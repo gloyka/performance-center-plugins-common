@@ -87,7 +87,6 @@
         </dependency>
     </dependencies>
     <build>
-        <pluginManagement>
             <plugins>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -155,7 +154,6 @@
                     </executions>
                 </plugin>
             </plugins>
-        </pluginManagement>
 
 
     </build>
