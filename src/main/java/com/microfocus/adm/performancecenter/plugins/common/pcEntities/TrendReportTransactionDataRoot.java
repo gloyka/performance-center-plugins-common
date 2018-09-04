@@ -14,8 +14,9 @@
  limitations under the License.
  */
 
-package com.microfocus.adm.performancecenter.plugins.common.pcEntities;
+package com.microfocus.adm.performancecenter.plugins.common.pcentities;
 
+import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public  class TrendReportTransactionDataRoot {
     public static TrendReportTransactionDataRoot xmlToObject(String xml)
     {
         XStream xstream = new XStream();
+        xstream = Helper.xstreamPermissions(xstream);
         xstream.alias("Root" , TrendReportTransactionDataRoot.class);
         xstream.alias("TransactionsData" , TrendReportTransactionDataRows.class);
         xstream.alias("TransactionsDataRow" , TrendReportTransactionDataRow.class);

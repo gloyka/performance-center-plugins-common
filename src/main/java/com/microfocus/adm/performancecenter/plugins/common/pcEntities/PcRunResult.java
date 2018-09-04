@@ -14,8 +14,9 @@
  limitations under the License.
  */
 
-package com.microfocus.adm.performancecenter.plugins.common.pcEntities;
+package com.microfocus.adm.performancecenter.plugins.common.pcentities;
 
+import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 
 public class PcRunResult {
@@ -29,10 +30,11 @@ public class PcRunResult {
     private String Type;
 	
 	public static PcRunResult xmlToObject(String xml)
-    {   	  
+    {
   	  XStream xstream = new XStream();
+		xstream = Helper.xstreamPermissions(xstream);
   	  xstream.alias("RunResult" , PcRunResult.class);
-  	  return (PcRunResult)xstream.fromXML(xml);	
+  	  return (PcRunResult)xstream.fromXML(xml);
     }
 
 	public int getID() {

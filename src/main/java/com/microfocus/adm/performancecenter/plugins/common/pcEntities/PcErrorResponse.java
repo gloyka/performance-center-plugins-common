@@ -14,10 +14,11 @@
  limitations under the License.
  */
 
-package com.microfocus.adm.performancecenter.plugins.common.pcEntities;
+package com.microfocus.adm.performancecenter.plugins.common.pcentities;
 
 import com.microfocus.adm.performancecenter.plugins.common.rest.PcRestProxy;
 import com.thoughtworks.xstream.XStream;
+import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 
 public class PcErrorResponse {
 
@@ -35,6 +36,7 @@ public class PcErrorResponse {
 
 	public static PcErrorResponse xmlToObject(String xml) {
 		XStream xstream = new XStream();
+		xstream = Helper.xstreamPermissions(xstream);
 		xstream.setClassLoader(PcErrorResponse.class.getClassLoader());
 		xstream.alias("Exception", PcErrorResponse.class);
 		return (PcErrorResponse) xstream.fromXML(xml);

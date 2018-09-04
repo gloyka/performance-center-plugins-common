@@ -14,9 +14,10 @@
  limitations under the License.
  */
 
-package com.microfocus.adm.performancecenter.plugins.common.pcEntities;
+package com.microfocus.adm.performancecenter.plugins.common.pcentities;
 
 import com.microfocus.adm.performancecenter.plugins.common.rest.PcRestProxy;
+import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 
 /**
@@ -39,6 +40,7 @@ public class TrendReportRequest {
 
     public String objectToXML() {
         XStream xstream = new XStream();
+        xstream = Helper.xstreamPermissions(xstream);
         xstream.useAttributeFor(TrendReportRequest.class, "xmlns");
         xstream.alias("TrendReport", TrendReportRequest.class);
         xstream.aliasField("Project", TrendReportRequest.class, "project");

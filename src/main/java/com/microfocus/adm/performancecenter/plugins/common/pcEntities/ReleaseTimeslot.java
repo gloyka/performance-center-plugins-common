@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-package com.microfocus.adm.performancecenter.plugins.common.pcEntities;
+package com.microfocus.adm.performancecenter.plugins.common.pcentities;
 
 import com.microfocus.adm.performancecenter.plugins.common.rest.PcRestProxy;
 import com.thoughtworks.xstream.XStream;
@@ -34,8 +34,8 @@ public class ReleaseTimeslot {
 
 	public String objectToXML() {
 		XStream obj = new XStream();
-		obj.alias("PostRunActions", com.microfocus.adm.performancecenter.plugins.common.pcEntities.ReleaseTimeslot.class);
-		obj.useAttributeFor(com.microfocus.adm.performancecenter.plugins.common.pcEntities.ReleaseTimeslot.class, "xmlns");
+		obj.alias("PostRunActions", com.microfocus.adm.performancecenter.plugins.common.pcentities.ReleaseTimeslot.class);
+		obj.useAttributeFor(com.microfocus.adm.performancecenter.plugins.common.pcentities.ReleaseTimeslot.class, "xmlns");
 		return obj.toXML(this);
 	}
 

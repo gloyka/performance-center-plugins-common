@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-package com.microfocus.adm.performancecenter.plugins.common.pcEntities;
+package com.microfocus.adm.performancecenter.plugins.common.pcentities;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -29,7 +29,7 @@ import java.io.StringReader;
 
 /**
  * Created by bemh on 6/5/2017.
- * Partial implementation of the test xml structure
+ * Partial implementation of the test2 xml structure
  */
 public class PcTestData {
 

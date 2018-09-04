@@ -13,11 +13,15 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+
 package com.microfocus.adm.performancecenter.plugins.common.pcentities;
 
 import com.microfocus.adm.performancecenter.plugins.common.rest.PcRestProxy;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.security.NoTypePermission;
+import com.thoughtworks.xstream.security.NullPermission;
+import com.thoughtworks.xstream.security.PrimitiveTypePermission;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -30,43 +34,57 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-/**
- * Created by bemh on 5/23/2017.
- */
-public class TestInstanceCreateRequest {
+import java.io.InputStream;
+import java.util.Collection;
+
+
+public class ScriptCreateRequest {
 
     private String xmlns = PcRestProxy.PC_API_XMLNS;
 
-    private int testId;
-    private int testSetId;
+    private String testFolderPath;
+    private boolean overwrite;
+    private boolean runtimeOnly;
+    private boolean keepCheckedOut;
 
-    public TestInstanceCreateRequest(int testId, int testSetId) {
-        this.testId = testId;
-        this.testSetId = testSetId;
+
+    public ScriptCreateRequest(String testFolderPath, boolean overwrite, boolean runtimeOnly, boolean keepCheckedOut) {
+        this.testFolderPath = testFolderPath;
+        this.overwrite = overwrite;
+        this.runtimeOnly = runtimeOnly;
+        this.keepCheckedOut = keepCheckedOut;
     }
+
 
     public String objectToXML() {
         XStream xstream = new XStream();
         xstream = Helper.xstreamPermissions(xstream);
-        xstream.useAttributeFor(TestInstanceCreateRequest.class, "xmlns");
-        xstream.alias("TestInstance", TestInstanceCreateRequest.class);
-        xstream.aliasField("TestID", TestInstanceCreateRequest.class, "testId");
-        xstream.aliasField("TestSetID", TestInstanceCreateRequest.class, "testSetId");
+        xstream.addPermission(NoTypePermission.NONE);
+        xstream.addPermission(NullPermission.NULL);
+        xstream.addPermission(PrimitiveTypePermission.PRIMITIVES);
+        xstream.allowTypeHierarchy(Collection.class);
+        xstream.allowTypesByWildcard(new String[] {
+                "com.microfocus.adm.performancecenter.plugins.common.pcentities.**"
+        });
+        xstream.useAttributeFor(ScriptCreateRequest.class, "xmlns");
+        xstream.alias("Script", ScriptCreateRequest.class);
+        xstream.aliasField("TestFolderPath", ScriptCreateRequest.class, "testFolderPath");
+        xstream.aliasField("Overwrite", ScriptCreateRequest.class, "overwrite");
+        xstream.aliasField("RuntimeOnly", ScriptCreateRequest.class, "runtimeOnly");
+        xstream.aliasField("KeepCheckedOut", ScriptCreateRequest.class, "keepCheckedOut");
         return xstream.toXML(this);
     }
 
-    public int getTestInstanceIDFromResponse(String xml, String getTestInstanceID) throws IOException, SAXException, ParserConfigurationException {
-
+    public int getScriptIdFromResponse(String xml, String getScriptID) throws IOException, SAXException, ParserConfigurationException {
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         InputSource is = new InputSource(new ByteArrayInputStream(xml.getBytes("utf-8")));
         Document doc = builder.parse(is);
         Element element = doc.getDocumentElement();
-
-
-        NodeList nListTrendedRun = doc.getElementsByTagName("TestInstanceID");
+        NodeList nListTrendedRun = doc.getElementsByTagName("ID");
         return Integer.parseInt(nListTrendedRun.item(0).getTextContent());
 
     }
 }
+

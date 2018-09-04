@@ -14,8 +14,9 @@
  limitations under the License.
  */
 
-package com.microfocus.adm.performancecenter.plugins.common.pcEntities;
+package com.microfocus.adm.performancecenter.plugins.common.pcentities;
 
+import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 
 import java.util.ArrayList;
@@ -30,12 +31,13 @@ public class PcRunEventLog {
         
     public static PcRunEventLog xmlToObject(String xml)
     {         
-      XStream xstream = new XStream();
-      xstream.alias("Record" , PcRunEventLogRecord.class);
-      xstream.alias("EventLog" , PcRunEventLog.class);
-      xstream.addImplicitCollection(PcRunEventLog.class, "RecordsList");
-      xstream.setClassLoader(PcRunEventLog.class.getClassLoader());
-      return (PcRunEventLog)xstream.fromXML(xml);    
+        XStream xstream = new XStream();
+        xstream = Helper.xstreamPermissions(xstream);
+        xstream.alias("Record" , PcRunEventLogRecord.class);
+        xstream.alias("EventLog" , PcRunEventLog.class);
+        xstream.addImplicitCollection(PcRunEventLog.class, "RecordsList");
+        xstream.setClassLoader(PcRunEventLog.class.getClassLoader());
+        return (PcRunEventLog)xstream.fromXML(xml);
     }
 
     public ArrayList<PcRunEventLogRecord> getRecordsList() {

@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-package com.microfocus.adm.performancecenter.plugins.common.pcEntities;
+package com.microfocus.adm.performancecenter.plugins.common.pcentities;
 
 import com.microfocus.adm.performancecenter.plugins.common.rest.PcRestProxy;
 import com.thoughtworks.xstream.XStream;
@@ -29,7 +29,7 @@ public class PcRunRequest {
 
 	private int TimeslotID;
 
-	private com.microfocus.adm.performancecenter.plugins.common.pcEntities.TimeslotDuration TimeslotDuration;
+	private com.microfocus.adm.performancecenter.plugins.common.pcentities.TimeslotDuration TimeslotDuration;
 
 	private String PostRunAction;
 

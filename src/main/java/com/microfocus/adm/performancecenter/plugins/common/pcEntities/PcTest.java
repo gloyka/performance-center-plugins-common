@@ -13,18 +13,17 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-package com.microfocus.adm.performancecenter.plugins.common.pcEntities;
+package com.microfocus.adm.performancecenter.plugins.common.pcentities;
 
 /**
  * Created by bemh on 6/5/2017.
- * Partial implementation of the test xml structure
+ * Partial implementation of the test2 xml structure
  */
 public class PcTest {
 
 
     private int testId;
     private String testName;
-
     private int trendReportId = -1;
 
 

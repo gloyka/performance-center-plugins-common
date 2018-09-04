@@ -14,8 +14,9 @@
  limitations under the License.
  */
 
-package com.microfocus.adm.performancecenter.plugins.common.pcEntities;
+package com.microfocus.adm.performancecenter.plugins.common.pcentities;
 
+import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class TrendReportMonitorsDataRows {
     public static TrendReportMonitorsDataRows xmlToObject(String xml)
     {
         XStream xstream = new XStream();
+        xstream = Helper.xstreamPermissions(xstream);
         xstream.alias("MonitorsData" , TrendReportMonitorsDataRows.class);
         xstream.alias("MonitorsDataRow" , TrendReportMonitorsDataRow.class);
         xstream.addImplicitCollection(TrendReportMonitorsDataRows.class, "trendReportMonitorsDataRowList");
