@@ -14,8 +14,9 @@
  limitations under the License.
  */
 
-package com.microfocus.adm.performancecenter.plugins.common.pcEntities;
+package com.microfocus.adm.performancecenter.plugins.common.pcentities;
 
+import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 
 /**
@@ -37,6 +38,7 @@ public class TrendReportRegularDataRow {
     public static TrendReportRegularDataRow xmlToObject(String xml)
     {
         XStream xstream = new XStream();
+        xstream = Helper.xstreamPermissions(xstream);
         xstream.alias("RegularDataRow" , TrendReportRegularDataRow.class);
         return (TrendReportRegularDataRow)xstream.fromXML(xml);
     }

@@ -14,8 +14,9 @@
  limitations under the License.
  */
 
-package com.microfocus.adm.performancecenter.plugins.common.pcEntities;
+package com.microfocus.adm.performancecenter.plugins.common.pcentities;
 
+import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 
 public class PcRunEventLogRecord {
@@ -33,10 +34,11 @@ public class PcRunEventLogRecord {
     private String Responsible;
     
     public static PcRunEventLogRecord xmlToObject(String xml)
-    {         
-      XStream xstream = new XStream();
-      xstream.alias("Record" , PcRunEventLogRecord.class);
-      return (PcRunEventLogRecord)xstream.fromXML(xml); 
+    {
+        XStream xstream = new XStream();
+        xstream = Helper.xstreamPermissions(xstream);
+        xstream.alias("Record" , PcRunEventLogRecord.class);
+        return (PcRunEventLogRecord)xstream.fromXML(xml);
     }
 
     public int getID() {

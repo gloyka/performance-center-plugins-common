@@ -32,6 +32,11 @@ public interface RESTConstants {
     String APP_XML = "application/xml";
     String TEXT_PLAIN = "text/plain";
     String APP_XML_BULK = "application/xml;type=collection";
+    String CONTENT_TYPE_DOWNLOAD_VALUE = "multipart/form-data; boundary=----";
+    String BOUNDARYSTR = "randomstring";
+    String FILENAME = "filename";
+    String BOUNDARY = "boundary";
+    String CONTENT_LENGTH = "Content-Length";
 
     String REST_PROTOCOL = "rest";
 

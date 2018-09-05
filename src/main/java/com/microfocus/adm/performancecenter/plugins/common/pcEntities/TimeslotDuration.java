@@ -1,4 +1,4 @@
-package com.microfocus.adm.performancecenter.plugins.common.pcEntities;
+package com.microfocus.adm.performancecenter.plugins.common.pcentities;
 
 /**
  Copyright 2018 Micro Focus International plc

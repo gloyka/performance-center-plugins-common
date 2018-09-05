@@ -13,8 +13,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-package com.microfocus.adm.performancecenter.plugins.common.pcEntities;
+package com.microfocus.adm.performancecenter.plugins.common.pcentities;
 
+import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class PcTestInstances {
     public static PcTestInstances xmlToObject(String xml)
     {
         XStream xstream = new XStream();
+        xstream = Helper.xstreamPermissions(xstream);
         xstream.alias("TestInstance" , PcTestInstance.class);
         xstream.alias("TestInstances" , PcTestInstances.class);
         xstream.addImplicitCollection(PcTestInstances.class, "TestInstancesList");

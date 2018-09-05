@@ -16,8 +16,9 @@
 package com.microfocus.adm.performancecenter.plugins.common.rest;
 
 
-import com.microfocus.adm.performancecenter.plugins.common.pcEntities.*;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.*;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Base64Encoder;
+import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHeaders;
@@ -29,6 +30,7 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -45,14 +47,15 @@ import org.apache.http.protocol.HttpContext;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.StringBody;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import org.apache.http.entity.mime.content.InputStreamBody;
 
 import static org.apache.commons.httpclient.HttpStatus.*;
 
@@ -72,7 +75,10 @@ public class PcRestProxy {
     protected static final String        TREND_REPORT_RESOURCE_NAME     = "TrendReports";
     protected static final String        TREND_REPORT_RESOURCE_SUFFIX     = "data";
     protected static final String        CONTENT_TYPE_XML               = "application/xml";
-    public static final String                  PC_API_XMLNS                   = "http://www.hp.com/PC/REST/API";
+    protected static final String        SCRIPTS_RESOURCE_NAME          = "Scripts";
+    protected static final String        TESTPLAN_RESOURCE_NAME          = "testplan";
+    public static final String           PC_API_XMLNS                   = "http://www.hp.com/PC/REST/API";
+
 	
     protected static final List<Integer> validStatusCodes = Arrays.asList(SC_OK, SC_CREATED, SC_ACCEPTED, SC_NO_CONTENT);
 	
@@ -335,6 +341,128 @@ public class PcRestProxy {
 			}  		
     		return response;           
     }
+
+    public PcScripts getScripts() throws IOException,PcException{
+        HttpGet getScriptsRequest = new HttpGet(String.format(baseURL + "/%s", SCRIPTS_RESOURCE_NAME));
+        HttpResponse response = executeRequest(getScriptsRequest);
+        String scripts = IOUtils.toString(response.getEntity().getContent());
+        return PcScripts.xmlToObject(scripts);
+    }
+
+    public PcScript getScript(int Id) throws IOException,PcException{
+        HttpGet getScriptsRequest = new HttpGet(String.format(baseURL + "/%s/%s", SCRIPTS_RESOURCE_NAME, Id));
+        HttpResponse response = executeRequest(getScriptsRequest);
+        String script = IOUtils.toString(response.getEntity().getContent());
+        return PcScript.xmlToObject(script);
+    }
+
+    public PcScript getScript(String testFolderPath) throws IOException,PcException{
+        List<PcScript> pcScriptList = getScripts().getPcScriptList();
+        for (PcScript pcScript:pcScriptList
+                ) {
+            if(pcScript.getTestFolderPath().toLowerCase().equals(testFolderPath.toLowerCase())) {
+                return pcScript;
+            }
+        }
+        return null;
+    }
+
+
+    public int uploadScript(String testFolderPath, boolean Overwrite, boolean RuntimeOnly, boolean KeepCheckedOut, String scriptPath) throws PcException, ClientProtocolException, IOException {
+
+        //trying to create Test Plan folder before uploading script
+        try {
+            if (!verifyTestPlanFolderExist(testFolderPath)) ;
+            {
+                String[] scriptPathArray = {testFolderPath};
+                createTestPlanFolders(scriptPathArray);
+            }
+        } catch (PcException | IOException ex) {
+            //Continuation should be allowed as exist verification and creation was introduced in PC12.60
+        }
+        HttpPost createScriptRequest = new HttpPost(String.format(baseURL + "/%s", SCRIPTS_RESOURCE_NAME));
+        File fileToSend = new File(scriptPath);
+        FileInputStream FileInputStreamToSend = new FileInputStream(fileToSend);
+        ScriptCreateRequest scriptCreateRequest = new ScriptCreateRequest(testFolderPath,Overwrite, RuntimeOnly, KeepCheckedOut);
+        MultipartEntity multipartEntity = new MultipartEntity();
+        multipartEntity.addPart("File", new InputStreamBody(FileInputStreamToSend, fileToSend.getName()));
+        multipartEntity.addPart("Text", new StringBody(scriptCreateRequest.objectToXML()));
+        createScriptRequest.setEntity(multipartEntity);
+        HttpResponse response = executeRequest(createScriptRequest);
+        String responseXml = IOUtils.toString(response.getEntity().getContent());
+        int scriptID = 0;
+        try {
+            scriptID = scriptCreateRequest.getScriptIdFromResponse(responseXml,"ID");
+        } catch (SAXException|ParserConfigurationException e) {
+            throw new PcException("uploadScript exception: " + e);
+        }
+        return scriptID;
+    }
+
+    public boolean deleteScript(int scriptId) throws PcException, ClientProtocolException, IOException {
+        HttpDelete deleteRequest = new HttpDelete(String.format(baseURL + "/%s/%s", SCRIPTS_RESOURCE_NAME, scriptId));
+        HttpResponse response = executeRequest(deleteRequest);
+        return true;
+    }
+
+    public PcTestPlanFolders getTestPlanFolders() throws IOException,PcException{
+        HttpGet getFolderTreeRequest = new HttpGet(String.format(baseURL + "/%s", TESTPLAN_RESOURCE_NAME));
+        HttpResponse response = executeRequest(getFolderTreeRequest);
+        String testPlan = IOUtils.toString(response.getEntity().getContent());
+        return PcTestPlanFolders.xmlToObject(testPlan);
+    }
+
+    public boolean verifyTestPlanFolderExist (String path) throws IOException,PcException {
+        PcTestPlanFolders pcTestPlanFolders = getTestPlanFolders();
+        if (pcTestPlanFolders != null ) {
+            for (PcTestPlanFolder pcTestPlanFolder : pcTestPlanFolders.getPcTestPlanFolderList()
+                    ) {
+                if (pcTestPlanFolder.getFullPath().equals(path))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public PcTestPlanFolder createTestPlanFolder(String existingPath, String name) throws IOException,PcException{
+        HttpPost createTestPlanFolderRequest = new HttpPost(String.format(baseURL + "/%s", TESTPLAN_RESOURCE_NAME));
+        TestPlanFolderCreateRequest testPlanFolderCreateRequest = new TestPlanFolderCreateRequest(existingPath, name);
+        createTestPlanFolderRequest.setEntity(new StringEntity(testPlanFolderCreateRequest.objectToXML(), org.apache.http.entity.ContentType.APPLICATION_XML));
+        createTestPlanFolderRequest.addHeader(RESTConstants.CONTENT_TYPE, CONTENT_TYPE_XML);
+        HttpResponse response = executeRequest(createTestPlanFolderRequest);
+        String responseXml = IOUtils.toString(response.getEntity().getContent());
+        PcTestPlanFolder pcTestPlanFolder;
+        try {
+            pcTestPlanFolder = testPlanFolderCreateRequest.getPcTestPlanFolderFromResponse(responseXml);
+        } catch (SAXException|ParserConfigurationException e) {
+            throw new PcException("createTestPlanFolder exception: " + e);
+        }
+        return pcTestPlanFolder;
+    }
+
+    public ArrayList<PcTestPlanFolder> createTestPlanFolders(String[] paths) throws IOException,PcException{
+
+        ArrayList<String[]> pathFromSubjectAndFolders = Helper.getArrayListOfStringArray(paths);
+        PcTestPlanFolders pcTestPlanFolders = getTestPlanFolders();
+        ArrayList<String[]> pathFromSubjectAndFoldersFiltered = Helper.getCleanAndNonExistingAndSortedArrayList(pathFromSubjectAndFolders, pcTestPlanFolders);
+        return createPcTestPlanFolders(pathFromSubjectAndFoldersFiltered);
+    }
+
+    public ArrayList<PcTestPlanFolder> createPcTestPlanFolders(ArrayList<String[]> stringsOfExistingPathFromSubjectAndOfFolderToCreate) throws IOException, PcException {
+        //creating the items from ArrayList not existing in PC
+        ArrayList<PcTestPlanFolder> createdPcTestPlanFolders = new ArrayList<PcTestPlanFolder>();
+        if (stringsOfExistingPathFromSubjectAndOfFolderToCreate.size() > 0) {
+            for (String[] pathFromSubjectAndFolder: stringsOfExistingPathFromSubjectAndOfFolderToCreate
+                 ) {
+                PcTestPlanFolder createdPcTestPlanFolder = createTestPlanFolder(pathFromSubjectAndFolder[0], pathFromSubjectAndFolder[1]);
+                createdPcTestPlanFolders.add(createdPcTestPlanFolder);
+            }
+        }
+        return createdPcTestPlanFolders;
+    }
+
+
+
 
 	public static boolean isOk (HttpResponse response) {
 	    return validStatusCodes.contains(response.getStatusLine().getStatusCode());
