@@ -1,0 +1,29 @@
+#test
+name: mytestname
+
+testfolderpath: "Subject\\tests\\mytests"
+
+content:
+#  controller: "[test]controller"
+
+  lgamount: 10
+
+  groups:
+    - groupname: "kilimanjaro_tc_1"
+      vusers: 50
+      scriptid: 1
+      #scriptfullname: 'scripts\kuku\scriptname'
+#      lgname:
+#        - "LG1"
+#        - "LG2"
+    - groupname: "kilimanjaro_tc_2"
+      vusers: 50
+      #scriptid: '218'
+      scriptfullname: "Subject\\t\\login_logout"
+#      lgname:
+#        - "LG3"
+#        - "LG4"
+
+  scheduler:
+    rampuptimeinseconds: 120
+    durationinseconds: 600

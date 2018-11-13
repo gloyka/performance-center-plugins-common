@@ -3,7 +3,6 @@ package com.microfocus.adm.performancecenter.plugins.common.utils;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.PcException;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.PcTestPlanFolder;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.PcTestPlanFolders;
-import com.microfocus.adm.performancecenter.plugins.common.rest.PcRestProxy;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.NoTypePermission;
 import com.thoughtworks.xstream.security.NullPermission;

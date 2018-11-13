@@ -1,0 +1,80 @@
+<Test xmlns="http://www.hp.com/PC/REST/API">
+    <Name>kuku</Name>
+    <TestFolderPath>Subject\daniel</TestFolderPath>
+    <Content>
+        <WorkloadType>
+            <Type>basic</Type>
+            <SubType>by test</SubType>
+            <VusersDistributionMode>by number</VusersDistributionMode>
+        </WorkloadType>
+        <LGDistribution>
+            <Type>all to each group</Type>
+            <Amount>10</Amount>
+        </LGDistribution>
+        <MonitorProfiles/>
+        <Groups>
+            <Group>
+                <Name>kilimanjaro_tc_1</Name>
+                <Vusers>1</Vusers>
+                <Script>
+                    <ID>1</ID>
+                </Script>
+                <RTS>
+                    <Pacing>
+                        <NumberOfIterations>1</NumberOfIterations>
+                        <StartNewIteration Type="immediately"/>
+                    </Pacing>
+                    <ThinkTime Type="replay"/>
+                    <Log Type="disable">
+                        <ParametersSubstituion>false</ParametersSubstituion>
+                        <DataReturnedByServer>false</DataReturnedByServer>
+                        <AdvanceTrace>false</AdvanceTrace>
+                    </Log>
+                </RTS>
+            </Group>
+            <Group>
+                <Name>kilimanjaro_tc_2</Name>
+                <Vusers>1</Vusers>
+                <Script>
+                    <ID>1</ID>
+                </Script>
+                <RTS>
+                    <Pacing>
+                        <NumberOfIterations>1</NumberOfIterations>
+                        <StartNewIteration Type="immediately"/>
+                    </Pacing>
+                    <ThinkTime Type="replay"/>
+                    <Log Type="disable">
+                        <ParametersSubstituion>false</ParametersSubstituion>
+                        <DataReturnedByServer>false</DataReturnedByServer>
+                        <AdvanceTrace>false</AdvanceTrace>
+                    </Log>
+                </RTS>
+            </Group>
+        </Groups>
+        <Scheduler>
+            <Actions>
+                <Action>
+                    <Initialize Type="just before vuser runs"/>
+                </Action>
+                <Action>
+                    <StartVusers Type="simultaneously"/>
+                </Action>
+                <Action>
+                    <Duration Type="until completion"/>
+                </Action>
+            </Actions>
+        </Scheduler>
+        <Diagnostics>
+            <Enabled>false</Enabled>
+            <VusersPercentage>1</VusersPercentage>
+            <EnableWebPage>false</EnableWebPage>
+            <J2EEDotNet>
+                <Enabled>false</Enabled>
+                <Probes></Probes>
+                <IsMediatorOFW>false</IsMediatorOFW>
+                <MonitorServerRequests>false</MonitorServerRequests>
+            </J2EEDotNet>
+        </Diagnostics>
+    </Content>
+</Test>
