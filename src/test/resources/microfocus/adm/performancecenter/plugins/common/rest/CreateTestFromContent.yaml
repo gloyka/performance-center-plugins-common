@@ -20,5 +20,5 @@ groups:
       - "[test]4"
 
 scheduler:
-  rampup_seconds: 120
-  duration_seconds: 600
+  rampup: 120
+  duration: 600
