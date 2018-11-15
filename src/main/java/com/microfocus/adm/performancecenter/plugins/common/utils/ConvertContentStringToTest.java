@@ -193,14 +193,14 @@ public class ConvertContentStringToTest {
         //initialized is unchanged
         Initialize initialize = new Initialize();
 
-        //StartVusers does change if rampuptimeinseconds was provided
+        //StartVusers does change if rampup was provided
         //StartVusers startVusers = new StartVusers();
         StartVusers startVusers = getStartVusersSchedulerByTest(simplifiedContent);
 
-        //Duration does change if durationinseconds was provided
+        //Duration does change if duration was provided
         Duration duration = new Duration();
-        if(simplifiedContent.getScheduler().getDuration_seconds() > 0) {
-            TimeInterval timeInterval = getTimeInterval(simplifiedContent.getScheduler().getDuration_seconds());
+        if(simplifiedContent.getScheduler().getDuration() > 0) {
+            TimeInterval timeInterval = getTimeInterval(simplifiedContent.getScheduler().getDuration());
             duration = new Duration(DurationTypeValues.RUN_FOR, timeInterval);
         }
 
@@ -218,9 +218,9 @@ public class ConvertContentStringToTest {
     //using 15 seconds interval
     private StartVusers getStartVusersSchedulerByTest(SimplifiedContent simplifiedContent) {
         StartVusers startVusers;
-        if(simplifiedContent.getScheduler().getRampup_seconds() > 30 ) {
+        if(simplifiedContent.getScheduler().getRampup() > 30 ) {
             int vusersSum = simplifiedContent.getGroups().stream().filter(o -> o.getVusers() > 0).mapToInt(o -> o.getVusers()).sum();
-            double exactTimeIntervalInSecondsPerUser = ((double) simplifiedContent.getScheduler().getRampup_seconds()) / ((double) vusersSum);
+            double exactTimeIntervalInSecondsPerUser = ((double) simplifiedContent.getScheduler().getRampup()) / ((double) vusersSum);
             int vusers = 1;
             int timeIntervalInSeconds = (int) exactTimeIntervalInSecondsPerUser;
             if(exactTimeIntervalInSecondsPerUser < 15 && exactTimeIntervalInSecondsPerUser > 0) {
@@ -230,9 +230,9 @@ public class ConvertContentStringToTest {
             TimeInterval timeInterval = getTimeInterval(timeIntervalInSeconds);
             Ramp ramp = new Ramp(vusers, timeInterval);
             startVusers = new StartVusers(StartStopVusersTypeValues.GRADUALLY, ramp);
-        } else if(simplifiedContent.getScheduler().getRampup_seconds() > 1 ){
+        } else if(simplifiedContent.getScheduler().getRampup() > 1 ){
             int vusersSum = simplifiedContent.getGroups().stream().filter(o -> o.getVusers() > 0).mapToInt(o -> o.getVusers()).sum();
-            int timeIntervalInSeconds = simplifiedContent.getScheduler().getRampup_seconds() / 2;
+            int timeIntervalInSeconds = simplifiedContent.getScheduler().getRampup() / 2;
             int vusers = (vusersSum /2) + (((vusersSum % 2)==0)?0:1);
             TimeInterval timeInterval = getTimeInterval(timeIntervalInSeconds);
             Ramp ramp = new Ramp(vusers, timeInterval);
