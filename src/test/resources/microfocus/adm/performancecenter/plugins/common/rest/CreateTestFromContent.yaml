@@ -1,0 +1,24 @@
+#content:
+controller: "[test]controller"
+
+#lgamount: 5
+
+groups:
+  - group_name: "kilimanjaro_tc_1"
+    vusers: 50
+    script_id: 1
+    #script_path: "Subject\\t\\login_logout"
+    lg_name:
+      - "[test]1"
+      - "[test]2"
+  - group_name: "kilimanjaro_tc_2"
+    vusers: 50
+    #script_id: '1'
+    script_path: "Subject\\t\\login_logout"
+    lg_name:
+      - "[test]3"
+      - "[test]4"
+
+scheduler:
+  rampup_seconds: 120
+  duration_seconds: 600

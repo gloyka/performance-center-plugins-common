@@ -16,8 +16,15 @@
 package com.microfocus.adm.performancecenter.plugins.common.rest;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.*;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.Content;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.SimplifiedTest;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.SimplifiedContent;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Base64Encoder;
+import com.microfocus.adm.performancecenter.plugins.common.utils.ConvertContentStringToTest;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.io.IOUtils;
@@ -30,13 +37,13 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.methods.*;
 import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.InputStreamBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -49,18 +56,18 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.URLEncoder;
-import java.util.*;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.StringBody;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import org.apache.http.entity.mime.content.InputStreamBody;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import static com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common.stringToInteger;
 import static org.apache.commons.httpclient.HttpStatus.*;
 
 public class PcRestProxy {
 
+    //region implemented
     protected static final String        BASE_PC_API_URL                = "%s://%s/LoadTest/rest";
     protected static final String        BASE_PC_API_AUTHENTICATION_URL = BASE_PC_API_URL + "/authentication-point";
     protected static final String        AUTHENTICATION_LOGIN_URL       = BASE_PC_API_AUTHENTICATION_URL + "/authenticate";
@@ -331,7 +338,6 @@ public class PcRestProxy {
 				String message;
 				try {
 					String content = IOUtils.toString(response.getEntity().getContent());
-//                    logger.println("DEBUGMSG - response content: " + content);
 					PcErrorResponse exception = PcErrorResponse.xmlToObject(content);
 					message  = String.format("%s Error code: %s", exception.ExceptionMessage, exception.ErrorCode);
                 } catch (Exception ex) {
@@ -356,11 +362,11 @@ public class PcRestProxy {
         return PcScript.xmlToObject(script);
     }
 
-    public PcScript getScript(String testFolderPath) throws IOException,PcException{
+    public PcScript getScript(String testFolderPath, String scriptName) throws IOException,PcException{
         List<PcScript> pcScriptList = getScripts().getPcScriptList();
         for (PcScript pcScript:pcScriptList
                 ) {
-            if(pcScript.getTestFolderPath().toLowerCase().equals(testFolderPath.toLowerCase())) {
+            if(pcScript.getTestFolderPath().equalsIgnoreCase(testFolderPath) && pcScript.getName().equalsIgnoreCase(scriptName)) {
                 return pcScript;
             }
         }
@@ -371,15 +377,8 @@ public class PcRestProxy {
     public int uploadScript(String testFolderPath, boolean Overwrite, boolean RuntimeOnly, boolean KeepCheckedOut, String scriptPath) throws PcException, ClientProtocolException, IOException {
 
         //trying to create Test Plan folder before uploading script
-        try {
-            if (!verifyTestPlanFolderExist(testFolderPath)) ;
-            {
-                String[] scriptPathArray = {testFolderPath};
-                createTestPlanFolders(scriptPathArray);
-            }
-        } catch (PcException | IOException ex) {
-            //Continuation should be allowed as exist verification and creation was introduced in PC12.60
-        }
+        createTestPlanFolder(testFolderPath);
+        //uploading script
         HttpPost createScriptRequest = new HttpPost(String.format(baseURL + "/%s", SCRIPTS_RESOURCE_NAME));
         File fileToSend = new File(scriptPath);
         FileInputStream FileInputStreamToSend = new FileInputStream(fileToSend);
@@ -460,8 +459,164 @@ public class PcRestProxy {
         }
         return createdPcTestPlanFolders;
     }
+    //endregion
 
 
+    public Test createOrUpdateTestFromYamlTest(String testString ) throws IOException, PcException {
+        SimplifiedTest simplifiedTest = yamlStringToSimplifiedTest(testString);
+        return createOrUpdateTestFromYamlContent("", "", testString);
+    }
+
+    public Test createOrUpdateTestFromYamlContent(String testName, String testFolderPath, String testOrContent ) throws IOException, PcException {
+
+        Test createdOrUpdatedTest = null;
+        //region requirements
+
+        /*
+        Required Test Functionality
+•	Should be supported
+    o	Workload type
+        	Basic schedule by test – number mode. The user should not specify the workload type in the XML
+    o	Controller selection (optional field)
+        	If field is added we should refer to the user selection. Possible values
+            •	<Controller>Automatch</Controller>
+            •	<Controller>Specific:machine_name_or_ip</Controller>
+            •	<Controller>Docker:image_name</Controller> (memory and CPU will be set to default values)
+        	If the field was not added to the XML PC should default to Automatch
+    o	Load Generator assignment. The user should be able to choose one of the following options
+        	The user should specify number of LGs and all of them will assigned to each group
+            •	In such case the user should specify whether to use Automatch or Docker
+        	The user should be able to specify which Load Generators are going to be assigned to which group. For example
+            •	Group 1 <-> LG1, specific_lg_name_or_ip, DOCKER1
+            •	Group 2 <-> LG2, DOCKER2
+            •	Group 3 <-> DOCKER2
+        	The user should also be able to specify number of LGs per group without specifying exact details for each group
+            •	Group 1 <-> 3 LGs
+            •	Group 2 <-> 5 LGs
+        	If the user chose this option, we should allow specifying also whether the LGs are Automatch or Dockerized
+        	The user should be able to specify the Docker image name and resource limits.  If not specified PC should use default values (if there are such)
+    o	Vusers
+        	User should be able to specify total number of Vusers and distribute equally among groups
+        	User should be able to specify the number of Vusers per group
+    o	Scheduler
+        	Ramp up time (Start Vusers section). The user should specify the time. PC will calculate internally how to spread it. meaning how many Vusers every time
+        	Duration
+
+•	Should not be supported for the first version
+    o	Test Options should not be exposed in the XML. The test creation should set default values.
+    o	Trend settings. The test creation should set it to disable (default for new tests in PC)
+    o	Workload Types
+        	Goal oriented schedule
+        	Basic scheduler by test percentage mode
+        	Basic schedule by group
+        	Real world by test (either by number or percentage)
+        	Real world by group
+    o	Load Generator assignment
+        	Setting attributes, location and terminal services
+    o	Scheduler
+        	Initialize: should not be exposed in the XML format. We should default to Initialize each Vuser just before it runs
+        	Stop Vusers: should not be exposed in the XML format. We should default to Stop all Vusers simultaneously.
+    o	Runtime settings should be taken from the script
+    o	Command line. The workaround for the user is to define them in RTS > Additional Attributes
+    o	Rendezvous
+    o	NV
+    o	SV
+    o	Analysis Template
+    o	SLA
+    o	Monitors
+    o	Topology
+    o	Diagnostics
+
+
+        */
+        //endregion
+
+        ConvertContentStringToTest convertContentStringToTest = new ConvertContentStringToTest(this, testName, testFolderPath, testOrContent).invoke();
+
+        //creating or updating test
+        try {
+            createdOrUpdatedTest = createOrUpdateTest(convertContentStringToTest.getTestName(), convertContentStringToTest.getTestFolderPathWithSubject(), convertContentStringToTest.getContent());
+        } catch (PcException ex) {
+            throw ex;
+        }
+        return createdOrUpdatedTest;
+    }
+
+    public static Content getContentFromXmlOrYamlString(String xmlOrYamlTest) {
+        Content content = null;
+
+        try {
+            Test test = Test.xmlToObject(xmlOrYamlTest);
+            content = test.getContent();
+        } catch (Exception ex) {
+            content = Content.xmlToObject(xmlOrYamlTest);
+        }
+
+        return content;
+    }
+
+
+    public Test createOrUpdateTest(String testName, String testFolderPath, String xml) throws IOException, PcException  {
+        String testFolderPathWithCorrectSeparatorsAndSubject = testFolderPath.replace("/","\\");
+        if(!testFolderPath.startsWith("Subject"))
+            testFolderPathWithCorrectSeparatorsAndSubject = "Subject\\".concat(testFolderPath);
+        Content content = getContentFromXmlOrYamlString(xml);
+        Test test = createOrUpdateTest(testName, testFolderPathWithCorrectSeparatorsAndSubject, content);
+        return test;
+    }
+
+
+    public Test createOrUpdateTest(String testName, String testFolderPath, Content content ) throws IOException, PcException  {
+        //trying to create Test Plan folder before creating the test
+        createTestPlanFolder(testFolderPath);
+        //try to create test
+        try {
+            HttpPost createTestRequest = new HttpPost(String.format(baseURL + "/%s", TESTS_RESOURCE_NAME));
+            Test test = new Test(testName, testFolderPath, content);
+            createTestRequest.setEntity(new StringEntity(test.objectToXML(), org.apache.http.entity.ContentType.APPLICATION_XML));
+            HttpResponse response = executeRequest(createTestRequest);
+            String createTestResponse =  IOUtils.toString(response.getEntity().getContent());
+            return Test.xmlToObject(createTestResponse);
+        } catch (PcException e) { //in case of failure, verify if exception return conflict with exiting test
+            int testId = extractTestIdFromString(e.getMessage());
+            if (testId != 0) //if exception returns conflict with existing test, get the testId from the exception and update it instead
+                   return updateTest(testId, content);
+
+            throw e;
+        }
+    }
+
+    private void createTestPlanFolder(String testFolderPath) {
+        try {
+            if (!verifyTestPlanFolderExist(testFolderPath)) {
+                String[] scriptPathArray = {testFolderPath};
+                createTestPlanFolders(scriptPathArray);
+            }
+        } catch (PcException | IOException ex) {
+            //Continuation should be allowed as exist verification and creation was introduced in PC12.60
+        }
+    }
+
+    public Test getTest(int testId) throws IOException,PcException {
+        HttpGet getTestRequest = new HttpGet(String.format(baseURL + "/%s/%s", TESTS_RESOURCE_NAME, testId));
+        HttpResponse response = executeRequest(getTestRequest);
+        String xmlTest = IOUtils.toString(response.getEntity().getContent());
+        return Test.xmlToObject(xmlTest);
+    }
+
+    public Test updateTest(int testId, Content content ) throws IOException, PcException  {
+        HttpPut updateTestRequest = new HttpPut(String.format(baseURL + "/%s/%s", TESTS_RESOURCE_NAME, testId));
+        updateTestRequest.setEntity(new StringEntity(content.objectToXML(true), org.apache.http.entity.ContentType.APPLICATION_XML));
+        HttpResponse response = executeRequest(updateTestRequest);
+        Test updatedTest = getTest(testId);
+        return updatedTest;
+    }
+
+    public boolean deleteTest(int testId) throws IOException, PcException  {
+        HttpDelete deleteTestRequest = new HttpDelete(String.format(baseURL + "/%s/%s", TESTS_RESOURCE_NAME, testId));
+        HttpResponse response = executeRequest(deleteTestRequest);
+        return true;
+    }
 
 
 	public static boolean isOk (HttpResponse response) {
@@ -470,6 +625,48 @@ public class PcRestProxy {
 	
     protected String getBaseURL() {
         return baseURL;
+    }
+
+    public int extractTestIdFromString(String value) {
+        if(value != null && !value.isEmpty()) {
+            Pattern pattern = Pattern.compile("ID:\'([^\']*)\'");
+            Matcher matcher = pattern.matcher(value);
+            while (matcher.find()) {
+                return stringToInteger(matcher.group(1));
+            }
+        }
+        return 0;
+    }
+
+    public Content readYaml(String yamlContent) throws IOException {
+        Content content = null;
+        final ObjectMapper mapper = new ObjectMapper(new YAMLFactory()); // jackson databind
+        try {
+            Test test = mapper.readValue(yamlContent, Test.class);
+            content = test.getContent();
+        } catch (IOException ex1) {
+            try {
+                content = mapper.readValue(yamlContent, Content.class);
+            } catch (IOException ex2) {
+                throw ex2;
+            }
+        }
+        return content;
+    }
+
+    public static SimplifiedContent yamlStringToSimplifiedContent (String strSimplifiedContent) throws IOException  {
+
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        SimplifiedContent simplifiedContent = mapper.readValue(strSimplifiedContent, SimplifiedContent.class);
+        return simplifiedContent;
+
+    }
+
+    public static SimplifiedTest yamlStringToSimplifiedTest(String strSimplifiedTest) throws IOException {
+
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        SimplifiedTest simplifiedTest = mapper.readValue(strSimplifiedTest, SimplifiedTest.class);
+        return simplifiedTest;
     }
 
 }

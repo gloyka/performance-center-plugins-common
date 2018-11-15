@@ -1,18 +1,17 @@
 package com.microfocus.adm.performancecenter.plugins.common.rest;
 
-import java.io.PrintStream;
-
-import com.microfocus.adm.performancecenter.plugins.common.pcentities.PcException;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.PostRunAction;
+
+import java.io.PrintStream;
 
 public interface PcRestProxyBase {
 
     public static final String SERVER_AND_PORT = "jenkins.server:8082";
-    public static final String PC_SERVER_NAME = "myd-vm02552.hpeswlab.net";
+    public static final String PC_SERVER_NAME = "myd-vm00669.hpeswlab.net";
     public static final String ALM_USER_NAME = "sa";
     public static final String ALM_PASSWORD = "";
     public static final String ALM_DOMAIN = "DEFAULT";
-    public static final String ALM_PROJECT = "AUTOMATION_PROJECT";
+    public static final String ALM_PROJECT = "aaa";
     public static final String TEST_ID = "1";
     public static final String TEST_INSTANCE_ID = "2";
     public static final String TIMESLOT_DURATION_HOURS = "0";
@@ -20,7 +19,7 @@ public interface PcRestProxyBase {
     public static final String TIMESLOT_ID = "56";
     public static final PostRunAction POST_RUN_ACTION = PostRunAction.COLLATE_AND_ANALYZE;
     public static final boolean VUDS_MODE = false;
-    public static final String DESCRIPTION = "Testing HPE Performance Center Jenkins plugin";
+    //public static final String DESCRIPTION = "Testing HPE Performance Center Jenkins plugin";
     public static final String RUN_ID = "7";
     public static final String RUN_ID_WAIT = "8";
     public static final String REPORT_ID = "9";

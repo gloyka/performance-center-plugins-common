@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<test>
+    <xmlns>http://www.hp.com/PC/REST/API</xmlns>
+    <ID>2</ID>
+    <Name>kuku</Name>
+    <TestFolderPath>Subject\mypctests</TestFolderPath>
+    <CreatedBy>sa</CreatedBy>
+    <LastModified>8-29-2018</LastModified>
+</test>
