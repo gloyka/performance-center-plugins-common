@@ -16,7 +16,7 @@ public class SimplifiedContent {
     String controller;
 
     //optional if specified in group
-    int lgamount;
+    int lg_amount;
 
     //required
     private List<SimplifiedGroup> groups;
@@ -26,9 +26,9 @@ public class SimplifiedContent {
 
     public SimplifiedContent() {}
 
-    public SimplifiedContent(String controller, int lgamount , List<SimplifiedGroup> groups, Scheduler scheduler) {
+    public SimplifiedContent(String controller, int lg_amount, List<SimplifiedGroup> groups, Scheduler scheduler) {
         this.controller = controller;
-        this.lgamount = lgamount;
+        this.lg_amount = lg_amount;
         this.groups = groups;
         this.scheduler = scheduler;
     }
@@ -38,7 +38,7 @@ public class SimplifiedContent {
     public String toString() {
         return "SimplifiedContent {" +
                 "controller = " + controller +
-                ", " + "lgamount = " + lgamount +
+                ", " + "lg_amount = " + lg_amount +
                 ", " + "groups = " + groups +
                 ", " + "scheduler = " + scheduler +
                 "}";

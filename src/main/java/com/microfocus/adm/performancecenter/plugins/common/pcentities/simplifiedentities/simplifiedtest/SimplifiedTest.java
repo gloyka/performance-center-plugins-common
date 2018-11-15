@@ -10,31 +10,31 @@ public class SimplifiedTest {
 
 //    @XmlElement
 //    @JsonProperty
-    private String name;
+    private String test_name;
 
 //    @XmlElement
 //    @JsonProperty
-    private String testfolderpath;
+    private String test_folder_path;
 
 //    @XmlElement
 //    @JsonProperty
-    private SimplifiedContent content;
+    private SimplifiedContent test_content;
 
     public SimplifiedTest() {}
 
-    public SimplifiedTest(String name, String testfolderpath, SimplifiedContent content) {
-        this.name = name;
-        this.testfolderpath = testfolderpath;
-        this.content = content;
+    public SimplifiedTest(String test_name, String test_folder_path, SimplifiedContent test_content) {
+        this.test_name = test_name;
+        this.test_folder_path = test_folder_path;
+        this.test_content = test_content;
     }
 
 
     @Override
     public String toString() {
         return "SimplifiedTest {" +
-                "name = " + name +
-                ", " + "testfolderpath = " + testfolderpath +
-                ", " + "content = " + content +
+                "test_name = " + test_name +
+                ", " + "test_folder_path = " + test_folder_path +
+                ", " + "test_content = " + test_content +
                 "}";
     }
 

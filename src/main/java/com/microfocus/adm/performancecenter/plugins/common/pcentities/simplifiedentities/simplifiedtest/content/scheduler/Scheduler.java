@@ -8,20 +8,20 @@ import lombok.Setter;
 public class Scheduler {
 
     //optional
-    int rampuptimeinseconds;
+    int rampup_seconds;
 
     //optional
-    int durationinseconds;
+    int duration_seconds;
 
-//    public Scheduler(int rampuptimeinseconds, int durationinseconds) {
-//        this.rampuptimeinseconds = rampuptimeinseconds;
-//        this.durationinseconds = durationinseconds;
+//    public Scheduler(int rampup_seconds, int duration_seconds) {
+//        this.rampup_seconds = rampup_seconds;
+//        this.duration_seconds = duration_seconds;
 //    }
 
     @Override
     public String toString() {
         return "Scheduler {" +
-                "rampuptimeinseconds = " + rampuptimeinseconds + ", " +
-                "durationinseconds = " + durationinseconds + "}";
+                "rampup_seconds = " + rampup_seconds + ", " +
+                "duration_seconds = " + duration_seconds + "}";
     }
 }

@@ -8,19 +8,19 @@ import lombok.Setter;
 public class SimplifiedGroup {
 
     //default name will be used if not supplied
-    String groupname;
+    String group_name;
 
     //1 vuser will be used if not supplied
     int vusers;
 
-    //required if scriptfullname not provided
-    int scriptid;
+    //required if script_path not provided
+    int script_id;
 
-    //required if scriptid not provided
-    String scriptfullname;
+    //required if script_id not provided
+    String script_path;
 
     //if supplied, it will be priorly considered even if lgamount was set
-    String[] lgname;
+    String[] lg_name;
 
     //not supplied, will be retrieved later.
     String protocol;
@@ -28,11 +28,11 @@ public class SimplifiedGroup {
     @Override
     public String toString() {
         return "SimplifiedGroup {" +
-                "groupname = " + groupname +
+                "group_name = " + group_name +
                 ", " + "vusers = " + vusers +
-                ", " + "scriptid = " + scriptid +
-                ", " + "scriptfullname = " + scriptfullname +
-                ", " + "" + "lgname = " + lgname +
+                ", " + "script_id = " + script_id +
+                ", " + "script_path = " + script_path +
+                ", " + "" + "lg_name = " + lg_name +
                 ", " + "" + "protocol = " + protocol +
                 "}";
     }

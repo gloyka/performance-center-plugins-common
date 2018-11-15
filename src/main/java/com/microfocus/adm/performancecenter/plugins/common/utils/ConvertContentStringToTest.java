@@ -156,9 +156,9 @@ public class ConvertContentStringToTest {
 
         if(testName.isEmpty() && testFolderPath.isEmpty()) {
             SimplifiedTest simplifiedTest = PcRestProxy.yamlStringToSimplifiedTest(testOrContent);
-            simplifiedContent = simplifiedTest.getContent();
-            testName = simplifiedTest.getName();
-            testFolderPath = simplifiedTest.getTestfolderpath();
+            simplifiedContent = simplifiedTest.getTest_content();
+            testName = simplifiedTest.getTest_name();
+            testFolderPath = simplifiedTest.getTest_folder_path();
         } else {
             simplifiedContent = PcRestProxy.yamlStringToSimplifiedContent(testOrContent);
         }
@@ -172,14 +172,14 @@ public class ConvertContentStringToTest {
         List<SimplifiedGroup> simplifiedGroups = simplifiedContent.getGroups();
         for (SimplifiedGroup simplifiedGroup: simplifiedGroups
              ) {
-            if(simplifiedGroup.getScriptid() == 0 && !simplifiedGroup.getScriptfullname().isEmpty()) { //retreiving the script ID + protocol from script name and script folder
-                File file = new File("Subject\\".concat(simplifiedGroup.getScriptfullname()));
+            if(simplifiedGroup.getScript_id() == 0 && !simplifiedGroup.getScript_path().isEmpty()) { //retreiving the script ID + protocol from script name and script folder
+                File file = new File("Subject\\".concat(simplifiedGroup.getScript_path()));
                 PcScript pcScript = pcRestProxy.getScript(file.getParent().toString(), file.getName());
-                simplifiedGroup.setScriptid(pcScript.getID());
+                simplifiedGroup.setScript_id(pcScript.getID());
                 simplifiedGroup.setProtocol(pcScript.getProtocol());
                 simplifiedContent.setGroups(simplifiedGroups);
-            } else if(simplifiedGroup.getScriptid() > 0) { // retrieving protocol of script
-                PcScript pcScript = pcRestProxy.getScript(simplifiedGroup.getScriptid());
+            } else if(simplifiedGroup.getScript_id() > 0) { // retrieving protocol of script
+                PcScript pcScript = pcRestProxy.getScript(simplifiedGroup.getScript_id());
                 simplifiedGroup.setProtocol(pcScript.getProtocol());
                 simplifiedContent.setGroups(simplifiedGroups);
             }
@@ -199,8 +199,8 @@ public class ConvertContentStringToTest {
 
         //Duration does change if durationinseconds was provided
         Duration duration = new Duration();
-        if(simplifiedContent.getScheduler().getDurationinseconds() > 0) {
-            TimeInterval timeInterval = getTimeInterval(simplifiedContent.getScheduler().getDurationinseconds());
+        if(simplifiedContent.getScheduler().getDuration_seconds() > 0) {
+            TimeInterval timeInterval = getTimeInterval(simplifiedContent.getScheduler().getDuration_seconds());
             duration = new Duration(DurationTypeValues.RUN_FOR, timeInterval);
         }
 
@@ -218,9 +218,9 @@ public class ConvertContentStringToTest {
     //using 15 seconds interval
     private StartVusers getStartVusersSchedulerByTest(SimplifiedContent simplifiedContent) {
         StartVusers startVusers;
-        if(simplifiedContent.getScheduler().getRampuptimeinseconds() > 30 ) {
+        if(simplifiedContent.getScheduler().getRampup_seconds() > 30 ) {
             int vusersSum = simplifiedContent.getGroups().stream().filter(o -> o.getVusers() > 0).mapToInt(o -> o.getVusers()).sum();
-            double exactTimeIntervalInSecondsPerUser = ((double) simplifiedContent.getScheduler().getRampuptimeinseconds()) / ((double) vusersSum);
+            double exactTimeIntervalInSecondsPerUser = ((double) simplifiedContent.getScheduler().getRampup_seconds()) / ((double) vusersSum);
             int vusers = 1;
             int timeIntervalInSeconds = (int) exactTimeIntervalInSecondsPerUser;
             if(exactTimeIntervalInSecondsPerUser < 15 && exactTimeIntervalInSecondsPerUser > 0) {
@@ -230,9 +230,9 @@ public class ConvertContentStringToTest {
             TimeInterval timeInterval = getTimeInterval(timeIntervalInSeconds);
             Ramp ramp = new Ramp(vusers, timeInterval);
             startVusers = new StartVusers(StartStopVusersTypeValues.GRADUALLY, ramp);
-        } else if(simplifiedContent.getScheduler().getRampuptimeinseconds() > 1 ){
+        } else if(simplifiedContent.getScheduler().getRampup_seconds() > 1 ){
             int vusersSum = simplifiedContent.getGroups().stream().filter(o -> o.getVusers() > 0).mapToInt(o -> o.getVusers()).sum();
-            int timeIntervalInSeconds = simplifiedContent.getScheduler().getRampuptimeinseconds() / 2;
+            int timeIntervalInSeconds = simplifiedContent.getScheduler().getRampup_seconds() / 2;
             int vusers = (vusersSum /2) + (((vusersSum % 2)==0)?0:1);
             TimeInterval timeInterval = getTimeInterval(timeIntervalInSeconds);
             Ramp ramp = new Ramp(vusers, timeInterval);
@@ -251,9 +251,9 @@ public class ConvertContentStringToTest {
             for (SimplifiedGroup simplifiedGroup:simplifiedGroups
                  ) {
 
-                String groupName = simplifiedGroup.getGroupname();
+                String groupName = simplifiedGroup.getGroup_name();
                 int groupVusers = simplifiedGroup.getVusers() > 0 ? simplifiedGroup.getVusers() : 1;
-                Script groupScript = new Script(simplifiedGroup.getScriptid());
+                Script groupScript = new Script(simplifiedGroup.getScript_id());
 
                 //region RTS
 
@@ -290,7 +290,7 @@ public class ConvertContentStringToTest {
                 //Hosts
                 ArrayList<Host> groupHosts = new ArrayList<Host>();
                 if(lgDistribution.getType()== LGDistributionTypeValues.MANUAL.value()) {
-                    for (String lgHost : simplifiedGroup.getLgname()
+                    for (String lgHost : simplifiedGroup.getLg_name()
                             ) {
                         if(lgHost.startsWith("LG") && Character.isDigit(lgHost.charAt(lgHost.length()-1)))
                             groupHosts.add(new Host(lgHost, HostTypeValues.AUTOMATCH));
@@ -312,17 +312,17 @@ public class ConvertContentStringToTest {
 
     private LGDistribution getLgDistribution(SimplifiedContent simplifiedContent) {
         LGDistributionTypeValues lgDistributionTypeValues = LGDistributionTypeValues.ALL_TO_EACH_GROUP;
-        boolean isLGHostDefinedInGroups =  simplifiedContent.getGroups().stream().filter(o -> o.getLgname() != null && o.getLgname().length > 0).count() == simplifiedContent.getGroups().size();
+        boolean isLGHostDefinedInGroups =  simplifiedContent.getGroups().stream().filter(o -> o.getLg_name() != null && o.getLg_name().length > 0).count() == simplifiedContent.getGroups().size();
 
-        if(simplifiedContent.getLgamount() == 0 && isLGHostDefinedInGroups)
+        if(simplifiedContent.getLg_amount() == 0 && isLGHostDefinedInGroups)
             lgDistributionTypeValues = LGDistributionTypeValues.MANUAL;
-        else if (simplifiedContent.getLgamount() == 0 )
-            simplifiedContent.setLgamount(1);
+        else if (simplifiedContent.getLg_amount() == 0 )
+            simplifiedContent.setLg_amount(1);
 
         LGDistribution lgDistribution = new LGDistribution(lgDistributionTypeValues);
         lgDistribution.setType(lgDistributionTypeValues);
         if(lgDistributionTypeValues==LGDistributionTypeValues.ALL_TO_EACH_GROUP)
-            lgDistribution.setAmount(simplifiedContent.getLgamount());
+            lgDistribution.setAmount(simplifiedContent.getLg_amount());
         return lgDistribution;
     }
 
