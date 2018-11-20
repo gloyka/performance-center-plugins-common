@@ -1,0 +1,23 @@
+test_name: mytest
+test_folder_path: "folder\\subfolder"
+test_content:
+  controller: "[test]controller1"
+  lg_amount: 3
+  group: 
+    - group_name: group1
+      vusers: 20
+      script_id: 5
+      script_path: "scripts\\folder1\\scriptname"
+      lg_name:
+        - LG1
+        - LG2
+    - group_name: group1
+      vusers: 20
+      script_id: 5
+      script_path: "scripts\\folder1\\scriptname"
+      lg_name:
+        - LG1
+        - LG2
+  scheduler: 
+    rampup: 300
+    duration: 600

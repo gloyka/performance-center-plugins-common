@@ -54,11 +54,18 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.transactionresponsetimepercentile.TransactionResponseTimePercentile;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.workloadtype.WorkloadType;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.enums.*;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.SimplifiedTest;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.SimplifiedContent;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.SimplifiedGroup;
 import org.junit.Before;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import static com.microfocus.adm.performancecenter.plugins.common.rest.PcRestProxy.xmlOrYamlStringToSimplifiedContent;
+import static com.microfocus.adm.performancecenter.plugins.common.rest.PcRestProxy.xmlOrYamlStringToSimplifiedTest;
 
 //import org.junit.Test;
 
@@ -69,9 +76,95 @@ public class TestTest {
     public void init() throws JAXBException {
 //    this.context = JAXBContext.newInstance(Test.class);
 }
+    //@org.junit.Test
+    public void verifySimplifiedTestSerialization() {
+
+        //region SimplifiedGroup
+        String group_name ="group1";
+        int vusers = 20;
+        int script_id = 5;
+        String script_path = "scripts\\folder1\\scriptname";
+        String[] lg_name = {"LG1", "LG2"};
+        SimplifiedGroup simplifiedGroup = new SimplifiedGroup(group_name, vusers, script_id, script_path, lg_name);
+        String xmlSimplifiedGroup = simplifiedGroup.objectToXML();
+        SimplifiedGroup simplifiedGroup2 = SimplifiedGroup.xmlToObject(xmlSimplifiedGroup);
+        String xmlSimplifiedGroup2 = simplifiedGroup2.objectToXML();
+        verifyXML(xmlSimplifiedGroup, xmlSimplifiedGroup2);
+        ArrayList<SimplifiedGroup> simplifiedGroups = new ArrayList<SimplifiedGroup>();
+        simplifiedGroups.add(simplifiedGroup);
+        simplifiedGroups.add(simplifiedGroup2);
+
+
+        //endregion
+
+        //region scheduler
+        int rampup = 300;
+        int duration = 600;
+        com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.scheduler.Scheduler scheduler =
+                new com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.scheduler.Scheduler(rampup, duration);
+        String xmlScheduler = scheduler.objectToXML();
+        com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.scheduler.Scheduler scheduler2 =
+                com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.scheduler.Scheduler.xmlToObject(xmlScheduler);
+        String xmlScheduler2 = scheduler2.objectToXML();
+        verifyXML(xmlScheduler, xmlScheduler2);
+        //endregion
+
+        //region SimplifiedContent
+        int lg_amount = 3;
+        String controller = "[test]controller1";
+        SimplifiedContent simplifiedContent = new SimplifiedContent(controller, lg_amount, simplifiedGroups, scheduler);
+        String xmlSimplifiedContent = simplifiedContent.objectToXML();
+        SimplifiedContent simplifiedContent2 = SimplifiedContent.xmlToObject(xmlSimplifiedContent);
+        String xmlSimplifiedContent2 = simplifiedContent2.objectToXML();
+        verifyXML(xmlSimplifiedContent, xmlSimplifiedContent2);
+        //endregion
+
+        //region SimplifiedTest
+        String test_name = "mytest";
+        String test_folder_path = "folder\\subfolder";
+        SimplifiedTest simplifiedTest = new SimplifiedTest(test_name, test_folder_path, simplifiedContent);
+        String xmlSimplifiedTest = simplifiedTest.objectToXML();
+        SimplifiedTest simplifiedTest2 = SimplifiedTest.xmlToObject(xmlSimplifiedTest);
+        String xmlSimplifiedTest2 = simplifiedTest2.objectToXML();
+        verifyXML(xmlSimplifiedTest, xmlSimplifiedTest2);
+        //endregion
+
+        //region SimplifiedContent from xml file
+        String xmlSimplifiedContentFromFile = TestPcRestProxy.fileToStringWithoutTrim("simplifiedContent.xml");
+        SimplifiedContent simplifiedContent3 = SimplifiedContent.xmlToObject(xmlSimplifiedContentFromFile);
+        String xmlSimplifiedContent3 = simplifiedContent3.objectToXML();
+        verifyXML(xmlSimplifiedContentFromFile.replace("\r\n", ""), xmlSimplifiedContent3.replace("\n", ""));
+        //endregion
+
+        //region SimplifiedTest from xml file
+        String xmlSimplifiedTestFromFile = TestPcRestProxy.fileToStringWithoutTrim("simplifiedTest.xml");
+        SimplifiedTest simplifiedTest3 = SimplifiedTest.xmlToObject(xmlSimplifiedTestFromFile);
+        String xmlSimplifiedTest3 = simplifiedTest3.objectToXML();
+        verifyXML(xmlSimplifiedTestFromFile.replace("\r\n", ""), xmlSimplifiedTest3.replace("\n", ""));
+        //endregion
+
+        //region verify SimplifiedContent and SimplifiedTest from yaml and compare to those from xml
+        try {
+            SimplifiedContent SimplifiedContentFromXml = xmlOrYamlStringToSimplifiedContent(xmlSimplifiedContentFromFile);
+            SimplifiedTest SimplifiedTestFromXml = xmlOrYamlStringToSimplifiedTest(xmlSimplifiedTestFromFile);
+
+            String yamlSimplifiedContentFromFile = TestPcRestProxy.fileToStringWithoutTrim("simplifiedContent.yaml");
+            SimplifiedContent SimplifiedContentFromYaml = xmlOrYamlStringToSimplifiedContent(yamlSimplifiedContentFromFile);
+
+            String yamlSimplifiedTestFromFile = TestPcRestProxy.fileToStringWithoutTrim("simplifiedTest.yaml");
+            SimplifiedTest SimplifiedTestFromYaml = xmlOrYamlStringToSimplifiedTest(yamlSimplifiedTestFromFile);
+
+            verifyXML(SimplifiedContentFromXml.objectToXML(), SimplifiedContentFromYaml.objectToXML());
+            verifyXML(SimplifiedTestFromXml.objectToXML(), SimplifiedTestFromYaml.objectToXML());
+
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        //endregion
+    }
 
     //@org.junit.Test
-    public void verifySerialization() throws JAXBException {
+    public void verifyTestSerialization() throws JAXBException {
 
 
         //region Test

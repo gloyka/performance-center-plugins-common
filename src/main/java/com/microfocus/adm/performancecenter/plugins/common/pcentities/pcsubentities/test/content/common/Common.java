@@ -1,6 +1,5 @@
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common;
 
-import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.script.Script;
 
 public class Common {
 
