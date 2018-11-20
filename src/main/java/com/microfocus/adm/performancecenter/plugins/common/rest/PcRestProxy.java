@@ -56,6 +56,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.URLEncoder;
+import java.rmi.server.ExportException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -463,7 +464,8 @@ public class PcRestProxy {
 
 
     public Test createOrUpdateTestFromYamlTest(String testString ) throws IOException, PcException {
-        SimplifiedTest simplifiedTest = yamlStringToSimplifiedTest(testString);
+
+        SimplifiedTest simplifiedTest = xmlOrYamlStringToSimplifiedTest(testString);
         return createOrUpdateTestFromYamlContent("", "", testString);
     }
 
@@ -654,18 +656,40 @@ public class PcRestProxy {
         return content;
     }
 
-    public static SimplifiedContent yamlStringToSimplifiedContent (String strSimplifiedContent) throws IOException  {
+    public static SimplifiedContent xmlOrYamlStringToSimplifiedContent(String strSimplifiedContent) throws IOException  {
 
+        if(strSimplifiedContent == null || strSimplifiedContent.isEmpty())
+            return null;
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        SimplifiedContent simplifiedContent = mapper.readValue(strSimplifiedContent, SimplifiedContent.class);
+        SimplifiedContent simplifiedContent;
+        try {
+            simplifiedContent = mapper.readValue(strSimplifiedContent, SimplifiedContent.class);
+        } catch (Exception ex1) {
+            try {
+                simplifiedContent = SimplifiedContent.xmlToObject(strSimplifiedContent);
+            } catch (Exception ex2) {
+                throw ex1;
+            }
+        }
         return simplifiedContent;
 
     }
 
-    public static SimplifiedTest yamlStringToSimplifiedTest(String strSimplifiedTest) throws IOException {
+    public static SimplifiedTest xmlOrYamlStringToSimplifiedTest(String strSimplifiedTest) throws IOException {
 
+        if(strSimplifiedTest == null || strSimplifiedTest.isEmpty())
+            return null;
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        SimplifiedTest simplifiedTest = mapper.readValue(strSimplifiedTest, SimplifiedTest.class);
+        SimplifiedTest simplifiedTest;
+        try {
+            simplifiedTest = mapper.readValue(strSimplifiedTest, SimplifiedTest.class);
+        } catch (Exception ex1) {
+            try {
+                simplifiedTest = SimplifiedTest.xmlToObject(strSimplifiedTest);
+            } catch (Exception ex2) {
+                throw ex1;
+            }
+        }
         return simplifiedTest;
     }
 

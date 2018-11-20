@@ -3,7 +3,7 @@ controller: "[test]controller"
 
 #lgamount: 5
 
-groups:
+group:
   - group_name: "kilimanjaro_tc_1"
     vusers: 50
     script_id: 1

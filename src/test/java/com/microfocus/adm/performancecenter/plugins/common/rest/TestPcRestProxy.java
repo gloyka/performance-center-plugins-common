@@ -85,7 +85,7 @@ public class TestPcRestProxy {
             testLogin();
 
             //create the test
-            String xmlTestToCreate = fileToString("CreateTest.xml");
+            String xmlTestToCreate = fileToStringWithTrim("CreateTest.xml");
             com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test testToCreate =
                     com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test.xmlToObject(xmlTestToCreate);
             com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test createdTest =
@@ -95,7 +95,7 @@ public class TestPcRestProxy {
 
 
             //update the test
-            String xmlTestToUpdate = fileToString("UpdateTest.xml");
+            String xmlTestToUpdate = fileToStringWithTrim("UpdateTest.xml");
             com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test testToUpdate =
                     com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test.xmlToObject(xmlTestToUpdate);
             com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test updatedTest =
@@ -115,7 +115,7 @@ public class TestPcRestProxy {
         }
     }
 
-    private String fileToString(String fileContent) {
+    public static String fileToStringWithTrim(String fileContent) {
         try {
             File fXmlFile = new File("src/test/resources/microfocus/adm/performancecenter/plugins/common/rest/".concat(fileContent));
             //filename is filepath string
@@ -132,7 +132,7 @@ public class TestPcRestProxy {
         return "";
     }
 
-    private String fileToStringWithoutTrim(String fileContent) {
+    public static String fileToStringWithoutTrim(String fileContent) {
         try {
             File fXmlFile = new File("src/test/resources/microfocus/adm/performancecenter/plugins/common/rest/".concat(fileContent));
             //filename is filepath string

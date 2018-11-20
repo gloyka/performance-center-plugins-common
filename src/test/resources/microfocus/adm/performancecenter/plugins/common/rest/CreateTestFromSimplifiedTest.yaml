@@ -8,7 +8,7 @@ test_content:
 
   lg_amount: 10
 
-  groups:
+  group:
     - group_name: "kilimanjaro_tc_1"
       vusers: 50
       script_id: 1
