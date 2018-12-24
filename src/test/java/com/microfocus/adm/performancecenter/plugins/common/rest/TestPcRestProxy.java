@@ -7,8 +7,10 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.*;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.Content;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.SimplifiedTest;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.SimplifiedContent;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.junit.Assert;
+import org.junit.Test;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -227,8 +229,8 @@ public class TestPcRestProxy {
 
             //reading CreateTestFromContent.yaml and creating simplifiedTest.Content object
             File contentFile = new File("src/test/resources/microfocus/adm/performancecenter/plugins/common/rest/".concat("CreateTestFromContent.yaml"));
-            com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.SimplifiedContent content =
-                    mapper.readValue(contentFile, com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.SimplifiedContent.class);
+            SimplifiedContent content =
+                    mapper.readValue(contentFile, SimplifiedContent.class);
             System.out.println(ReflectionToStringBuilder.toString(content, MULTI_LINE_STYLE));
 
             //reading CreateTestFromSimplifiedTest.yaml and creating SimplifiedTest object
@@ -239,8 +241,8 @@ public class TestPcRestProxy {
 
             //reading string and creating simplifiedTest.Content object
             String contentString = fileToStringWithoutTrim("CreateTestFromContent.yaml");
-            com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.SimplifiedContent content2 =
-                    mapper.readValue(contentString, com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.SimplifiedContent.class);
+            SimplifiedContent content2 =
+                    mapper.readValue(contentString, SimplifiedContent.class);
             System.out.println(ReflectionToStringBuilder.toString(content2, MULTI_LINE_STYLE));
 
 
@@ -250,23 +252,9 @@ public class TestPcRestProxy {
                     mapper.readValue(simplifiedTestString, SimplifiedTest.class);
             System.out.println(ReflectionToStringBuilder.toString(simplifiedTest2, MULTI_LINE_STYLE));
 
-            com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test  test =
-                    pcRestProxy.createOrUpdateTestFromYamlContent("testnamekuku", "Subject\\pathkuku", contentString);
+            createUpdateDeleteTest(pcRestProxy.createOrUpdateTestFromYamlContent("verifyTestCreationOrUpdateViaXmlOrYaml", "Subject\\FolderCreatedBy_VerifyTestCreationOrUpdateViaXmlOrYaml", contentString));
 
-            System.out.println(String.format("the following test was created/updated successfully: id: %s, testname: %s, path: %s", test.getID(), test.getName(), test.getTestFolderPath()));
-
-            pcRestProxy.deleteTest(stringToInteger(test.getID()));
-
-            System.out.println(String.format("test ID %s deleted successfully",test.getID()));
-
-            com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test  test2 =
-                    pcRestProxy.createOrUpdateTestFromYamlTest(simplifiedTestString);
-
-            System.out.println(String.format("the following test was created/updated successfully: id: %s, testname: %s, path: %s", test2.getID(), test2.getName(), test2.getTestFolderPath()));
-
-            pcRestProxy.deleteTest(stringToInteger(test2.getID()));
-
-            System.out.println(String.format("test ID %s deleted successfully",test2.getID()));
+            createUpdateDeleteTest(pcRestProxy.createOrUpdateTestFromYamlTest(simplifiedTestString));
 
         } catch (Exception e) {
             System.out.println("verifyTestCreationOrUpdateViaXmlOrYaml failed. Exception = " + e.getMessage());
@@ -274,6 +262,17 @@ public class TestPcRestProxy {
         } finally {
             //testLogout();
         }
+    }
+
+    private void createUpdateDeleteTest(com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test orUpdateTestFromYamlTest) throws IOException, PcException {
+        com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test test2 =
+                orUpdateTestFromYamlTest;
+
+        System.out.println(String.format("the following test was created/updated successfully: id: %s, testname: %s, path: %s", test2.getID(), test2.getName(), test2.getTestFolderPath()));
+
+        pcRestProxy.deleteTest(stringToInteger(test2.getID()));
+
+        System.out.println(String.format("test ID %s deleted successfully", test2.getID()));
     }
 
 

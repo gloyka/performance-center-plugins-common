@@ -30,33 +30,65 @@ public class ThinkTime {
     private String MaxPercentage;
 
     @XmlElement
+    @XStreamAlias("MultiplyFactor")
+    private String MultiplyFactor;
+
+    @XmlElement
     @XStreamAlias("LimitThinkTimeSeconds")
     private String LimitThinkTimeSeconds;
 
     public ThinkTime() {
-        setType(ThinkTimeTypeValues.REPLAY);
+        setType(ThinkTimeTypeValues.IGNORE);
     }
 
-    public ThinkTime(String type) {
+    public ThinkTime(String type, int limitThinkTimeSeconds, int minPercentage, int maxPercentage, int multiplyFactor ) {
         setType(type);
+        if (this.Type.equals(ThinkTimeTypeValues.IGNORE.value())) {
+            setLimitThinkTimeSeconds(-1);
+            setMultiplyFactor(-1);
+            setMinPercentage(-1);
+            setMaxPercentage(-1);
+        } else if (this.Type.equals(ThinkTimeTypeValues.REPLAY.value())) {
+            setLimitThinkTimeSeconds(limitThinkTimeSeconds);
+            setMultiplyFactor(-1);
+            setMinPercentage(-1);
+            setMaxPercentage(-1);
+        } else if (this.Type.equals(ThinkTimeTypeValues.MODIFY.value())) {
+            setLimitThinkTimeSeconds(limitThinkTimeSeconds);
+            setMultiplyFactor(multiplyFactor);
+            setMinPercentage(-1);
+            setMaxPercentage(-1);
+        } else if (this.Type.equals(ThinkTimeTypeValues.RANDOM.value())) {
+            setLimitThinkTimeSeconds(limitThinkTimeSeconds);
+            setMinPercentage(minPercentage);
+            setMaxPercentage(maxPercentage);
+            setMultiplyFactor(-1);
+        }
     }
 
-    public ThinkTime(ThinkTimeTypeValues type) {
+    public ThinkTime(ThinkTimeTypeValues type, int limitThinkTimeSeconds, int minPercentage, int maxPercentage, int multiplyFactor) {
         setType(type);
-    }
-
-    public ThinkTime(String type, int minPercentage, int maxPercentage, int limitThinkTimeSeconds) {
-        setType(type);
-        setMinPercentage(minPercentage);
-        setMaxPercentage(maxPercentage);
-        setLimitThinkTimeSeconds(limitThinkTimeSeconds);
-    }
-
-    public ThinkTime(ThinkTimeTypeValues type, int minPercentage, int maxPercentage, int limitThinkTimeSeconds) {
-        setType(type);
-        setMinPercentage(minPercentage);
-        setMaxPercentage(maxPercentage);
-        setLimitThinkTimeSeconds(limitThinkTimeSeconds);
+        if (this.Type.equals(ThinkTimeTypeValues.IGNORE.value())) {
+            setLimitThinkTimeSeconds(-1);
+            setMultiplyFactor(-1);
+            setMinPercentage(-1);
+            setMaxPercentage(-1);
+        } else if (this.Type.equals(ThinkTimeTypeValues.REPLAY.value())) {
+            setLimitThinkTimeSeconds(limitThinkTimeSeconds);
+            setMultiplyFactor(-1);
+            setMinPercentage(-1);
+            setMaxPercentage(-1);
+        } else if (this.Type.equals(ThinkTimeTypeValues.MODIFY.value())) {
+            setLimitThinkTimeSeconds(limitThinkTimeSeconds);
+            setMultiplyFactor(multiplyFactor);
+            setMinPercentage(-1);
+            setMaxPercentage(-1);
+        } else if (this.Type.equals(ThinkTimeTypeValues.RANDOM.value())) {
+            setLimitThinkTimeSeconds(limitThinkTimeSeconds);
+            setMinPercentage(minPercentage);
+            setMaxPercentage(maxPercentage);
+            setMultiplyFactor(-1);
+        }
     }
 
     public void setType (String type) {
@@ -75,15 +107,21 @@ public class ThinkTime {
         this.MaxPercentage = Common.integerToString(value);
     }
 
+    public void setMultiplyFactor(int value) {
+        this.MultiplyFactor = Common.integerToString(value);
+    }
+
     public void setLimitThinkTimeSeconds(int value) {
         this.LimitThinkTimeSeconds = Common.integerToString(value);
     }
+
 
     @Override
     public String toString() {
         return "ThinkTime{" + "Type = " + Type +
                 ", MinPercentage = " + MinPercentage +
                 ", MaxPercentage = " + MaxPercentage +
+                ", MultiplyFactor = " + MultiplyFactor +
                 ", LimitThinkTimeSeconds = " + LimitThinkTimeSeconds +
                 "}";
     }
@@ -96,6 +134,7 @@ public class ThinkTime {
         xstream.aliasField("Type", ThinkTime.class, "Type");
         xstream.aliasField("MinPercentage", ThinkTime.class, "MinPercentage");
         xstream.aliasField("MaxPercentage", ThinkTime.class, "MaxPercentage");
+        xstream.aliasField("MultiplyFactor", ThinkTime.class, "MultiplyFactor");
         xstream.aliasField("LimitThinkTimeSeconds", ThinkTime.class, "LimitThinkTimeSeconds");
         xstream.aliasField("ThinkTime", ThinkTime.class, "ThinkTime");
         xstream.setMode(XStream.NO_REFERENCES);

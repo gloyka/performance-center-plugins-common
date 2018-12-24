@@ -1,7 +1,6 @@
 
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test;
 
-import com.microfocus.adm.performancecenter.plugins.common.pcentities.TestRequest;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.Content;
 
 import javax.xml.bind.annotation.*;
@@ -13,6 +12,7 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.Group;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.host.Host;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.RTS;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.javavm.javaenvclasspaths.JavaEnvClassPaths;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.log.Log;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.log.logoptions.LogOptions;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.pacing.startnewiteration.StartNewIteration;
@@ -27,7 +27,6 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.scheduler.actions.startvusers.StartVusers;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.scheduler.actions.stopvusers.StopVusers;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.common.Thresholds.betweenthreshold.BetweenThreshold;
-import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.common.loadvalues.LoadValues;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.common.loadvalues.betweens.Between;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.common.transactions.Transaction;
 import com.microfocus.adm.performancecenter.plugins.common.rest.PcRestProxy;
@@ -156,6 +155,10 @@ public class Test
         xstream.aliasField("Type", Duration.class, "Type");
         xstream.alias("Action", Action.class, Action.class);
 
+        //JavaEnvClassPaths
+        xstream.alias("JavaEnvClassPath", String.class);
+        xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
+
         //Scheduler
         xstream.useAttributeFor(StopVusers.class, "Type");
         xstream.aliasField("Type", StopVusers.class, "Type");
@@ -234,6 +237,10 @@ public class Test
         xstream.aliasField("Type", Duration.class, "Type");
         xstream.alias("Action", Action.class, Action.class);
         xstream.omitField(Script.class, "ProtocolType" );
+
+        //JavaEnvClassPaths
+        xstream.alias("JavaEnvClassPath", String.class);
+        xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
 
         //Scheduler
         xstream.useAttributeFor(StopVusers.class, "Type");

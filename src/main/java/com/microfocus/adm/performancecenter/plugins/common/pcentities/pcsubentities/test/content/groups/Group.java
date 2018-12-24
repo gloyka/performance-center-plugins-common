@@ -1,6 +1,7 @@
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups;
 
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.javavm.javaenvclasspaths.JavaEnvClassPaths;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.log.Log;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.log.logoptions.LogOptions;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.pacing.startnewiteration.StartNewIteration;
@@ -52,6 +53,9 @@ public class Group
     private String GlobalCommandLine;
 
     @XmlElement
+    private String CommandLine;
+
+    @XmlElement
     private String GlobalRTS;
 
     @XmlElement
@@ -59,44 +63,48 @@ public class Group
 
     public Group() {}
 
-    public Group(String name, int vusers, Script script, ArrayList<Host> hosts, RTS RTS, String globalCommandLine, String globalRTS) {
+    public Group(String name, int vusers, Script script, ArrayList<Host> hosts, RTS RTS, String globalCommandLine, String commandLine, String globalRTS) {
         setName(name);
         setVusers(vusers);
         setScript(script);
         setHosts(hosts);
         setRTS(RTS);
         setGlobalCommandLine(globalCommandLine);
+        setCommandLine(commandLine);
         setGlobalRTS(globalRTS);
     }
 
-    public Group(String name, String vusers, Script script, ArrayList<Host> hosts, RTS RTS, String globalCommandLine, String globalRTS) {
+    public Group(String name, String vusers, Script script, ArrayList<Host> hosts, RTS RTS, String globalCommandLine, String commandLine, String globalRTS) {
         setName(name);
         setVusers(vusers);
         setScript(script);
         setHosts(hosts);
         setRTS(RTS);
         setGlobalCommandLine(globalCommandLine);
+        setCommandLine(commandLine);
         setGlobalRTS(globalRTS);
     }
 
-    public Group(String name, int vusers, Script script, ArrayList<Host> hosts, RTS RTS, String globalCommandLine, String globalRTS, Scheduler scheduler) {
+    public Group(String name, int vusers, Script script, ArrayList<Host> hosts, RTS RTS, String globalCommandLine, String commandLine, String globalRTS, Scheduler scheduler) {
         setName(name);
         setVusers(vusers);
         setScript(script);
         setHosts(hosts);
         setRTS(RTS);
         setGlobalCommandLine(globalCommandLine);
+        setCommandLine(commandLine);
         setGlobalRTS(globalRTS);
         setScheduler(scheduler);
     }
 
-    public Group(String name, String vusers, Script script, ArrayList<Host> hosts, RTS RTS, String globalCommandLine, String globalRTS, Scheduler scheduler) {
+    public Group(String name, String vusers, Script script, ArrayList<Host> hosts, RTS RTS, String globalCommandLine, String commandLine, String globalRTS, Scheduler scheduler) {
         setName(name);
         setVusers(vusers);
         setScript(script);
         setHosts(hosts);
         setRTS(RTS);
         setGlobalCommandLine(globalCommandLine);
+        setCommandLine(commandLine);
         setGlobalRTS(globalRTS);
         setScheduler(scheduler);
     }
@@ -117,6 +125,7 @@ public class Group
                 ", Script = " + Script +
                 ", Hosts = " + Hosts +
                 ", GlobalCommandLine = " + GlobalCommandLine +
+                ", CommandLine = " + CommandLine +
                 ", GlobalRTS = " + GlobalRTS +
                 ", RTS = " + RTS +
                 ", Scheduler = " + Scheduler + "}";
@@ -156,7 +165,13 @@ public class Group
         xstream.aliasField("Script", Group.class, "Script");
         xstream.aliasField("Hosts", Group.class, "Hosts");
         xstream.aliasField("RTS", Group.class, "RTS");
+
+        //JavaEnvClassPaths
+        xstream.alias("JavaEnvClassPath", String.class);
+        xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
+
         xstream.aliasField("GlobalCommandLine", Group.class, "GlobalCommandLine");
+        xstream.aliasField("CommandLine", Group.class, "CommandLine");
         xstream.aliasField("GlobalRTS", Group.class, "GlobalRTS");
         xstream.aliasField("Scheduler", Group.class, "Scheduler");
         xstream.aliasField("Group", Group.class, "Group");
@@ -194,6 +209,10 @@ public class Group
         xstream.aliasField("Type", Duration.class, "Type");
         xstream.alias("Action", Action.class, Action.class);
         xstream.omitField(Script.class, "ProtocolType" );
+
+        //JavaEnvClassPaths
+        xstream.alias("JavaEnvClassPath", String.class);
+        xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
 
         xstream.setClassLoader(Group.class.getClassLoader());
         xstream.setMode(XStream.NO_REFERENCES);

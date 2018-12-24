@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
 
 @Setter
 @Getter
@@ -39,9 +40,9 @@ public class JavaVM {
     public JavaVM() {}
 
     public JavaVM(JavaEnvClassPaths javaEnvClassPaths, boolean userSpecifiedJdk, String jdkHome, String javaVmParameters, boolean useXboot, boolean enableClassLoaderPerVuser) {
-        setJavaEnvClassPaths(javaEnvClassPaths);
+        this.setJavaEnvClassPaths(javaEnvClassPaths);
         setUserSpecifiedJdk(userSpecifiedJdk);
-        setJdkHome(JdkHome);
+        setJdkHome(jdkHome);
         setJavaVmParameters(javaVmParameters);
         setUseXboot(useXboot);
         setEnableClassLoaderPerVuser(enableClassLoaderPerVuser);
@@ -63,6 +64,11 @@ public class JavaVM {
         xstream = Helper.xstreamPermissions(xstream);
         xstream.alias("JavaVM", JavaVM.class);
         xstream.aliasField("JavaEnvClassPaths", JavaVM.class, "JavaEnvClassPaths");
+
+        //JavaEnvClassPaths
+        xstream.alias("JavaEnvClassPath", String.class);
+        xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
+
         xstream.aliasField("UserSpecifiedJdk", JavaVM.class, "UserSpecifiedJdk");
         xstream.aliasField("JMeterUseDefaultPort", JavaVM.class, "JMeterUseDefaultPort");
         xstream.aliasField("JMeterMinPort", JavaVM.class, "JMeterMinPort");
@@ -76,6 +82,11 @@ public class JavaVM {
         XStream xstream = new XStream();
         xstream = Helper.xstreamPermissions(xstream);
         xstream.alias("JavaVM" , JavaVM.class);
+
+        //JavaEnvClassPaths
+        xstream.alias("JavaEnvClassPath", String.class);
+        xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
+
         xstream.setClassLoader(JavaVM.class.getClassLoader());
         xstream.setMode(XStream.NO_REFERENCES);
         return (JavaVM)xstream.fromXML(xml);

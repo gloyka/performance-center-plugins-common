@@ -11,6 +11,8 @@ import lombok.Getter;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.enums.StartNewIterationTypeValues;
 import javax.xml.bind.annotation.*;
 
+import static com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common.integerToString;
+
 @Setter
 @Getter
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -22,6 +24,10 @@ public class StartNewIteration
     private String  Type;
 
     @XmlElement
+    @XStreamAlias("DelayOfSeconds")
+    private String DelayOfSeconds;
+
+    @XmlElement
     @XStreamAlias("DelayAtRangeOfSeconds")
     private String DelayAtRangeOfSeconds;
 
@@ -29,7 +35,11 @@ public class StartNewIteration
     @XStreamAlias("DelayAtRangeToSeconds")
     private String DelayAtRangeToSeconds;
 
-    public StartNewIteration(){}
+    public StartNewIteration(){
+        setType(StartNewIterationTypeValues.IMMEDIATELY);
+        setDelayAtRangeOfSeconds(-1);
+        setDelayAtRangeToSeconds(-1);
+    }
 
     public StartNewIteration(StartNewIterationTypeValues type) {
         setType(type);
@@ -43,16 +53,38 @@ public class StartNewIteration
         setDelayAtRangeToSeconds(-1);
     }
 
-    public StartNewIteration(StartNewIterationTypeValues type, int delayAtRangeOfSeconds, int delayAtRangeToSeconds) {
+    public StartNewIteration(StartNewIterationTypeValues type, int delayOfSeconds, int delayAtRangeOfSeconds, int delayAtRangeToSeconds) {
         setType(type);
-        setDelayAtRangeOfSeconds(delayAtRangeOfSeconds);
-        setDelayAtRangeToSeconds(delayAtRangeToSeconds);
+        if(type.equals(StartNewIterationTypeValues.IMMEDIATELY.value())) {
+            setDelayOfSeconds(-1);
+            setDelayAtRangeOfSeconds(-1);
+            setDelayAtRangeToSeconds(-1);
+        } else if(type.equals(StartNewIterationTypeValues.FIXED_DELAY.value()) || type.equals(StartNewIterationTypeValues.FIXED_INTERVAL.value())) {
+            setDelayOfSeconds(delayOfSeconds);
+            setDelayAtRangeOfSeconds(-1);
+            setDelayAtRangeToSeconds(-1);
+        } else if(type.equals(StartNewIterationTypeValues.RANDOM_DELAY.value()) || type.equals(StartNewIterationTypeValues.RANDOM_INTERVAL.value())) {
+            setDelayOfSeconds(-1);
+            setDelayAtRangeOfSeconds(delayAtRangeOfSeconds);
+            setDelayAtRangeToSeconds(delayAtRangeToSeconds);
+        }
     }
 
-    public StartNewIteration(String type, int delayAtRangeOfSeconds, int delayAtRangeToSeconds) {
+    public StartNewIteration(String type, int delayOfSeconds, int delayAtRangeOfSeconds, int delayAtRangeToSeconds) {
         setType(type);
-        setDelayAtRangeOfSeconds(delayAtRangeOfSeconds);
-        setDelayAtRangeToSeconds(delayAtRangeToSeconds);
+        if(type.equals(StartNewIterationTypeValues.IMMEDIATELY.value())) {
+            setDelayOfSeconds(-1);
+            setDelayAtRangeOfSeconds(-1);
+            setDelayAtRangeToSeconds(-1);
+        } else if(type.equals(StartNewIterationTypeValues.FIXED_DELAY.value()) || type.equals(StartNewIterationTypeValues.FIXED_INTERVAL.value())) {
+            setDelayOfSeconds(delayOfSeconds);
+            setDelayAtRangeOfSeconds(-1);
+            setDelayAtRangeToSeconds(-1);
+        } else if(type.equals(StartNewIterationTypeValues.RANDOM_DELAY.value()) || type.equals(StartNewIterationTypeValues.RANDOM_INTERVAL.value())) {
+            setDelayOfSeconds(-1);
+            setDelayAtRangeOfSeconds(delayAtRangeOfSeconds);
+            setDelayAtRangeToSeconds(delayAtRangeToSeconds);
+        }
     }
 
     public void setType(String type) {
@@ -63,12 +95,16 @@ public class StartNewIteration
         this.Type = type.value();
     }
 
+    public void setDelayOfSeconds(int delayOfSeconds) {
+        this.DelayOfSeconds = integerToString(delayOfSeconds);
+    }
+
     public void setDelayAtRangeOfSeconds(int delayAtRangeOfSeconds) {
-            this.DelayAtRangeOfSeconds = Common.integerToString(delayAtRangeOfSeconds);
+            this.DelayAtRangeOfSeconds = integerToString(delayAtRangeOfSeconds);
     }
 
     public void setDelayAtRangeToSeconds(int delayAtRangeToSeconds) {
-            this.DelayAtRangeToSeconds = Common.integerToString(delayAtRangeToSeconds);
+            this.DelayAtRangeToSeconds = integerToString(delayAtRangeToSeconds);
     }
 
     @Override
@@ -85,6 +121,7 @@ public class StartNewIteration
         xstream.alias("StartNewIteration", StartNewIteration.class);
         xstream.useAttributeFor(StartNewIteration.class, "Type");
         xstream.aliasField("Type", StartNewIteration.class, "Type");
+        xstream.aliasField("DelayOfSeconds", StartNewIteration.class, "DelayOfSeconds");
         xstream.aliasField("DelayAtRangeOfSeconds", StartNewIteration.class, "DelayAtRangeOfSeconds");
         xstream.aliasField("DelayAtRangeToSeconds", StartNewIteration.class, "DelayAtRangeToSeconds");
         xstream.aliasField("StartNewIteration", StartNewIteration.class, "StartNewIteration");

@@ -2,6 +2,7 @@ package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubenti
 
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.RTS;
 
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.javavm.javaenvclasspaths.JavaEnvClassPaths;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.log.Log;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.log.logoptions.LogOptions;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.pacing.startnewiteration.StartNewIteration;
@@ -58,6 +59,11 @@ public class GlobalRTS {
         xstream.aliasField("LogOptions", Log.class, "LogOptions");
         xstream.useAttributeFor(LogOptions.class, "Type");
         xstream.aliasField("GlobalRTS", GlobalRTS.class, "GlobalRTS");
+
+        //JavaEnvClassPaths
+        xstream.alias("JavaEnvClassPath", String.class);
+        xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
+
         xstream.setMode(XStream.NO_REFERENCES);
         xstream.setMode(XStream.NO_REFERENCES);
         return xstream.toXML(this);
@@ -79,6 +85,10 @@ public class GlobalRTS {
         xstream.useAttributeFor(Log.class, "Type");
         xstream.aliasField("LogOptions", Log.class, "LogOptions");
         xstream.useAttributeFor(LogOptions.class, "Type");
+
+        //JavaEnvClassPaths
+        xstream.alias("JavaEnvClassPath", String.class);
+        xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
 
         xstream.setClassLoader(GlobalRTS.class.getClassLoader());
         xstream.setMode(XStream.NO_REFERENCES);
