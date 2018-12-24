@@ -1,25 +1,26 @@
 #test
 test_name: mytestname
 
-test_folder_path: "tests\\mytests"
+test_folder_path: "Tests\\mytests"
 
 test_content:
 #  controller: "[test]controller"
 
-  lg_amount: 10
+  lg_amount: 3
+
 
   group:
     - group_name: "kilimanjaro_tc_1"
       vusers: 50
-      script_id: 1
-      #script_path: 'scripts\kuku\scriptname'
+      #script_id: 390
+      script_path: "scripts\\java_protocols\\calc_test_ju4"
 #      lg_name:
 #        - "LG1"
 #        - "LG2"
     - group_name: "kilimanjaro_tc_2"
       vusers: 50
-      #script_id: '218'
-      script_path: "Subject\\t\\login_logout"
+      #script_id: '391'
+      script_path: "scripts\\java_protocols\\JavaHTTP_BigXML"
 #      lg_name:
 #        - "LG3"
 #        - "LG4"

@@ -54,9 +54,15 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.transactionresponsetimepercentile.TransactionResponseTimePercentile;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.workloadtype.WorkloadType;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.enums.*;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.enums.SimplifiedPacingTypeValues;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.SimplifiedTest;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.SimplifiedContent;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.SimplifiedGroup;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.SimplifiedRTS;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.javavm.SimplifiedJavaVM;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.jmeter.SimplifiedJMeter;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.pacing.SimplifiedPacing;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.thinktime.SimplifiedThinkTime;
 import org.junit.Before;
 
 import javax.xml.bind.JAXBContext;
@@ -79,6 +85,66 @@ public class TestTest {
     //@org.junit.Test
     public void verifySimplifiedTestSerialization() {
 
+        //region SimplifiedJavaVM
+        String jdk_home ="jdk_home";
+        String java_vm_parameters = "java_vm_parameters";
+        boolean use_xboot = true;
+        boolean enable_classloader_per_vuser = true;
+        String[] java_env_class_paths = {"java_env_class_path1", "java_env_class_path2"};
+        SimplifiedJavaVM simplifiedJavaVM = new  SimplifiedJavaVM(jdk_home, java_vm_parameters, use_xboot, enable_classloader_per_vuser, java_env_class_paths);
+        String xmlSimplifiedJavaVM = simplifiedJavaVM.objectToXML();
+        SimplifiedJavaVM simplifiedJavaVM2 = SimplifiedJavaVM.xmlToObject(xmlSimplifiedJavaVM);
+        String xmlSimplifiedJavaVM2 = simplifiedJavaVM2.objectToXML();
+        verifyXML(xmlSimplifiedJavaVM, xmlSimplifiedJavaVM2);
+        //endregion
+
+        //region SimplifiedJMeter
+        boolean start_measurements = true;
+        String jmeter_home_path = "jmeter_home_path";
+        int jmeter_min_port = 12345;
+        int jmeter_max_port = 12346;
+//        boolean jmeter_distribute_mode = true;
+//        String jmeter_additional_properties = "jmeter_additional_properties";
+        SimplifiedJMeter simplifiedJMeter = new SimplifiedJMeter(start_measurements, jmeter_home_path, jmeter_min_port, jmeter_max_port);
+        String xmlSimplifiedJMeter = simplifiedJMeter.objectToXML();
+        SimplifiedJMeter simplifiedJMeter2 = SimplifiedJMeter.xmlToObject(xmlSimplifiedJMeter);
+        String xmlSimplifiedJMeter2 = simplifiedJMeter2.objectToXML();
+        verifyXML(xmlSimplifiedJMeter, xmlSimplifiedJMeter2);
+        //endregion
+
+        //region SimplifiedPacing
+        int number_of_iterations = 3;
+        String simplifiedPacingType = SimplifiedPacingTypeValues.RANDOM_INTERVAL.value();
+        int delay_at_range_of_seconds = 60;
+        int delay_at_range_to_seconds = 120;
+        SimplifiedPacing simplifiedPacing = new SimplifiedPacing(number_of_iterations, simplifiedPacingType, delay_at_range_of_seconds, delay_at_range_to_seconds);
+        String xmlSimplifiedPacing = simplifiedPacing.objectToXML();
+        SimplifiedPacing simplifiedPacing2 = SimplifiedPacing.xmlToObject(xmlSimplifiedPacing);
+        String xmlSimplifiedPacing2 = simplifiedPacing2.objectToXML();
+        verifyXML(xmlSimplifiedPacing, xmlSimplifiedPacing2);
+        //endregion
+
+        //region SimplifiedThinkTime
+        String simplifiedThinkTimeType = SimplifiedPacingTypeValues.RANDOM_INTERVAL.value();
+        int min_percentage = 3;
+        int max_percentage = 8;
+        int limit_seconds = 60;
+        int multiply_factor = 3;
+        SimplifiedThinkTime simplifiedThinkTime = new SimplifiedThinkTime(simplifiedThinkTimeType,limit_seconds, min_percentage, max_percentage, multiply_factor);
+        String xmlSimplifiedThinkTime = simplifiedThinkTime.objectToXML();
+        SimplifiedThinkTime simplifiedThinkTime2 = SimplifiedThinkTime.xmlToObject(xmlSimplifiedThinkTime);
+        String xmlSimplifiedThinkTime2 = simplifiedThinkTime2.objectToXML();
+        verifyXML(xmlSimplifiedThinkTime, xmlSimplifiedThinkTime2);
+        //endregion
+
+        //region SimplifiedRTS
+        SimplifiedRTS simplifiedRTS = new SimplifiedRTS(simplifiedJavaVM, simplifiedJMeter, simplifiedPacing, simplifiedThinkTime );
+        String xmlSimplifiedRTS = simplifiedRTS.objectToXML();
+        SimplifiedRTS simplifiedRTS2 = SimplifiedRTS.xmlToObject(xmlSimplifiedRTS);
+        String xmlSimplifiedRTS2 = simplifiedRTS2.objectToXML();
+        verifyXML(xmlSimplifiedRTS, xmlSimplifiedRTS2);
+        //endregion
+
         //region SimplifiedGroup
         String group_name ="group1";
         int vusers = 20;
@@ -93,8 +159,6 @@ public class TestTest {
         ArrayList<SimplifiedGroup> simplifiedGroups = new ArrayList<SimplifiedGroup>();
         simplifiedGroups.add(simplifiedGroup);
         simplifiedGroups.add(simplifiedGroup2);
-
-
         //endregion
 
         //region scheduler
@@ -303,7 +367,7 @@ public class TestTest {
                             /* Verifying StartNewIteration */
                                 int delayAtRangeOfSeconds = 10;
                                 int delayAtRangeToSeconds = 20;
-                                StartNewIteration startNewIteration = new StartNewIteration(StartNewIterationTypeValues.RANDOM_INTERVAL, delayAtRangeOfSeconds, delayAtRangeToSeconds);
+                                StartNewIteration startNewIteration = new StartNewIteration(StartNewIterationTypeValues.RANDOM_INTERVAL, -1, delayAtRangeOfSeconds, delayAtRangeToSeconds);
                                 String xmlStartNewIteration = startNewIteration.objectToXML();
                                 StartNewIteration startNewIteration2 = StartNewIteration.xmlToObject(xmlStartNewIteration);
                                 String xmlStartNewIteration2 = startNewIteration2.objectToXML();
@@ -321,7 +385,7 @@ public class TestTest {
 
         //region ThinkTime
                         /* Verifying ThinkTime */
-                            ThinkTime thinkTime = new ThinkTime(ThinkTimeTypeValues.RANDOM, 50, 150, 10);
+                            ThinkTime thinkTime = new ThinkTime(ThinkTimeTypeValues.RANDOM, 50, 150, 10, 20);
                             String xmlThinkTime = thinkTime.objectToXML();
                             ThinkTime thinkTime2 = ThinkTime.xmlToObject(xmlThinkTime);
                             String xmlThinkTime2 = thinkTime2.objectToXML();
@@ -334,8 +398,10 @@ public class TestTest {
 
         //region JavaEnvClassPaths
                             /* verifying JavaEnvClassPaths */
-                                String JavaEnvClassPath = "user_binaries\\C__Users_my_user_Desktop_VugenScriptConverterCustomerIssue\\junit-1.0-SNAPSHOT.jar";
-                                JavaEnvClassPaths javaEnvClassPaths = new JavaEnvClassPaths(JavaEnvClassPath);
+                                ArrayList<String> classPaths = new ArrayList<>();
+                                classPaths.add("user_binaries1\\C__Users_my_user_Desktop_VugenScriptConverterCustomerIssue\\junit-1.0-SNAPSHOT.jar");
+                                classPaths.add("user_binaries2\\C__Users_my_user_Desktop_VugenScriptConverterCustomerIssue\\junit-1.0-SNAPSHOT.jar");
+                                JavaEnvClassPaths javaEnvClassPaths = new JavaEnvClassPaths(classPaths);
                                 String xmlJavaEnvClassPaths = javaEnvClassPaths.objectToXML();
                                 JavaEnvClassPaths javaEnvClassPaths2 = JavaEnvClassPaths.xmlToObject(xmlJavaEnvClassPaths);
                                 String xmlJavaEnvClassPaths2 = javaEnvClassPaths2.objectToXML();
@@ -436,7 +502,7 @@ public class TestTest {
                     String globalRTSFourth="Fourth";
                     String globalRTSFifth="Fifth";
 
-                    Group group = new Group(groupName1, vusers, script, hosts, rts, globalRTSFifth, commandLineName1);
+                    Group group = new Group(groupName1, vusers, script, hosts, rts, globalRTSFifth, commandLineName1, null);
                     String xmlGroup = group.objectToXML();
                     Group group2 = Group.xmlToObject(xmlGroup);
                     String xmlGroup2 = group2.objectToXML();
@@ -882,8 +948,8 @@ public class TestTest {
                 ArrayList<MonitorOFW> monitorsOFW = new ArrayList<MonitorOFW>();
                 monitorsOFW.add(new MonitorOFW(80));
                 monitorsOFW.add(new MonitorOFW(81));
-                groups.add(new Group(groupName1, vusers, script, hosts, rts, globalRTSFifth, commandLineName1));
-                groups.add(new Group(groupName2, vusers, script, hosts, rts, globalRTSFifth, commandLineName2));
+                groups.add(new Group(groupName1, vusers, script, hosts, rts, globalRTSFifth, commandLineName1, null));
+                groups.add(new Group(groupName2, vusers, script, hosts, rts, globalRTSFifth, commandLineName2, null));
 
                 Content content = new Content("controller", workloadType, lgDistribution, monotorProfiles, groups, scheduler, analysisTemplate, automaticTrending, monitorsOFW, sla, diagnostics, globalCommandLine, globalRTS);
                 String xmlContent = content.objectToXML(true);

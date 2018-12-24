@@ -2,6 +2,7 @@ package com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifie
 
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.SimplifiedContent;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.SimplifiedGroup;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.javavm.SimplifiedJavaVM;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -13,16 +14,10 @@ import lombok.Setter;
 @Setter
 public class SimplifiedTest {
 
-//    @XmlElement
-//    @JsonProperty
     private String test_name;
 
-//    @XmlElement
-//    @JsonProperty
     private String test_folder_path;
 
-//    @XmlElement
-//    @JsonProperty
     private SimplifiedContent test_content;
 
     public SimplifiedTest() {}
@@ -51,6 +46,8 @@ public class SimplifiedTest {
         xstream.aliasField("test_folder_path", SimplifiedTest.class, "test_folder_path");
         xstream.aliasField("test_content", SimplifiedTest.class, "test_content");
 
+        xstream.alias("java_env_class_paths", String.class);
+        xstream.addImplicitCollection(SimplifiedJavaVM.class, "java_env_class_paths", "java_env_class_paths", String.class);
 
         xstream.alias("group", SimplifiedGroup.class);
         xstream.addImplicitCollection(SimplifiedContent.class, "group", "group", SimplifiedGroup.class);
@@ -67,6 +64,9 @@ public class SimplifiedTest {
         XStream xstream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("_-", "_")));
         xstream = Helper.xstreamPermissions(xstream);
         xstream.alias("Test" , SimplifiedTest.class);
+
+        xstream.alias("java_env_class_paths", String.class);
+        xstream.addImplicitCollection(SimplifiedJavaVM.class, "java_env_class_paths", "java_env_class_paths", String.class);
 
         xstream.alias("group", SimplifiedGroup.class);
         xstream.addImplicitCollection(SimplifiedContent.class, "group", "group", SimplifiedGroup.class);

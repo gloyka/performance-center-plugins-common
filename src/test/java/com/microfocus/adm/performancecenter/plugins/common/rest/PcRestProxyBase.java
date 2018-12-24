@@ -10,8 +10,8 @@ public interface PcRestProxyBase {
     public static final String PC_SERVER_NAME = "myd-vm00669.hpeswlab.net";
     public static final String ALM_USER_NAME = "sa";
     public static final String ALM_PASSWORD = "";
-    public static final String ALM_DOMAIN = "DEFAULT";
-    public static final String ALM_PROJECT = "aaa";
+    public static final String ALM_DOMAIN = "DANIEL";
+    public static final String ALM_PROJECT = "git_sync";
     public static final String TEST_ID = "1";
     public static final String TEST_INSTANCE_ID = "2";
     public static final String TIMESLOT_DURATION_HOURS = "0";

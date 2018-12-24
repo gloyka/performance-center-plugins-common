@@ -498,7 +498,7 @@ public class PcRestProxy {
         	If the user chose this option, we should allow specifying also whether the LGs are Automatch or Dockerized
         	The user should be able to specify the Docker image name and resource limits.  If not specified PC should use default values (if there are such)
     o	Vusers
-        	User should be able to specify total number of Vusers and distribute equally among groups
+        	User should be able to specify total number of Vusers and distribute equally among group
         	User should be able to specify the number of Vusers per group
     o	Scheduler
         	Ramp up time (Start Vusers section). The user should specify the time. PC will calculate internally how to spread it. meaning how many Vusers every time
@@ -619,7 +619,6 @@ public class PcRestProxy {
         HttpResponse response = executeRequest(deleteTestRequest);
         return true;
     }
-
 
 	public static boolean isOk (HttpResponse response) {
 	    return validStatusCodes.contains(response.getStatusLine().getStatusCode());

@@ -1,7 +1,7 @@
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content;
 
-
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.SimplifiedGroup;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.javavm.SimplifiedJavaVM;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.scheduler.Scheduler;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
@@ -14,19 +14,20 @@ import java.util.List;
 
 @Getter
 @Setter
+//@JsonIgnoreProperties
 public class SimplifiedContent {
 
     //optional
-    String controller;
+    private String controller;
 
     //optional if specified in group
-    int lg_amount;
+    private int lg_amount;
 
     //required
     private List<SimplifiedGroup> group;
 
     //optional
-    Scheduler scheduler;
+    private Scheduler scheduler;
 
     public SimplifiedContent() {}
 
@@ -56,7 +57,9 @@ public class SimplifiedContent {
         xstream.alias("Content", SimplifiedContent.class);
         xstream.aliasField("controller", SimplifiedContent.class, "controller");
         xstream.aliasField("lg_amount", SimplifiedContent.class, "lg_amount");
-        //xstream.aliasField("group", SimplifiedContent.class, "group");
+
+        xstream.alias("java_env_class_paths", String.class);
+        xstream.addImplicitCollection(SimplifiedJavaVM.class, "java_env_class_paths", "java_env_class_paths", String.class);
 
         xstream.alias("group", SimplifiedGroup.class);
         xstream.addImplicitCollection(SimplifiedContent.class, "group", "group", SimplifiedGroup.class);
@@ -75,6 +78,9 @@ public class SimplifiedContent {
         XStream xstream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("_-", "_")));
         xstream = Helper.xstreamPermissions(xstream);
         xstream.alias("Content" , SimplifiedContent.class);
+
+        xstream.alias("java_env_class_paths", String.class);
+        xstream.addImplicitCollection(SimplifiedJavaVM.class, "java_env_class_paths", "java_env_class_paths", String.class);
 
         xstream.alias("group", SimplifiedGroup.class);
         xstream.addImplicitCollection(SimplifiedContent.class, "group", "group", SimplifiedGroup.class);

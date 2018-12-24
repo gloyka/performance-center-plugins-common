@@ -9,6 +9,7 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.Group;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.host.Host;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.RTS;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.javavm.javaenvclasspaths.JavaEnvClassPaths;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.log.Log;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.log.logoptions.LogOptions;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.pacing.startnewiteration.StartNewIteration;
@@ -207,6 +208,10 @@ public class Content
         xstream.alias("Action", Action.class, Action.class);
         xstream.omitField(Script.class, "ProtocolType" );
 
+        //JavaEnvClassPaths
+        xstream.alias("JavaEnvClassPath", String.class);
+        xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
+
         //Scheduler
         xstream.useAttributeFor(StopVusers.class, "Type");
         xstream.aliasField("Type", StopVusers.class, "Type");
@@ -283,6 +288,10 @@ public class Content
         xstream.useAttributeFor(Duration.class, "Type");
         xstream.aliasField("Type", Duration.class, "Type");
         xstream.alias("Action", Action.class, Action.class);
+
+        //JavaEnvClassPaths
+        xstream.alias("JavaEnvClassPath", String.class);
+        xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
 
         //Scheduler
         xstream.useAttributeFor(StopVusers.class, "Type");

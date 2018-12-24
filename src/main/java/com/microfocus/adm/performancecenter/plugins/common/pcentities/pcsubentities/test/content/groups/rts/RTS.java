@@ -1,5 +1,6 @@
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts;
 
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.javavm.javaenvclasspaths.JavaEnvClassPaths;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.jmeter.JMeter;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.log.Log;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.log.logoptions.LogOptions;
@@ -18,7 +19,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.security.PublicKey;
 
 @Setter
 @Getter
@@ -98,6 +98,11 @@ public class RTS
         xstream.useAttributeFor(LogOptions.class, "Type");
         xstream.aliasField("JMeter", RTS.class, "JMeter");
         xstream.aliasField("JavaVM", RTS.class, "JavaVM");
+
+        //JavaEnvClassPaths
+        xstream.alias("JavaEnvClassPath", String.class);
+        xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
+
         xstream.aliasField("RTS", RTS.class, "RTS");
         xstream.setMode(XStream.NO_REFERENCES);
         return xstream.toXML(this);
@@ -115,6 +120,11 @@ public class RTS
         xstream.aliasField("Type", ThinkTime.class, "Type");
         xstream.useAttributeFor(Log.class, "Type");
         xstream.aliasField("LogOptions", Log.class, "LogOptions");
+
+        //JavaEnvClassPaths
+        xstream.alias("JavaEnvClassPath", String.class);
+        xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
+
         xstream.useAttributeFor(LogOptions.class, "Type");
         xstream.setClassLoader(RTS.class.getClassLoader());
         xstream.setMode(XStream.NO_REFERENCES);

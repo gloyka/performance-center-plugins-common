@@ -41,8 +41,6 @@ public class JMeter {
     public JMeter() {
         setStartMeasurements(true);
         setJMeterUseDefaultPort(true);
-        setJMeterMinPort(4445);
-        setJMeterMaxPort(4455);
         setJMeterDistributeMode(false);
     }
 
@@ -58,11 +56,21 @@ public class JMeter {
         setStartMeasurements(startMeasurements);
         setJMeterHomePath(jMeterHomePath);
         setJMeterUseDefaultPort(jMeterUseDefaultPort);
-        setJMeterMinPort(jMeterMinPort);
-        setJMeterMaxPort(jMeterMaxPort);
-        setJMeterMaxPort(jMeterMaxPort);
+        setJMeterMinPort(jMeterUseDefaultPort ? 0 : jMeterMinPort);
+        setJMeterMaxPort(jMeterUseDefaultPort ? 0 : jMeterMaxPort);
         setJMeterDistributeMode(jMeterDistributeMode);
     }
+
+    public JMeter(boolean startMeasurements, String jMeterHomePath, boolean jMeterUseDefaultPort, int jMeterMinPort, int jMeterMaxPort, boolean jMeterDistributeMode, String jMeterAdditionalProperties) {
+        setStartMeasurements(startMeasurements);
+        setJMeterHomePath(jMeterHomePath);
+        setJMeterUseDefaultPort(jMeterUseDefaultPort);
+        setJMeterMinPort(jMeterUseDefaultPort ? 0 : jMeterMinPort);
+        setJMeterMaxPort(jMeterUseDefaultPort ? 0 : jMeterMaxPort);
+        setJMeterDistributeMode(jMeterDistributeMode);
+        setJMeterAdditionalProperties(jMeterAdditionalProperties);
+    }
+
 
     public void setJMeterMinPort(int JMeterMinPort) {
             this.JMeterMinPort = Common.integerToString(JMeterMinPort);
