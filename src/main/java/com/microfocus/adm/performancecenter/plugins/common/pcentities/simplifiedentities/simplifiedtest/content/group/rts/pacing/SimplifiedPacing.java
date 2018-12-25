@@ -34,20 +34,20 @@ public class SimplifiedPacing {
         this.delay_random_range = delay_random_range;
     }
 
-    public SimplifiedPacing(int number_of_iterations, SimplifiedPacingTypeValues type, int delay, int delay_random_range) {
-        this.number_of_iterations = number_of_iterations;
-        setType(type);
-        this.delay = delay;
-        this.delay_random_range = delay_random_range;
-    }
+//    public SimplifiedPacing(int number_of_iterations, SimplifiedPacingTypeValues type, int delay, int delay_random_range) {
+//        this.number_of_iterations = number_of_iterations;
+//        setType(type);
+//        this.delay = delay;
+//        this.delay_random_range = delay_random_range;
+//    }
 
     public void setType (String type) {
         this.type = type;
     }
 
-    public void setType (SimplifiedPacingTypeValues type) {
-        this.type = type.value();
-    }
+//    public void setType (SimplifiedPacingTypeValues type) {
+//        this.type = type.value();
+//    }
 
     @Override
     public String toString() {

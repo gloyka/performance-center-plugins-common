@@ -371,7 +371,8 @@ public class PcRestProxy {
                 return pcScript;
             }
         }
-        return null;
+        throw new PcException(String.format("No script named '%s' was found under this folder path '%s' within the PC project.", scriptName, testFolderPath));
+//        return null;
     }
 
 
