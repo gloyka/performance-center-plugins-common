@@ -24,7 +24,7 @@ public class SimplifiedThinkTime {
     private int multiply_factor;
 
     public SimplifiedThinkTime() {
-        setType(SimplifiedThinkTimeTypeValues.IGNORE);
+        setType(SimplifiedThinkTimeTypeValues.IGNORE.value());
     }
 
     public SimplifiedThinkTime(String type, int min_percentage, int max_percentage, int limit_seconds, int multiply_factor) {
@@ -35,21 +35,21 @@ public class SimplifiedThinkTime {
         this.multiply_factor = multiply_factor;
     }
 
-    public SimplifiedThinkTime(SimplifiedThinkTimeTypeValues type, int min_percentage, int max_percentage, int limit_seconds, int multiply_factor) {
-        setType(type);
-        this.min_percentage = min_percentage;
-        this.max_percentage = max_percentage;
-        this.limit_seconds = limit_seconds;
-        this.multiply_factor = multiply_factor;
-    }
+//    public SimplifiedThinkTime(SimplifiedThinkTimeTypeValues type, int min_percentage, int max_percentage, int limit_seconds, int multiply_factor) {
+//        setType(type);
+//        this.min_percentage = min_percentage;
+//        this.max_percentage = max_percentage;
+//        this.limit_seconds = limit_seconds;
+//        this.multiply_factor = multiply_factor;
+//    }
 
     public void setType(String type) {
         this.type = type;
     }
 
-    public void setType(SimplifiedThinkTimeTypeValues type) {
-        this.type = type.value();
-    }
+//    public void setType(SimplifiedThinkTimeTypeValues type) {
+//        this.type = type.value();
+//    }
 
     @Override
     public String toString() {
