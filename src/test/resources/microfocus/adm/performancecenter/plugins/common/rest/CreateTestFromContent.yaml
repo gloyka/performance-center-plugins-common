@@ -1,11 +1,21 @@
 ##################################################
 controller: "myd-vm00670"
-lg_amount: 3
+#elastic_configuration:
+#  image_name: "performancetesting/load_generator_linux:12.60"
+#  memory_limit: 4
+#  cpu_limit: 3
+#lg_elastic_configuration:
+#  image_id: 2
+#  memory_limit: 4
+#  cpu_limit: 3
 group:
 - #group_name: "JavaVuser_LR_Information_pacing_immediately_thinktime_ignore"
   vusers: 50
-  script_id: 394
+  script_id: 520
   command_line: "echo hello from JavaVuser_LR_Information_pacing_immediately_thinktime_ignore > c:\\hello_from_JavaVuser_LR_Information_pacing_immediately_thinktime_ignore.txt"
+  lg_name:
+  - "LG1"
+  - "LG2"
   rts:
     pacing:
       number_of_iterations: 2
@@ -23,8 +33,11 @@ group:
 
 - #group_name: "JavaHTTP_BigXML_pacing_fixed_delay_thinktime_replay"
   vusers: 50
-  script_path: "scripts\\java_protocols\\JavaHTTP_BigXML"
+  script_path: "scripts\\javascripts\\JavaHTTP_BigXML"
   command_line: "echo hello from JavaHTTP_BigXML_pacing_fixed_delay_thinktime_replay > c:\\hello_from_JavaHTTP_BigXML_pacing_fixed_delay_thinktime_replay.txt"
+  lg_name:
+  - "LG1"
+  - "DOCKER1"
   rts:
     pacing:
       number_of_iterations: 2
@@ -40,8 +53,11 @@ group:
 
 - group_name: "JavaVuser_LR_Information_immediately_pacing_random_delay_thinktime_modify"
   vusers: 50
-  script_id: 394
+  script_id: 520
   command_line: "echo hello from JavaVuser_LR_Information_immediately_pacing_random_delay_thinktime_modify > c:\\hello_from_JavaVuser_LR_Information_immediately_pacing_random_delay_thinktime_modify.txt"
+  lg_name:
+  - "LG1"
+  - "LG2"
   rts:
     pacing:
       number_of_iterations: 2
@@ -57,14 +73,17 @@ group:
       - "java_env_class_path2"
     thinktime:
       type: "modify"
-      limit_seconds: 30
+#      limit_seconds: 30
       multiply_factor: 2
 
 - group_name: "JavaHTTP_BigXML_pacing_fixed_interval_thinktime_random"
   vusers: 50
-  #script_id: 392
-  script_path: "scripts\\java_protocols\\JavaHTTP_BigXML"
+  #script_id: 520
+  script_path: "scripts\\javascripts\\JavaHTTP_BigXML"
   command_line: "echo hello from JavaHTTP_BigXML_pacing_fixed_interval_thinktime_random > c:\\hello_from_JavaHTTP_BigXML_pacing_fixed_interval_thinktime_random.txt"
+  lg_name:
+  - "LG1"
+  - "LG2"
   rts:
     pacing:
       number_of_iterations: 2
@@ -85,8 +104,11 @@ group:
 
 - group_name: "JavaHTTP_BigXML_pacing_random_interval"
   vusers: 50
-  script_path: "scripts\\java_protocols\\JavaHTTP_BigXML"
+  script_path: "scripts\\javascripts\\JavaHTTP_BigXML"
   command_line: "echo hello from JavaHTTP_BigXML_pacing_random_interval > c:\\hello_from_JavaHTTP_BigXML_pacing_random_interval.txt"
+  lg_name:
+  - "LG1"
+  - "LG2"
   rts:
     pacing:
       number_of_iterations: 2
@@ -105,6 +127,9 @@ group:
   vusers: 50
   script_path: "scripts\\Mtours"
   command_line: "echo hello from Mtours_pacing_random_interval > c:\\hello_from_Mtours_pacing_random_interval.txt"
+  lg_name:
+  - "LG1"
+  - "LG2"
   rts:
     pacing:
       number_of_iterations: 2
@@ -121,6 +146,9 @@ group:
   vusers: 50
   script_path: "scripts\\Mtours"
   command_line: "echo hello from Mtours_pacing_random_interval_Jmeter_default_port > c:\\hello_from_Mtours_pacing_random_interval_Jmeter_default_port.txt"
+  lg_name:
+  - "LG1"
+  - "LG2"
   rts:
     pacing:
       number_of_iterations: 2

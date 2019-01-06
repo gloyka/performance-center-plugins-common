@@ -20,7 +20,7 @@ import java.util.ArrayList;
 @Setter
 @Getter
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="Scheduler")
+@XmlRootElement(name="SimplifiedScheduler")
 public class Scheduler
 {
     @XmlElement
@@ -34,14 +34,14 @@ public class Scheduler
 
     @Override
     public String toString() {
-        return "Scheduler{" + "Actions = " + Actions + "}";
+        return "SimplifiedScheduler{" + "Actions = " + Actions + "}";
     }
 
 
     public String objectToXML() {
         XStream xstream = new XStream();
         xstream = Helper.xstreamPermissions(xstream);
-        xstream.alias("Scheduler", Scheduler.class);
+        xstream.alias("SimplifiedScheduler", Scheduler.class);
 
         xstream.useAttributeFor(StopVusers.class, "Type");
         xstream.aliasField("Type", StopVusers.class, "Type");
@@ -56,7 +56,7 @@ public class Scheduler
         xstream.alias("Action", Action.class, Action.class);
 
         xstream.aliasField("Actions", Scheduler.class, "Actions");
-        xstream.aliasField("Scheduler", Scheduler.class, "Scheduler");
+        xstream.aliasField("SimplifiedScheduler", Scheduler.class, "SimplifiedScheduler");
         xstream.setMode(XStream.NO_REFERENCES);
         return xstream.toXML(this);
     }
@@ -77,7 +77,7 @@ public class Scheduler
         xstream.aliasField("Type", Duration.class, "Type");
         xstream.alias("Action", Action.class, Action.class);
 
-        xstream.alias("Scheduler" , Scheduler.class);
+        xstream.alias("SimplifiedScheduler" , Scheduler.class);
         xstream.setClassLoader(Scheduler.class.getClassLoader());
         xstream.setMode(XStream.NO_REFERENCES);
         return (Scheduler)xstream.fromXML(xml);

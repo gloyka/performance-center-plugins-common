@@ -25,7 +25,8 @@ public class TestPcRestProxy {
 
 
     //region intro
-    private PcRestProxy pcRestProxy;
+    private PcRestProxy pcRestProxy_61;
+    private PcRestProxy pcRestProxy_62;
 
     public final String RESOURCES_DIR = getClass().getResource("").getPath();
 
@@ -33,7 +34,8 @@ public class TestPcRestProxy {
     public void setUp() throws  PcException, Exception {
         System.out.println("setUp: starts");
         try {
-            pcRestProxy = new PcRestProxy(PcRestProxyBase.WEB_PROTOCOL, PcRestProxyBase.PC_SERVER_NAME, PcRestProxyBase.ALM_DOMAIN, PcRestProxyBase.ALM_PROJECT, "","","");
+            pcRestProxy_61 = new PcRestProxy(PcRestProxyBase.WEB_PROTOCOL, PcRestProxyBase.PC_SERVER_NAME, PcRestProxyBase.ALM_DOMAIN, PcRestProxyBase.ALM_PROJECT, "","","");
+            pcRestProxy_62 = new PcRestProxy(PcRestProxyBase.WEB_PROTOCOL_62, PcRestProxyBase.PC_SERVER_NAME_62, PcRestProxyBase.ALM_DOMAIN_62, PcRestProxyBase.ALM_PROJECT_62, "","","");
             System.out.println("setUp: setUp done.");
         } catch (PcException ex) {
             System.out.println("setUp: setUp failed. PcException = " + ex.getMessage());
@@ -159,7 +161,7 @@ public class TestPcRestProxy {
             String testname = test.getName();
             String folderPath = test.getTestFolderPath();
             Content content = test.getContent();
-            createdOrUpdatedTest = pcRestProxy.createOrUpdateTest(testname, folderPath, content);
+            createdOrUpdatedTest = pcRestProxy_61.createOrUpdateTest(testname, folderPath, content);
             return createdOrUpdatedTest;
         } catch (PcException ex) {
             System.out.println("createOrUpdateTestTest: creating or updating test failed. PcException = " + ex.getMessage());
@@ -177,7 +179,7 @@ public class TestPcRestProxy {
             String testName = test.getName();
             String folderPath = test.getTestFolderPath();
             Content content = test.getContent();
-            testUpdated = pcRestProxy.updateTest(testId, content);
+            testUpdated = pcRestProxy_61.updateTest(testId, content);
             return testUpdated;
         } catch (PcException ex) {
             System.out.println("updateTest: updating test failed. PcException = " + ex.getMessage());
@@ -191,7 +193,7 @@ public class TestPcRestProxy {
     public boolean deleteTest(int id) throws PcException, IOException {
         System.out.println("deleteTest: starts");
         try {
-            boolean isTestDeleted = pcRestProxy.deleteTest(id);
+            boolean isTestDeleted = pcRestProxy_61.deleteTest(id);
             return isTestDeleted;
         } catch (PcException ex) {
             System.out.println("deleteTest: deleting test failed. PcException = " + ex.getMessage());
@@ -205,7 +207,7 @@ public class TestPcRestProxy {
     public int extractTestIdFromStringTest(String value) {
         try {
             String str = "Invalid design performance test request. A performance test (ID:'732323223') named 'testempty2_not_created_by_rest_api_without_SLA' in folder 'Subject\\daniel' already exists.";
-            int testID = pcRestProxy.extractTestIdFromString(value);
+            int testID = pcRestProxy_61.extractTestIdFromString(value);
             return testID;
         } catch (Exception ex) {
             System.out.println("testExtractTestIdFromString: Exception = " + ex.getMessage());
@@ -217,7 +219,7 @@ public class TestPcRestProxy {
     //endregion
 
     //region create test from yaml
-    //@Test
+    @Test
     public void verifyTestCreationOrUpdateViaXmlOrYaml() throws  PcException, Exception {
         try {
 
@@ -228,33 +230,38 @@ public class TestPcRestProxy {
 
 
             //reading CreateTestFromContent.yaml and creating simplifiedTest.Content object
-            File contentFile = new File("src/test/resources/microfocus/adm/performancecenter/plugins/common/rest/".concat("CreateTestFromContent.yaml"));
-            SimplifiedContent content =
-                    mapper.readValue(contentFile, SimplifiedContent.class);
-            System.out.println(ReflectionToStringBuilder.toString(content, MULTI_LINE_STYLE));
+            File contentFile_61 = new File("src/test/resources/microfocus/adm/performancecenter/plugins/common/rest/".concat("CreateTestFromContent.yaml"));
+            File contentFile_62 = new File("src/test/resources/microfocus/adm/performancecenter/plugins/common/rest/".concat("CreateTestFromContent_62.yaml"));
+
+            SimplifiedContent content_61 = mapper.readValue(contentFile_61, SimplifiedContent.class);
+            SimplifiedContent content_62 = mapper.readValue(contentFile_62, SimplifiedContent.class);
+            System.out.println(ReflectionToStringBuilder.toString(content_61, MULTI_LINE_STYLE));
+            System.out.println(ReflectionToStringBuilder.toString(content_62, MULTI_LINE_STYLE));
 
             //reading CreateTestFromSimplifiedTest.yaml and creating SimplifiedTest object
-            File simplifiedTestFile = new File("src/test/resources/microfocus/adm/performancecenter/plugins/common/rest/".concat("CreateTestFromSimplifiedTest.yaml"));
-            SimplifiedTest simplifiedTest =
-                    mapper.readValue(simplifiedTestFile, SimplifiedTest.class);
-            System.out.println(ReflectionToStringBuilder.toString(simplifiedTest, MULTI_LINE_STYLE));
+//            File simplifiedTestFile = new File("src/test/resources/microfocus/adm/performancecenter/plugins/common/rest/".concat("CreateTestFromSimplifiedTest.yaml"));
+//            SimplifiedTest simplifiedTest = mapper.readValue(simplifiedTestFile, SimplifiedTest.class);
+//            System.out.println(ReflectionToStringBuilder.toString(simplifiedTest, MULTI_LINE_STYLE));
 
             //reading string and creating simplifiedTest.Content object
-            String contentString = fileToStringWithoutTrim("CreateTestFromContent.yaml");
-            SimplifiedContent content2 =
-                    mapper.readValue(contentString, SimplifiedContent.class);
-            System.out.println(ReflectionToStringBuilder.toString(content2, MULTI_LINE_STYLE));
+            String contentString_61 = fileToStringWithoutTrim("CreateTestFromContent.yaml");
+//            SimplifiedContent content2 =   mapper.readValue(contentString, SimplifiedContent.class);
+//            System.out.println(ReflectionToStringBuilder.toString(content2, MULTI_LINE_STYLE));
 
+            //reading string and creating simplifiedTest.Content object
+            String contentString_62 = fileToStringWithoutTrim("CreateTestFromContent_62.yaml");
+//            SimplifiedContent content2 =   mapper.readValue(contentString, SimplifiedContent.class);
+//            System.out.println(ReflectionToStringBuilder.toString(content2, MULTI_LINE_STYLE));
 
             //reading CreateTestFromSimplifiedTest.yaml and creating SimplifiedTest object
-            String simplifiedTestString = fileToStringWithoutTrim("CreateTestFromSimplifiedTest.yaml");
-            SimplifiedTest simplifiedTest2 =
-                    mapper.readValue(simplifiedTestString, SimplifiedTest.class);
-            System.out.println(ReflectionToStringBuilder.toString(simplifiedTest2, MULTI_LINE_STYLE));
+//            String simplifiedTestString = fileToStringWithoutTrim("CreateTestFromSimplifiedTest.yaml");
+//            SimplifiedTest simplifiedTest2 = mapper.readValue(simplifiedTestString, SimplifiedTest.class);
+//            System.out.println(ReflectionToStringBuilder.toString(simplifiedTest2, MULTI_LINE_STYLE));
 
-            createUpdateDeleteTest(pcRestProxy.createOrUpdateTestFromYamlContent("verifyTestCreationOrUpdateViaXmlOrYaml", "Subject\\FolderCreatedBy_VerifyTestCreationOrUpdateViaXmlOrYaml", contentString));
+            //createUpdateDeleteTest(pcRestProxy_61, pcRestProxy_61.createOrUpdateTestFromYamlContent("verifyTestCreationOrUpdateViaXmlOrYaml", "Subject\\FolderCreatedBy_VerifyTestCreationOrUpdateViaXmlOrYaml", contentString_61));
+            createUpdateDeleteTest(pcRestProxy_62, pcRestProxy_62.createOrUpdateTestFromYamlContent("verifyTestCreationOrUpdateViaXmlOrYaml", "Subject\\FolderCreatedBy_VerifyTestCreationOrUpdateViaXmlOrYaml", contentString_62));
 
-            createUpdateDeleteTest(pcRestProxy.createOrUpdateTestFromYamlTest(simplifiedTestString));
+            //createUpdateDeleteTest(pcRestProxy_61.createOrUpdateTestFromYamlTest(simplifiedTestString));
 
         } catch (Exception e) {
             System.out.println("verifyTestCreationOrUpdateViaXmlOrYaml failed. Exception = " + e.getMessage());
@@ -264,9 +271,9 @@ public class TestPcRestProxy {
         }
     }
 
-    private void createUpdateDeleteTest(com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test orUpdateTestFromYamlTest) throws IOException, PcException {
+    private void createUpdateDeleteTest(PcRestProxy pcRestProxy, com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test createdOrUpdateTestFromYamlTest) throws IOException, PcException {
         com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test test2 =
-                orUpdateTestFromYamlTest;
+                createdOrUpdateTestFromYamlTest;
 
         System.out.println(String.format("the following test was created/updated successfully: id: %s, testname: %s, path: %s", test2.getID(), test2.getName(), test2.getTestFolderPath()));
 
@@ -284,7 +291,8 @@ public class TestPcRestProxy {
         System.out.println("testLogin: starts");
         try {
             System.out.println("testLogin: Testing Login to PC server");
-            Assert.assertTrue("testLogin: Authenticate success", pcRestProxy.authenticate(PcRestProxyBase.ALM_USER_NAME, PcRestProxyBase.ALM_PASSWORD));
+            Assert.assertTrue("testLogin: Authenticate success", pcRestProxy_61.authenticate(PcRestProxyBase.ALM_USER_NAME, PcRestProxyBase.ALM_PASSWORD));
+            Assert.assertTrue("testLogin: Authenticate success", pcRestProxy_62.authenticate(PcRestProxyBase.ALM_USER_NAME, PcRestProxyBase.ALM_PASSWORD));
         }
         catch (PcException ex) {
             System.out.println("testLogin: Failed to Authenticate. PcException = " + ex.getMessage());
@@ -300,7 +308,7 @@ public class TestPcRestProxy {
     public PcTestInstances getTestInstancesByTestId(int testID) {
         System.out.println("getTestInstancesByTestId: starts");
         try {
-            PcTestInstances pcTestInstances = pcRestProxy.getTestInstancesByTestId(testID);
+            PcTestInstances pcTestInstances = pcRestProxy_61.getTestInstancesByTestId(testID);
             System.out.println(String.format("getTestInstancesByTestId: pcTestInstances are: %s", pcTestInstances.getTestInstancesList().toString()));
             return pcTestInstances;
         } catch (PcException|IOException ex) {
@@ -314,7 +322,7 @@ public class TestPcRestProxy {
     private void testGetAllTestSets () throws PcException, IOException {
         System.out.println("testGetAllTestSets: starts");
         try {
-            PcTestSets pcTestSets = pcRestProxy.GetAllTestSets();
+            PcTestSets pcTestSets = pcRestProxy_61.GetAllTestSets();
             Assert.assertTrue("testGetAllTestSets: testsets received", !pcTestSets.getPcTestSetsList().isEmpty());
         }
         catch (PcException ex) {
@@ -332,7 +340,7 @@ public class TestPcRestProxy {
             System.out.println("testUploadScript: Uploading script to project");
             ClassLoader classLoader = getClass().getClassLoader();
             File file = new File(classLoader.getResource("microfocus/adm/performancecenter/plugins/common/rest/kilimanjaro.zip").getFile());
-            int scriptId = pcRestProxy.uploadScript(PcRestProxyBase.testFolderPath, PcRestProxyBase.Overwrite, PcRestProxyBase.RuntimeOnly, PcRestProxyBase.KeepCheckedOut, file.getPath());
+            int scriptId = pcRestProxy_61.uploadScript(PcRestProxyBase.testFolderPath, PcRestProxyBase.Overwrite, PcRestProxyBase.RuntimeOnly, PcRestProxyBase.KeepCheckedOut, file.getPath());
             System.out.println("testUploadScript: Uploading script to project to scriptID " + scriptId);
             System.out.println("testUploadScript: ends");
             return scriptId;
@@ -351,7 +359,7 @@ public class TestPcRestProxy {
         System.out.println("getScripts: starts");
         try {
             System.out.println("getScripts: getting all scripts from the project");
-            PcScripts pcScripts = pcRestProxy.getScripts();
+            PcScripts pcScripts = pcRestProxy_61.getScripts();
             String scriptIdsList = "ID of scripts in the project: ";
             for (PcScript pcScript: pcScripts.getPcScriptList()
                  ) {
@@ -379,7 +387,7 @@ public class TestPcRestProxy {
         System.out.println("getScript: starts");
         try {
             System.out.println(String.format("getScript: getting script ID = %s from the project", Id));
-            PcScript pcScript = pcRestProxy.getScript(Id);
+            PcScript pcScript = pcRestProxy_61.getScript(Id);
             System.out.println(String.format("ID = %s, Name = %s, CreatedBy = %s, TestFolderPath = %s, WorkingMode = %s, Protocol = %s,",
                     Integer.toString(pcScript.getID()), pcScript.getName(), pcScript.getCreatedBy(),
                     pcScript.getTestFolderPath(), pcScript.getWorkingMode(), pcScript.getProtocol()));
@@ -399,7 +407,7 @@ public class TestPcRestProxy {
         System.out.println("getTestPlan: starts");
         try {
             System.out.println(String.format("getTestPlan"));
-            PcTestPlanFolders pcTestPlanFolders = pcRestProxy.getTestPlanFolders();
+            PcTestPlanFolders pcTestPlanFolders = pcRestProxy_61.getTestPlanFolders();
             for (PcTestPlanFolder pcTestPlanFolder : pcTestPlanFolders.getPcTestPlanFolderList()
                  ) {
                 System.out.println(String.format("Id = %s, Name = %s, ParentId = %s, FullPath = %s", pcTestPlanFolder.getId(), pcTestPlanFolder.getName(), pcTestPlanFolder.getParentId(), pcTestPlanFolder.getFullPath() ));
@@ -421,7 +429,7 @@ public class TestPcRestProxy {
         try {
 
             System.out.println(String.format("CreateTestPlanFolder: requesting to create Folder '%s' under folder path '%s'", path, name));
-            PcTestPlanFolder pcTestPlanFolder = pcRestProxy.createTestPlanFolder(path, name);
+            PcTestPlanFolder pcTestPlanFolder = pcRestProxy_61.createTestPlanFolder(path, name);
             System.out.println(String.format("Folder created: Id = %s, Name = %s, ParentId = %s, FullPath = %s", pcTestPlanFolder.getId(), pcTestPlanFolder.getName(), pcTestPlanFolder.getParentId(), pcTestPlanFolder.getFullPath() ));
 
 
@@ -440,7 +448,7 @@ public class TestPcRestProxy {
         try {
 
             System.out.println(String.format("verifyTestPlanFolderExist: Verifying if Folder '%s' exists", path));
-            boolean testPlanfolderExist = pcRestProxy.verifyTestPlanFolderExist(path);
+            boolean testPlanfolderExist = pcRestProxy_61.verifyTestPlanFolderExist(path);
             System.out.println(String.format(testPlanfolderExist ? "verifyTestPlanFolderExist: Folder '%s' does exist" : "verifyTestPlanFolderExist: Folder '%s' does not exist", path));
 
             return testPlanfolderExist;
@@ -457,7 +465,7 @@ public class TestPcRestProxy {
         System.out.println("verifyTestPlanFolderExist: starts");
         ArrayList<PcTestPlanFolder> pcTestPlanFolders = null;
         try {
-        pcTestPlanFolders = pcRestProxy.createTestPlanFolders(paths);
+        pcTestPlanFolders = pcRestProxy_61.createTestPlanFolders(paths);
         for (PcTestPlanFolder pcTestPlanFolder: pcTestPlanFolders
                 ) {
             System.out.println(String.format("Id = %s, Name = %s, ParentId = %s, FullPath = %s", pcTestPlanFolder.getId(), pcTestPlanFolder.getName(), pcTestPlanFolder.getParentId(), pcTestPlanFolder.getFullPath() ));
@@ -475,7 +483,7 @@ public class TestPcRestProxy {
         System.out.println("getScript: starts");
         try {
             System.out.println(String.format("getScript: getting script folder = %s from the project", testFolderPath));
-            PcScript pcScript = pcRestProxy.getScript(testFolderPath, scriptName);
+            PcScript pcScript = pcRestProxy_61.getScript(testFolderPath, scriptName);
             System.out.println(String.format("ID = %s, Name = %s, CreatedBy = %s, TestFolderPath = %s, WorkingMode = %s, Protocol = %s,",
                     Integer.toString(pcScript.getID()), pcScript.getName(), pcScript.getCreatedBy(),
                     pcScript.getTestFolderPath(), pcScript.getWorkingMode(), pcScript.getProtocol()));
@@ -495,7 +503,7 @@ public class TestPcRestProxy {
         System.out.println("deleteScript: starts");
         try {
             System.out.println("deleteScript: deleting script from project");
-            boolean deleteSuccess = pcRestProxy.deleteScript(scriptId);
+            boolean deleteSuccess = pcRestProxy_61.deleteScript(scriptId);
             System.out.println(String.format("deleteScript: deleting script %s from project to  ", scriptId));
             System.out.println("deleteScript: ends");
             return deleteSuccess;
@@ -514,7 +522,7 @@ public class TestPcRestProxy {
         System.out.println("testLogout: starts");
         try {
         System.out.println("testLogout: Testing Logout from PC server");
-        Assert.assertTrue("testLogout: Failed to logout with pcClient", pcRestProxy.logout());
+        Assert.assertTrue("testLogout: Failed to logout with pcClient", pcRestProxy_61.logout());
         }
         catch (PcException ex) {
             System.out.println("testLogout: logout failed. PcException = " + ex.getMessage());

@@ -128,7 +128,7 @@ public class Group
                 ", CommandLine = " + CommandLine +
                 ", GlobalRTS = " + GlobalRTS +
                 ", RTS = " + RTS +
-                ", Scheduler = " + Scheduler + "}";
+                ", SimplifiedScheduler = " + Scheduler + "}";
     }
 
     public String objectToXML() {
@@ -173,7 +173,7 @@ public class Group
         xstream.aliasField("GlobalCommandLine", Group.class, "GlobalCommandLine");
         xstream.aliasField("CommandLine", Group.class, "CommandLine");
         xstream.aliasField("GlobalRTS", Group.class, "GlobalRTS");
-        xstream.aliasField("Scheduler", Group.class, "Scheduler");
+        xstream.aliasField("SimplifiedScheduler", Group.class, "SimplifiedScheduler");
         xstream.aliasField("Group", Group.class, "Group");
         xstream.setMode(XStream.NO_REFERENCES);
         return xstream.toXML(this);

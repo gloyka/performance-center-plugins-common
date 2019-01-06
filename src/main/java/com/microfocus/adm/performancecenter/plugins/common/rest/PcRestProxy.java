@@ -484,7 +484,7 @@ public class PcRestProxy {
         	If field is added we should refer to the user selection. Possible values
             •	<Controller>Automatch</Controller>
             •	<Controller>Specific:machine_name_or_ip</Controller>
-            •	<Controller>Docker:image_name</Controller> (memory and CPU will be set to default values)
+            •	<Controller>Docker:image_id</Controller> (memory and CPU will be set to default values)
         	If the field was not added to the XML PC should default to Automatch
     o	Load Generator assignment. The user should be able to choose one of the following options
         	The user should specify number of LGs and all of them will assigned to each group
@@ -501,7 +501,7 @@ public class PcRestProxy {
     o	Vusers
         	User should be able to specify total number of Vusers and distribute equally among group
         	User should be able to specify the number of Vusers per group
-    o	Scheduler
+    o	SimplifiedScheduler
         	Ramp up time (Start Vusers section). The user should specify the time. PC will calculate internally how to spread it. meaning how many Vusers every time
         	Duration
 
@@ -516,7 +516,7 @@ public class PcRestProxy {
         	Real world by group
     o	Load Generator assignment
         	Setting attributes, location and terminal services
-    o	Scheduler
+    o	SimplifiedScheduler
         	Initialize: should not be exposed in the XML format. We should default to Initialize each Vuser just before it runs
         	Stop Vusers: should not be exposed in the XML format. We should default to Stop all Vusers simultaneously.
     o	Runtime settings should be taken from the script

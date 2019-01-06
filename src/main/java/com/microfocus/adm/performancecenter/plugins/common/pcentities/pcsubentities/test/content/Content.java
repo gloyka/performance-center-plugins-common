@@ -3,6 +3,8 @@ package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubenti
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.analysistemplate.AnalysisTemplate;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.automatictrending.AutomaticTrending;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.diagnostics.Diagnostics;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.elasticcontrollerconfiguration.ElasticControllerConfiguration;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.elasticloadgeneratorconfiguration.ElasticLoadGeneratorConfiguration;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.globalcommandline.GlobalCommandLine;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.globalcommandline.commandline.CommandLine;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.globalrts.GlobalRTS;
@@ -86,11 +88,16 @@ public class Content
     //@XmlElement
     private GlobalRTS GlobalRTS;
 
+    private ElasticLoadGeneratorConfiguration ElasticLoadGeneratorConfiguration;
+
+    private ElasticControllerConfiguration ElasticControllerConfiguration;
+
     public Content() {}
 
     public Content(WorkloadType workloadType, LGDistribution lgDistribution, ArrayList<MonitorProfile> monitorProfiles,
                    ArrayList<Group> groups, Scheduler scheduler, AnalysisTemplate analysisTemplate, AutomaticTrending automaticTrending,
-                   ArrayList<MonitorOFW> monitorsOFW, SLA sla, Diagnostics diagnostics, GlobalCommandLine globalCommandLine, GlobalRTS globalRTS) {
+                   ArrayList<MonitorOFW> monitorsOFW, SLA sla, Diagnostics diagnostics, GlobalCommandLine globalCommandLine, GlobalRTS globalRTS,
+                   ElasticLoadGeneratorConfiguration elasticLoadGeneratorConfiguration ,ElasticControllerConfiguration elasticControllerConfiguration) {
         setWorkloadType(workloadType);
         setLGDistribution(lgDistribution);
         setMonitorProfiles(monitorProfiles);
@@ -103,11 +110,14 @@ public class Content
         setDiagnostics(diagnostics);
         setGlobalCommandLine(globalCommandLine);
         setGlobalRTS(globalRTS);
+        setElasticLoadGeneratorConfiguration(elasticLoadGeneratorConfiguration);
+        setElasticControllerConfiguration(elasticControllerConfiguration);
     }
 
     public Content(String controller, WorkloadType workloadType, LGDistribution lgDistribution, ArrayList<MonitorProfile> monitorProfiles,
                    ArrayList<Group> groups, Scheduler scheduler, AnalysisTemplate analysisTemplate, AutomaticTrending automaticTrending,
-                   ArrayList<MonitorOFW> monitorsOFW, SLA sla, Diagnostics diagnostics, GlobalCommandLine globalCommandLine, GlobalRTS globalRTS) {
+                   ArrayList<MonitorOFW> monitorsOFW, SLA sla, Diagnostics diagnostics, GlobalCommandLine globalCommandLine, GlobalRTS globalRTS,
+                   ElasticLoadGeneratorConfiguration elasticLoadGeneratorConfiguration, ElasticControllerConfiguration elasticControllerConfiguration) {
         setController(controller);
         setWorkloadType(workloadType);
         setLGDistribution(lgDistribution);
@@ -121,6 +131,8 @@ public class Content
         setDiagnostics(diagnostics);
         setGlobalCommandLine(globalCommandLine);
         setGlobalRTS(globalRTS);
+        setElasticLoadGeneratorConfiguration(elasticLoadGeneratorConfiguration);
+        setElasticControllerConfiguration(elasticControllerConfiguration);
     }
 
 
@@ -131,7 +143,7 @@ public class Content
                 ", LGDistribution = " + LGDistribution +
                 ", MonitorProfiles = " + MonitorProfiles +
                 ", Groups = " + Groups +
-                ", Scheduler = " + Scheduler +
+                ", SimplifiedScheduler = " + Scheduler +
                 ", AnalysisTemplate = " + AnalysisTemplate +
                 ", AutomaticTrending = " + AutomaticTrending  +
                 ", MonitorsOFW = " + MonitorsOFW +
@@ -139,6 +151,8 @@ public class Content
                 ", Diagnostics = " + Diagnostics +
                 ", GlobalCommandLine = " + GlobalCommandLine +
                 ", GlobalRTS = " + GlobalRTS +
+                ", ElasticLoadGeneratorConfiguration" + ElasticLoadGeneratorConfiguration +
+                ", ElasticLoadGeneratorConfiguration" + ElasticControllerConfiguration +
                 "}";
     }
 
@@ -160,6 +174,8 @@ public class Content
         xstream.aliasField("SLA", Content.class, "SLA");
         xstream.aliasField("Diagnostics", Content.class, "Diagnostics");
         xstream.aliasField("AutomaticTrending", Content.class, "AutomaticTrending");
+        xstream.aliasField("ElasticLoadGeneratorConfiguration", Content.class, "ElasticLoadGeneratorConfiguration");
+        xstream.aliasField("ElasticControllerConfiguration", Content.class, "ElasticControllerConfiguration");
 
         //Content
         xstream.alias("MonitorProfile", MonitorProfile.class,MonitorProfile.class);
@@ -212,7 +228,7 @@ public class Content
         xstream.alias("JavaEnvClassPath", String.class);
         xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
 
-        //Scheduler
+        //SimplifiedScheduler
         xstream.useAttributeFor(StopVusers.class, "Type");
         xstream.aliasField("Type", StopVusers.class, "Type");
         xstream.useAttributeFor(StartVusers.class, "Type");
@@ -293,7 +309,7 @@ public class Content
         xstream.alias("JavaEnvClassPath", String.class);
         xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
 
-        //Scheduler
+        //SimplifiedScheduler
         xstream.useAttributeFor(StopVusers.class, "Type");
         xstream.aliasField("Type", StopVusers.class, "Type");
         xstream.useAttributeFor(StartVusers.class, "Type");

@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Scheduler {
+public class SimplifiedScheduler {
 
     //optional
     int rampup;
@@ -15,16 +15,16 @@ public class Scheduler {
     //optional
     int duration;
 
-    public Scheduler() {}
+    public SimplifiedScheduler() {}
 
-    public Scheduler(int rampup, int duration) {
+    public SimplifiedScheduler(int rampup, int duration) {
         this.rampup = rampup;
         this.duration = duration;
     }
 
     @Override
     public String toString() {
-        return "Scheduler {" +
+        return "SimplifiedScheduler {" +
                 "rampup = " + rampup + ", " +
                 "duration = " + duration + "}";
     }
@@ -33,20 +33,20 @@ public class Scheduler {
     public String objectToXML() {
         XStream xstream = new XStream();
         xstream = Helper.xstreamPermissions(xstream);
-        xstream.alias("Scheduler", Scheduler.class);
-        xstream.aliasField("rampup", Scheduler.class, "MinVusers");
-        xstream.aliasField("duration", Scheduler.class, "MaxVusers");
-        xstream.aliasField("Scheduler", Scheduler.class, "Scheduler");
+        xstream.alias("SimplifiedScheduler", SimplifiedScheduler.class);
+        xstream.aliasField("rampup", SimplifiedScheduler.class, "MinVusers");
+        xstream.aliasField("duration", SimplifiedScheduler.class, "MaxVusers");
+        xstream.aliasField("SimplifiedScheduler", SimplifiedScheduler.class, "SimplifiedScheduler");
         xstream.setMode(XStream.NO_REFERENCES);
         return xstream.toXML(this);
     }
 
-    public static Scheduler xmlToObject(String xml) {
+    public static SimplifiedScheduler xmlToObject(String xml) {
         XStream xstream = new XStream();
         xstream = Helper.xstreamPermissions(xstream);
-        xstream.alias("Scheduler" , Scheduler.class);
-        xstream.setClassLoader(Scheduler.class.getClassLoader());
+        xstream.alias("SimplifiedScheduler" , SimplifiedScheduler.class);
+        xstream.setClassLoader(SimplifiedScheduler.class.getClassLoader());
         xstream.setMode(XStream.NO_REFERENCES);
-        return (Scheduler)xstream.fromXML(xml);
+        return (SimplifiedScheduler)xstream.fromXML(xml);
     }
 }
