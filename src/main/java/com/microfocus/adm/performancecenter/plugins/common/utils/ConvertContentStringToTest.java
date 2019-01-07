@@ -6,6 +6,8 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.analysistemplate.AnalysisTemplate;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.automatictrending.AutomaticTrending;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.diagnostics.Diagnostics;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.elasticcontrollerconfiguration.ElasticControllerConfiguration;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.elasticloadgeneratorconfiguration.ElasticLoadGeneratorConfiguration;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.globalcommandline.GlobalCommandLine;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.globalcommandline.commandline.CommandLine;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.globalrts.GlobalRTS;
@@ -36,6 +38,7 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.enums.*;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.SimplifiedTest;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.SimplifiedContent;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.elasticconfiguration.SimplifiedElasticConfiguration;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.SimplifiedGroup;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.javavm.SimplifiedJavaVM;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.jmeter.SimplifiedJMeter;
@@ -108,7 +111,7 @@ public class ConvertContentStringToTest {
         ArrayList<MonitorProfile> monitorProfiles = null;
         //endregion
 
-        //region Scheduler
+        //region SimplifiedScheduler
         Scheduler scheduler = getScheduler(simplifiedContent);
         //endregion
 
@@ -122,6 +125,14 @@ public class ConvertContentStringToTest {
 
         //region MonitorsOFW
         ArrayList<MonitorOFW> monitorsOFW = null;
+        //endregion
+
+        //region ElasticLoadGeneratorConfiguration
+        ElasticLoadGeneratorConfiguration elasticLoadGeneratorConfiguration = getElasticLoadGeneratorConfiguration(simplifiedContent);
+        //endregion
+
+        //region ElasticControllerConfiguration
+        ElasticControllerConfiguration elasticControllerConfiguration = getElasticControllerConfiguration(simplifiedContent);
         //endregion
 
         //region SLA
@@ -155,7 +166,7 @@ public class ConvertContentStringToTest {
 
         //region default and given values assigned to objects
         content = new Content(controller, workloadType, lgDistribution, monitorProfiles, receivedGroups, scheduler,
-                analysisTemplate, automaticTrending, monitorsOFW, sla, diagnostics, globalCommandLine, globalRTS);
+                analysisTemplate, automaticTrending, monitorsOFW, sla, diagnostics, globalCommandLine, globalRTS, elasticLoadGeneratorConfiguration, elasticControllerConfiguration);
         //endregion
         return this;
     }
@@ -252,6 +263,25 @@ public class ConvertContentStringToTest {
         return new Scheduler(actions);
     }
 
+
+    private ElasticLoadGeneratorConfiguration getElasticLoadGeneratorConfiguration(SimplifiedContent simplifiedContent) {
+        SimplifiedElasticConfiguration simplifiedElasticConfiguration = simplifiedContent.getLg_elastic_configuration();
+        ElasticLoadGeneratorConfiguration elasticLoadGeneratorConfiguration = null;
+        if(simplifiedElasticConfiguration != null  && simplifiedElasticConfiguration.getImage_id() != 0 ) {
+            elasticLoadGeneratorConfiguration = new ElasticLoadGeneratorConfiguration(simplifiedElasticConfiguration.getImage_id(), simplifiedElasticConfiguration.getMemory_limit(), simplifiedElasticConfiguration.getCpu_limit());
+        }
+        return elasticLoadGeneratorConfiguration;
+    }
+
+    private ElasticControllerConfiguration getElasticControllerConfiguration(SimplifiedContent simplifiedContent) {
+        SimplifiedElasticConfiguration simplifiedElasticConfiguration = simplifiedContent.getController_elastic_configuration();
+        ElasticControllerConfiguration elasticControllerConfiguration = null;
+        if(simplifiedElasticConfiguration != null  && simplifiedElasticConfiguration.getImage_id() != 0) {
+            elasticControllerConfiguration = new ElasticControllerConfiguration(simplifiedElasticConfiguration.getImage_id(), simplifiedElasticConfiguration.getMemory_limit(), simplifiedElasticConfiguration.getCpu_limit());
+        }
+        return elasticControllerConfiguration;
+    }
+
     //using 15 seconds interval
     private StartVusers getStartVusersSchedulerByTest(SimplifiedContent simplifiedContent) {
         StartVusers startVusers;
@@ -284,7 +314,6 @@ public class ConvertContentStringToTest {
 
     private ArrayList<Group> getGroups(List<SimplifiedGroup> simplifiedGroups, LGDistribution lgDistribution) {
         ArrayList<Group> receivedGroups = new ArrayList<Group>();
-
         {
             for (SimplifiedGroup simplifiedGroup:simplifiedGroups
                  ) {
@@ -456,8 +485,11 @@ public class ConvertContentStringToTest {
 
     private String getController(SimplifiedContent simplifiedContent) {
         String controller = null;
-        if(simplifiedContent.getController() != null && !simplifiedContent.getController().isEmpty())
+        if(simplifiedContent.getController() != null && !simplifiedContent.getController().isEmpty()) {
             controller = simplifiedContent.getController();
+            if (controller.equalsIgnoreCase("Elastic"))
+                controller = "Elastic";
+        }
         return controller;
 
     }

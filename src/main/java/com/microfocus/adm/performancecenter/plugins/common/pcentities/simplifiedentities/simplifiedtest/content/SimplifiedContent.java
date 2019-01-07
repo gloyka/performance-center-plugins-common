@@ -1,8 +1,9 @@
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content;
 
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.elasticconfiguration.SimplifiedElasticConfiguration;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.SimplifiedGroup;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.javavm.SimplifiedJavaVM;
-import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.scheduler.Scheduler;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.scheduler.SimplifiedScheduler;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -27,15 +28,23 @@ public class SimplifiedContent {
     private List<SimplifiedGroup> group;
 
     //optional
-    private Scheduler scheduler;
+    private SimplifiedScheduler scheduler;
+
+    //optional if docker not used
+    private SimplifiedElasticConfiguration lg_elastic_configuration;
+
+    private SimplifiedElasticConfiguration controller_elastic_configuration;
 
     public SimplifiedContent() {}
 
-    public SimplifiedContent(String controller, int lg_amount, List<SimplifiedGroup> group, Scheduler scheduler) {
+    public SimplifiedContent(String controller, int lg_amount, List<SimplifiedGroup> group, SimplifiedScheduler scheduler,
+                             SimplifiedElasticConfiguration lg_elastic_configuration, SimplifiedElasticConfiguration controller_elastic_configuration) {
         this.controller = controller;
         this.lg_amount = lg_amount;
         this.group = group;
         this.scheduler = scheduler;
+        this.lg_elastic_configuration = lg_elastic_configuration;
+        this.controller_elastic_configuration = controller_elastic_configuration;
     }
 
 
@@ -46,6 +55,8 @@ public class SimplifiedContent {
                 ", " + "lg_amount = " + lg_amount +
                 ", " + "group = " + group +
                 ", " + "scheduler = " + scheduler +
+//                ", " + "lg_elastic_configuration = " + lg_elastic_configuration +
+                ", " + "controller_elastic_configuration = " + controller_elastic_configuration +
                 "}";
     }
 
@@ -65,6 +76,8 @@ public class SimplifiedContent {
         xstream.addImplicitCollection(SimplifiedContent.class, "group", "group", SimplifiedGroup.class);
 
         xstream.aliasField("scheduler", SimplifiedContent.class, "scheduler");
+        xstream.aliasField("lg_elastic_configuration", SimplifiedContent.class, "lg_elastic_configuration");
+        xstream.aliasField("controller_elastic_configuration", SimplifiedContent.class, "controller_elastic_configuration");
 
         xstream.alias("lg_name", String.class);
         xstream.addImplicitCollection(SimplifiedGroup.class, "lg_name", "lg_name", String.class);

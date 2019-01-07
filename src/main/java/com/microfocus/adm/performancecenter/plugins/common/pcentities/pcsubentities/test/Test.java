@@ -159,7 +159,7 @@ public class Test
         xstream.alias("JavaEnvClassPath", String.class);
         xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
 
-        //Scheduler
+        //SimplifiedScheduler
         xstream.useAttributeFor(StopVusers.class, "Type");
         xstream.aliasField("Type", StopVusers.class, "Type");
         xstream.useAttributeFor(StartVusers.class, "Type");
@@ -242,7 +242,7 @@ public class Test
         xstream.alias("JavaEnvClassPath", String.class);
         xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
 
-        //Scheduler
+        //SimplifiedScheduler
         xstream.useAttributeFor(StopVusers.class, "Type");
         xstream.aliasField("Type", StopVusers.class, "Type");
         xstream.useAttributeFor(StartVusers.class, "Type");

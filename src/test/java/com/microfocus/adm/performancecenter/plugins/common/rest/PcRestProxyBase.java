@@ -8,10 +8,13 @@ public interface PcRestProxyBase {
 
     public static final String SERVER_AND_PORT = "jenkins.server:8082";
     public static final String PC_SERVER_NAME = "myd-vm00669.hpeswlab.net";
+    public static final String PC_SERVER_NAME_62 = "myd-vm04289.hpeswlab.net";//"myd-vm01543.hpeswlab.net";
     public static final String ALM_USER_NAME = "sa";
     public static final String ALM_PASSWORD = "";
     public static final String ALM_DOMAIN = "DANIEL";
+    public static final String ALM_DOMAIN_62 = "DEFAULT"; //"OMER";
     public static final String ALM_PROJECT = "git_sync";
+    public static final String ALM_PROJECT_62 = "PC"; //"OmerNC";
     public static final String TEST_ID = "1";
     public static final String TEST_INSTANCE_ID = "2";
     public static final String TIMESLOT_DURATION_HOURS = "0";
@@ -25,6 +28,7 @@ public interface PcRestProxyBase {
     public static final String REPORT_ID = "9";
     public static final String STOP_MODE = "stop";
     public static final String WEB_PROTOCOL = "http";
+    public static final String WEB_PROTOCOL_62 = "http";
     public static final Boolean IS_HTTPS = false;
     public static final String TESTINSTANCEID = "MANUAL";
     public static final PrintStream LOGGER = null;

@@ -6,6 +6,8 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.automatictrending.AutomaticTrending;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.diagnostics.Diagnostics;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.diagnostics.j2eedotnet.J2EEDotNet;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.elasticcontrollerconfiguration.ElasticControllerConfiguration;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.elasticloadgeneratorconfiguration.ElasticLoadGeneratorConfiguration;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.globalcommandline.GlobalCommandLine;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.globalcommandline.commandline.CommandLine;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.globalrts.GlobalRTS;
@@ -57,12 +59,14 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.enums.SimplifiedPacingTypeValues;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.SimplifiedTest;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.SimplifiedContent;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.elasticconfiguration.SimplifiedElasticConfiguration;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.SimplifiedGroup;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.SimplifiedRTS;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.javavm.SimplifiedJavaVM;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.jmeter.SimplifiedJMeter;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.pacing.SimplifiedPacing;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.thinktime.SimplifiedThinkTime;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.scheduler.SimplifiedScheduler;
 import org.junit.Before;
 
 import javax.xml.bind.JAXBContext;
@@ -164,19 +168,25 @@ public class TestTest {
         //region scheduler
         int rampup = 300;
         int duration = 600;
-        com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.scheduler.Scheduler scheduler =
-                new com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.scheduler.Scheduler(rampup, duration);
-        String xmlScheduler = scheduler.objectToXML();
-        com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.scheduler.Scheduler scheduler2 =
-                com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.scheduler.Scheduler.xmlToObject(xmlScheduler);
-        String xmlScheduler2 = scheduler2.objectToXML();
-        verifyXML(xmlScheduler, xmlScheduler2);
+        SimplifiedScheduler simplifiedScheduler = new SimplifiedScheduler(rampup, duration);
+        String xmlSimplifiedScheduler = simplifiedScheduler.objectToXML();
+        SimplifiedScheduler simplifiedScheduler2 = SimplifiedScheduler.xmlToObject(xmlSimplifiedScheduler);
+        String xmlSimplifiedScheduler2 = simplifiedScheduler2.objectToXML();
+        verifyXML(xmlSimplifiedScheduler, xmlSimplifiedScheduler2);
+        //endregion
+
+        //region SimplifiedContent
+        SimplifiedElasticConfiguration simplifiedElasticConfiguration = new SimplifiedElasticConfiguration(5, 2, 5);
+        String xmlSimplifiedElasticConfiguration = simplifiedElasticConfiguration.objectToXML();
+        SimplifiedElasticConfiguration simplifiedElasticConfiguration2 = SimplifiedElasticConfiguration.xmlToObject(xmlSimplifiedElasticConfiguration);
+        String xmlSimplifiedElasticConfiguration2 = simplifiedElasticConfiguration2.objectToXML();
+        verifyXML(xmlSimplifiedElasticConfiguration, xmlSimplifiedElasticConfiguration2);
         //endregion
 
         //region SimplifiedContent
         int lg_amount = 3;
         String controller = "[test]controller1";
-        SimplifiedContent simplifiedContent = new SimplifiedContent(controller, lg_amount, simplifiedGroups, scheduler);
+        SimplifiedContent simplifiedContent = new SimplifiedContent(controller, lg_amount, simplifiedGroups, simplifiedScheduler, simplifiedElasticConfiguration, simplifiedElasticConfiguration);
         String xmlSimplifiedContent = simplifiedContent.objectToXML();
         SimplifiedContent simplifiedContent2 = SimplifiedContent.xmlToObject(xmlSimplifiedContent);
         String xmlSimplifiedContent2 = simplifiedContent2.objectToXML();
@@ -564,8 +574,8 @@ public class TestTest {
                 /* verified monitorOFW */
         //endregion
 
-        //region Scheduler
-                /* Verifying Scheduler */
+        //region SimplifiedScheduler
+                /* Verifying SimplifiedScheduler */
 
         //region Action
                     /* Verifying Action */
@@ -660,7 +670,7 @@ public class TestTest {
                      /* Verified Action */
         //endregion
 
-                     //Verifying Scheduler
+                     //Verifying SimplifiedScheduler
                     ArrayList<Action> schedulerActions = new ArrayList<Action>();
                     schedulerActions.add(new Action(initialize));
                     schedulerActions.add(new Action(startVusers));
@@ -674,7 +684,7 @@ public class TestTest {
                     String xmlScheduler2 = scheduler2.objectToXML();
                     verifyXML(xmlScheduler,xmlScheduler2);
 
-                /* Verified Scheduler */
+                /* Verified SimplifiedScheduler */
         //endregion
 
         //region GoalScheduler
@@ -940,6 +950,30 @@ public class TestTest {
                 /* Verified SLA */
         //endregion
 
+        //region ElasticLoadGeneratorConfiguration
+            /* verifying ElasticLoadGeneratorConfiguration */
+            ElasticLoadGeneratorConfiguration elasticLoadGeneratorConfiguration = new ElasticLoadGeneratorConfiguration(3, 2, 2);
+            String xmlElasticLoadGeneratorConfiguration = elasticLoadGeneratorConfiguration.objectToXML();
+            ElasticLoadGeneratorConfiguration elasticLoadGeneratorConfiguration2 = ElasticLoadGeneratorConfiguration.xmlToObject(xmlElasticLoadGeneratorConfiguration);
+            String xmlElasticLoadGeneratorConfiguration2 = elasticLoadGeneratorConfiguration2.objectToXML();
+            verifyXML(xmlElasticLoadGeneratorConfiguration, xmlElasticLoadGeneratorConfiguration2);
+            /* verified ElasticLoadGeneratorConfiguration */
+        //endregion
+
+        //region ElasticControllerConfiguration
+            /* verifying ElasticControllerConfiguration */
+            ElasticControllerConfiguration elasticControllerConfiguration = new ElasticControllerConfiguration(3, 2, 2);
+            String xmlElasticControllerConfiguration = elasticControllerConfiguration.objectToXML();
+            ElasticControllerConfiguration elasticControllerConfiguration2 = ElasticControllerConfiguration.xmlToObject(xmlElasticControllerConfiguration);
+            String xmlElasticControllerConfiguration2 = elasticControllerConfiguration2.objectToXML();
+            verifyXML(xmlElasticControllerConfiguration, xmlElasticControllerConfiguration2);
+            /* verified ElasticControllerConfiguration */
+        //endregion
+
+        //region ElasticLoadGeneratorConfiguratio
+        // ElasticLoadGeneratorConfiguration
+        //endregion
+
                 //Verifying Content
                 ArrayList<MonitorProfile> monotorProfiles = new ArrayList<MonitorProfile>();
                 monotorProfiles.add(new MonitorProfile(42));
@@ -951,7 +985,7 @@ public class TestTest {
                 groups.add(new Group(groupName1, vusers, script, hosts, rts, globalRTSFifth, commandLineName1, null));
                 groups.add(new Group(groupName2, vusers, script, hosts, rts, globalRTSFifth, commandLineName2, null));
 
-                Content content = new Content("controller", workloadType, lgDistribution, monotorProfiles, groups, scheduler, analysisTemplate, automaticTrending, monitorsOFW, sla, diagnostics, globalCommandLine, globalRTS);
+                Content content = new Content("controller", workloadType, lgDistribution, monotorProfiles, groups, scheduler, analysisTemplate, automaticTrending, monitorsOFW, sla, diagnostics, globalCommandLine, globalRTS, elasticLoadGeneratorConfiguration,  elasticControllerConfiguration);
                 String xmlContent = content.objectToXML(true);
                 Content content2 = Content.xmlToObject(xmlContent);
                 String xmlContent2 = content2.objectToXML(true);
