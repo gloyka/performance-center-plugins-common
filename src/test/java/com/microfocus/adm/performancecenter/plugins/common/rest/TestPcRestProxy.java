@@ -219,7 +219,7 @@ public class TestPcRestProxy {
     //endregion
 
     //region create test from yaml
-    @Test
+    //@Test
     public void verifyTestCreationOrUpdateViaXmlOrYaml() throws  PcException, Exception {
         try {
 
