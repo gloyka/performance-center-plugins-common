@@ -1,0 +1,165 @@
+##################################################
+controller: "Elastic"
+lg_elastic_configuration:
+  image_id: 1006
+#  memory_limit: 4
+#  cpu_limit: 3
+controller_elastic_configuration:
+  image_id: 1011
+#  memory_limit: 4
+#  cpu_limit: 3
+
+group:
+- #group_name: "JavaVuser_LR_Information_pacing_immediately_thinktime_ignore"
+  vusers: 5
+  script_path: "scripts\\javascripts\\JavaHTTP_BigXML"
+  command_line: "echo hello from JavaVuser_LR_Information_pacing_immediately_thinktime_ignore > c:\\hello_from_JavaVuser_LR_Information_pacing_immediately_thinktime_ignore.txt"
+  lg_name:
+  - "DOCKER1"
+  - "DOCKER2"
+  rts:
+    pacing:
+      number_of_iterations: 2
+      type: "immediately"
+    java_vm:
+      jdk_home: "C:\\Program Files\\Java\\jdk1.8.0_191"
+      java_vm_parameters: "java_vm_parameters"
+      enable_classloader_per_vuser: true
+      use_xboot: true
+      java_env_class_paths:
+      - "java_env_class_path1"
+      - "java_env_class_path2"
+    thinktime:
+      type: "ignore"
+
+- #group_name: "JavaHTTP_BigXML_pacing_fixed_delay_thinktime_replay"
+  vusers: 5
+  script_path: "scripts\\javascripts\\JavaHTTP_BigXML"
+  command_line: "echo hello from JavaHTTP_BigXML_pacing_fixed_delay_thinktime_replay > c:\\hello_from_JavaHTTP_BigXML_pacing_fixed_delay_thinktime_replay.txt"
+  lg_name:
+  - "DOCKER1"
+  - "DOCKER2"
+  rts:
+    pacing:
+      number_of_iterations: 2
+      type: "fixed delay"
+      delay: 10
+    java_vm:
+      jdk_home: "C:\\Program Files\\Java\\jdk1.8.0_191"
+      java_vm_parameters: "java_vm_parameters"
+      enable_classloader_per_vuser: true
+    thinktime:
+      type: "replay"
+      limit_seconds: 30
+
+- group_name: "JavaVuser_LR_Information_immediately_pacing_random_delay_thinktime_modify"
+  vusers: 5
+  script_path: "scripts\\javascripts\\JavaHTTP_BigXML"
+  command_line: "echo hello from JavaVuser_LR_Information_immediately_pacing_random_delay_thinktime_modify > c:\\hello_from_JavaVuser_LR_Information_immediately_pacing_random_delay_thinktime_modify.txt"
+  lg_name:
+  - "DOCKER1"
+  - "DOCKER2"
+  rts:
+    pacing:
+      number_of_iterations: 2
+      type: "random delay"
+      delay: 10
+      delay_random_range: 20
+    java_vm:
+      jdk_home: "C:\\Program Files\\Java\\jdk1.8.0_191"
+      java_vm_parameters: "java_vm_parameters"
+      enable_classloader_per_vuser: true
+      java_env_class_paths:
+      - "java_env_class_path1"
+      - "java_env_class_path2"
+    thinktime:
+      type: "modify"
+      limit_seconds: 30
+      multiply_factor: 2
+
+- group_name: "JavaHTTP_BigXML_pacing_fixed_interval_thinktime_random"
+  vusers: 5
+  #script_id: 48
+  script_path: "scripts\\javascripts\\JavaHTTP_BigXML"
+  command_line: "echo hello from JavaHTTP_BigXML_pacing_fixed_interval_thinktime_random > c:\\hello_from_JavaHTTP_BigXML_pacing_fixed_interval_thinktime_random.txt"
+  lg_name:
+  - "DOCKER1"
+  - "DOCKER2"
+  rts:
+    pacing:
+      number_of_iterations: 2
+      type: "fixed interval"
+      delay: 10
+    java_vm:
+      jdk_home: "C:\\Program Files\\Java\\jdk1.8.0_191"
+      java_vm_parameters: "java_vm_parameters"
+      enable_classloader_per_vuser: true
+      java_env_class_paths:
+      - "java_env_class_path1"
+      - "java_env_class_path2"
+    thinktime:
+      type: "random"
+      limit_seconds: 30
+      min_percentage: 2
+      max_percentage: 3
+
+- group_name: "JavaHTTP_BigXML_pacing_random_interval"
+  vusers: 5
+  script_path: "scripts\\javascripts\\JavaHTTP_BigXML"
+  command_line: "echo hello from JavaHTTP_BigXML_pacing_random_interval > c:\\hello_from_JavaHTTP_BigXML_pacing_random_interval.txt"
+  lg_name:
+  - "DOCKER1"
+  - "DOCKER2"
+  rts:
+    pacing:
+      number_of_iterations: 2
+      type: "random interval"
+      delay: 10
+      delay_random_range: 20
+    java_vm:
+      jdk_home: "C:\\Program Files\\Java\\jdk1.8.0_191"
+      java_vm_parameters: "java_vm_parameters"
+      enable_classloader_per_vuser: true
+      java_env_class_paths:
+      - "java_env_class_path1"
+      - "java_env_class_path2"
+
+- group_name: "Mtours_pacing_random_interval"
+  vusers: 5
+  script_path: "scripts\\Mtours"
+  command_line: "echo hello from Mtours_pacing_random_interval > c:\\hello_from_Mtours_pacing_random_interval.txt"
+  lg_name:
+  - "DOCKER1"
+  - "DOCKER2"
+  rts:
+    pacing:
+      number_of_iterations: 2
+      type: "random interval"
+      delay: 10
+      delay_random_range: 20
+    jmeter:
+      start_measurements: true
+      jmeter_home_path: "c:\\jmeter"
+      jmeter_min_port: 2001
+      jmeter_max_port: 3001
+      jmeter_additional_properties: "jmeter_additional_properties"
+- group_name: "Mtours_pacing_random_interval_Jmeter_default_port"
+  vusers: 5
+  script_path: "scripts\\Mtours"
+  command_line: "echo hello from Mtours_pacing_random_interval_Jmeter_default_port > c:\\hello_from_Mtours_pacing_random_interval_Jmeter_default_port.txt"
+  lg_name:
+  - "DOCKER1"
+  - "DOCKER2"
+  rts:
+    pacing:
+      number_of_iterations: 2
+      type: "random interval"
+      delay: 10
+      delay_random_range: 20
+    jmeter:
+      start_measurements: true
+
+scheduler:
+  rampup: 120
+  duration: 600
+##################################################
