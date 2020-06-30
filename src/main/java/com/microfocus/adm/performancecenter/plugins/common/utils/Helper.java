@@ -10,6 +10,10 @@ import com.thoughtworks.xstream.security.PrimitiveTypePermission;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common.stringToInteger;
 
 public class Helper {
     public static XStream xstreamPermissions (XStream xstream)
@@ -97,4 +101,61 @@ public class Helper {
         }
         return sb.toString();
     }
+
+    public static String[] GetLreServerAndTenant(String lreServer)
+    {
+
+        String delimiterSlash = "/";
+        String delimiterQuestionMark = "\\?";
+        String useDelimiter = delimiterSlash;
+        String[] strServerAndTenant = {lreServer, ""};
+
+        String theLreServer = lreServer;
+        //replace for common mistakes
+        if(lreServer != null && !lreServer.isEmpty()) {
+            theLreServer = lreServer.toLowerCase().replace("http://", "");
+            theLreServer = theLreServer.replace("https://", "");
+            theLreServer = theLreServer.replace("/lre", "");
+            theLreServer = theLreServer.replace("/site", "");
+            theLreServer = theLreServer.replace("/loadtest", "");
+            theLreServer = theLreServer.replace("/pcx", "");
+            theLreServer = theLreServer.replace("/adminx", "");
+            theLreServer = theLreServer.replace("/admin", "");
+            theLreServer = theLreServer.replace("/login", "");
+        }
+        if(theLreServer != null && !theLreServer.isEmpty()) {
+            if(lreServer.contains("/"))
+            {
+                useDelimiter = delimiterSlash;
+            }
+            else if(lreServer.contains("?"))
+            {
+                useDelimiter = delimiterQuestionMark;
+            }
+            String[] severTenantArray = theLreServer.split(useDelimiter);
+            if(severTenantArray.length > 0) {
+                strServerAndTenant[0] = severTenantArray[0];
+                if(severTenantArray.length > 1) {
+                    if (useDelimiter.equals(delimiterQuestionMark)) {
+                        strServerAndTenant[1] = delimiterQuestionMark + severTenantArray[1];
+                    } else {
+                        strServerAndTenant[1] = severTenantArray[1];
+                    }
+                }
+            }
+        }
+        return strServerAndTenant;
+    }
+
+    public static int extractTestIdFromString(String value) {
+        if(value != null && !value.isEmpty()) {
+            Pattern pattern = Pattern.compile("ID:\'([^\']*)\'");
+            Matcher matcher = pattern.matcher(value);
+            while (matcher.find()) {
+                return stringToInteger(matcher.group(1));
+            }
+        }
+        return 0;
+    }
+
 }

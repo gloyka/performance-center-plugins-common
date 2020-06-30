@@ -15,7 +15,6 @@
  */
 package com.microfocus.adm.performancecenter.plugins.common.rest;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.*;
@@ -52,23 +51,16 @@ import org.apache.http.impl.conn.SchemeRegistryFactory;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.xml.sax.SAXException;
-
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.URLEncoder;
-import java.rmi.server.ExportException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common.stringToInteger;
 import static org.apache.commons.httpclient.HttpStatus.*;
 
 public class PcRestProxy {
 
-    //region implemented
     protected static final String        BASE_PC_API_URL                = "%s://%s/LoadTest/rest";
     protected static final String        BASE_PC_API_AUTHENTICATION_URL = BASE_PC_API_URL + "/authentication-point";
     protected static final String        AUTHENTICATION_LOGIN_URL       = BASE_PC_API_AUTHENTICATION_URL + "/authenticate";
@@ -85,11 +77,10 @@ public class PcRestProxy {
     protected static final String        CONTENT_TYPE_XML               = "application/xml";
     protected static final String        SCRIPTS_RESOURCE_NAME          = "Scripts";
     protected static final String        TESTPLAN_RESOURCE_NAME          = "testplan";
+    protected static final List<Integer> validStatusCodes = Arrays.asList(SC_OK, SC_CREATED, SC_ACCEPTED, SC_NO_CONTENT);
+
     public static final String           PC_API_XMLNS                   = "http://www.hp.com/PC/REST/API";
 
-	
-    protected static final List<Integer> validStatusCodes = Arrays.asList(SC_OK, SC_CREATED, SC_ACCEPTED, SC_NO_CONTENT);
-	
 	private String baseURL;
     private String pcServer;
 	private String domain;
@@ -100,16 +91,15 @@ public class PcRestProxy {
 	private int proxyPort;
     private String proxyUser;
     private String proxyPassword;
-
 	private DefaultHttpClient client;
     private HttpContext context;
     private CookieStore cookieStore;
-  //  private PrintStream logger;
+    private String tenantSuffix;
 
     public PcRestProxy(String webProtocolName, String pcServerName, String almDomain, String almProject, String proxyOutURL, String proxyUser, String proxyPassword) throws PcException {
-
-//        logger = mainLogger;
-    	pcServer = pcServerName;
+        String[] lreServerAndTenant = Helper.GetLreServerAndTenant(pcServerName);
+        pcServer = lreServerAndTenant[0];
+        tenantSuffix = lreServerAndTenant[1];
     	domain = almDomain;
     	project = almProject;
     	webProtocol = webProtocolName;
@@ -145,7 +135,6 @@ public class PcRestProxy {
 	}
 
     private void getProxyDataFromURL(String proxyURL) throws PcException {
-
         try {
             String mainStr = "";
             if (proxyURL != null && !proxyURL.isEmpty()){
@@ -160,40 +149,31 @@ public class PcRestProxy {
                     proxyHostName = mainStr;
                     proxyPort = 80;
                 }
-
-
-
             }
         } catch (Exception ex) {
             throw new PcException("Error: Validating Proxy URL: " + ex + " Please add a proxy URL in this pattern: http(s)://<host>:<port> or leave blank");
         }
-
-
-
     }
 
-    
     public boolean authenticate(String userName, String password) throws PcException, ClientProtocolException, IOException {
         String userNameAndPassword = userName + ":" + password;
         String encodedCredentials = Base64Encoder.encode(userNameAndPassword.getBytes());
-        HttpGet authRequest = new HttpGet(String.format(AUTHENTICATION_LOGIN_URL,webProtocol, pcServer));
+        HttpGet authRequest = new HttpGet(String.format(AUTHENTICATION_LOGIN_URL + tenantSuffix, webProtocol, pcServer));
         authRequest.addHeader("Authorization", String.format("Basic %s", encodedCredentials));
         executeRequest(authRequest);
         return true;
     }
 
-    public PcRunResponse startRun(int testId, int testInstaceId, TimeslotDuration timeslotDuration,
+    public PcRunResponse startRun(int testId, int testInstanceId, TimeslotDuration timeslotDuration,
                                   String postRunAction, boolean vudsMode) throws PcException, ClientProtocolException, IOException {
-     //   logger.println("Starting run");
         HttpPost startRunRequest = new HttpPost(String.format(baseURL + "/%s", RUNS_RESOURCE_NAME));
         startRunRequest.addHeader(RESTConstants.CONTENT_TYPE, CONTENT_TYPE_XML);
-        PcRunRequest runRequestData = new PcRunRequest(testId, testInstaceId, 0, timeslotDuration, postRunAction, vudsMode);
+        PcRunRequest runRequestData = new PcRunRequest(testId, testInstanceId, 0, timeslotDuration, postRunAction, vudsMode);
         startRunRequest.setEntity(new StringEntity(runRequestData.objectToXML(), org.apache.http.entity.ContentType.APPLICATION_XML));
         HttpResponse response = executeRequest(startRunRequest);
         String startRunResponse = IOUtils.toString(response.getEntity().getContent());
         return PcRunResponse.xmlToObject(startRunResponse);
     }
-
 
     public int createTestInstance(int testId, int testSetId) throws PcException, ClientProtocolException, IOException {
         HttpPost createTestInstanceRequest = new HttpPost(String.format(baseURL + "/%s", TEST_INSTANCES_NAME));
@@ -225,7 +205,6 @@ public class PcRestProxy {
         HttpResponse response = executeRequest(getFirtstTestInstanceByTestID);
         String testInstances = IOUtils.toString(response.getEntity().getContent());
         return PcTestInstances.xmlToObject(testInstances);
-
     }
 
     public boolean stopRun(int runId, String stopMode) throws PcException, ClientProtocolException, IOException {
@@ -274,7 +253,6 @@ public class PcRestProxy {
         return true;
     }
 
-
     public TrendReportTransactionDataRoot getTrendReportByXML (String trendReportId, int runId) throws PcException, ClientProtocolException, IOException {
         String getTrendReportByXMLUrl = String.format(baseURL + "/%s/%s/%s", TREND_REPORT_RESOURCE_NAME, trendReportId,runId);
         HttpGet getTrendReportByXMLRequest = new HttpGet(getTrendReportByXMLUrl);
@@ -285,7 +263,6 @@ public class PcRestProxy {
 
 
     public boolean updateTrendReport(String trendReportId, TrendReportRequest trendReportRequest) throws PcException, IOException {
-
         String updateTrendReportUrl = String.format(baseURL + "/%s/%s", TREND_REPORT_RESOURCE_NAME, trendReportId);
         HttpPost updateTrendReportRequest = new HttpPost(updateTrendReportUrl);
         updateTrendReportRequest.addHeader(HttpHeaders.CONTENT_TYPE, CONTENT_TYPE_XML);
@@ -294,19 +271,13 @@ public class PcRestProxy {
         return true;
     }
 
-
-
     public InputStream getTrendingPDF(String trendReportId) throws IOException, PcException {
-
         String getTrendReportUrl = String.format(baseURL + "/%s/%s/%s", TREND_REPORT_RESOURCE_NAME, trendReportId,TREND_REPORT_RESOURCE_SUFFIX);
         HttpGet getTrendReportRequest = new HttpGet(getTrendReportUrl);
         executeRequest(getTrendReportRequest);
-
         HttpResponse response = executeRequest(getTrendReportRequest);
         InputStream in = response.getEntity().getContent();
-
         return in;
-
     }
 
     public ArrayList<PcTrendedRun> getTrendReportMetaData (String trendReportId) throws PcException, ClientProtocolException, IOException {
@@ -325,7 +296,7 @@ public class PcRestProxy {
         String runEventLog = IOUtils.toString(response.getEntity().getContent());
         return PcRunEventLog.xmlToObject(runEventLog);
     }
-    
+
     public boolean logout() throws PcException, ClientProtocolException, IOException {
         HttpGet logoutRequest = new HttpGet(String.format(AUTHENTICATION_LOGOUT_URL, webProtocol,pcServer));
         executeRequest(logoutRequest);
@@ -333,8 +304,7 @@ public class PcRestProxy {
     }
 
     protected HttpResponse executeRequest(HttpRequestBase request) throws PcException, IOException {
-
-        HttpResponse response = client.execute(request,context);
+        HttpResponse response = client.execute(request, context);
 			if (!isOk(response)){
 				String message;
 				try {
@@ -372,7 +342,6 @@ public class PcRestProxy {
             }
         }
         throw new PcException(String.format("No script named '%s' was found under this folder path '%s' within the PC project.", scriptName, testFolderPath));
-//        return null;
     }
 
 
@@ -442,7 +411,6 @@ public class PcRestProxy {
     }
 
     public ArrayList<PcTestPlanFolder> createTestPlanFolders(String[] paths) throws IOException,PcException{
-
         ArrayList<String[]> pathFromSubjectAndFolders = Helper.getArrayListOfStringArray(paths);
         PcTestPlanFolders pcTestPlanFolders = getTestPlanFolders();
         ArrayList<String[]> pathFromSubjectAndFoldersFiltered = Helper.getCleanAndNonExistingAndSortedArrayList(pathFromSubjectAndFolders, pcTestPlanFolders);
@@ -461,8 +429,6 @@ public class PcRestProxy {
         }
         return createdPcTestPlanFolders;
     }
-    //endregion
-
 
     public Test createOrUpdateTestFromYamlTest(String testString ) throws IOException, PcException {
 
@@ -474,7 +440,6 @@ public class PcRestProxy {
 
         Test createdOrUpdatedTest = null;
         //region requirements
-
         /*
         Required Test Functionality
 •	Should be supported
@@ -504,7 +469,6 @@ public class PcRestProxy {
     o	SimplifiedScheduler
         	Ramp up time (Start Vusers section). The user should specify the time. PC will calculate internally how to spread it. meaning how many Vusers every time
         	Duration
-
 •	Should not be supported for the first version
     o	Test Options should not be exposed in the XML. The test creation should set default values.
     o	Trend settings. The test creation should set it to disable (default for new tests in PC)
@@ -529,13 +493,9 @@ public class PcRestProxy {
     o	Monitors
     o	Topology
     o	Diagnostics
-
-
         */
         //endregion
-
         ConvertContentStringToTest convertContentStringToTest = new ConvertContentStringToTest(this, testName, testFolderPath, testOrContent).invoke();
-
         //creating or updating test
         try {
             createdOrUpdatedTest = createOrUpdateTest(convertContentStringToTest.getTestName(), convertContentStringToTest.getTestFolderPathWithSubject(), convertContentStringToTest.getContent());
@@ -547,17 +507,14 @@ public class PcRestProxy {
 
     public static Content getContentFromXmlOrYamlString(String xmlOrYamlTest) {
         Content content = null;
-
         try {
             Test test = Test.xmlToObject(xmlOrYamlTest);
             content = test.getContent();
         } catch (Exception ex) {
             content = Content.xmlToObject(xmlOrYamlTest);
         }
-
         return content;
     }
-
 
     public Test createOrUpdateTest(String testName, String testFolderPath, String xml) throws IOException, PcException  {
         String testFolderPathWithCorrectSeparatorsAndSubject = testFolderPath.replace("/","\\");
@@ -567,7 +524,6 @@ public class PcRestProxy {
         Test test = createOrUpdateTest(testName, testFolderPathWithCorrectSeparatorsAndSubject, content);
         return test;
     }
-
 
     public Test createOrUpdateTest(String testName, String testFolderPath, Content content ) throws IOException, PcException  {
         //trying to create Test Plan folder before creating the test
@@ -630,14 +586,7 @@ public class PcRestProxy {
     }
 
     public int extractTestIdFromString(String value) {
-        if(value != null && !value.isEmpty()) {
-            Pattern pattern = Pattern.compile("ID:\'([^\']*)\'");
-            Matcher matcher = pattern.matcher(value);
-            while (matcher.find()) {
-                return stringToInteger(matcher.group(1));
-            }
-        }
-        return 0;
+        return Helper.extractTestIdFromString(value);
     }
 
     public Content readYaml(String yamlContent) throws IOException {
@@ -657,7 +606,6 @@ public class PcRestProxy {
     }
 
     public static SimplifiedContent xmlOrYamlStringToSimplifiedContent(String strSimplifiedContent) throws IOException  {
-
         if(strSimplifiedContent == null || strSimplifiedContent.isEmpty())
             return null;
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
@@ -672,11 +620,9 @@ public class PcRestProxy {
             }
         }
         return simplifiedContent;
-
     }
 
     public static SimplifiedTest xmlOrYamlStringToSimplifiedTest(String strSimplifiedTest) throws IOException {
-
         if(strSimplifiedTest == null || strSimplifiedTest.isEmpty())
             return null;
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
@@ -692,5 +638,6 @@ public class PcRestProxy {
         }
         return simplifiedTest;
     }
+    //endregion
 
 }
