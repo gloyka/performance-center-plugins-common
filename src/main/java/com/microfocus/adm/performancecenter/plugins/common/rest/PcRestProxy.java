@@ -638,6 +638,13 @@ public class PcRestProxy {
         }
         return simplifiedTest;
     }
-    //endregion
 
+    public String GetPcServer () {
+        return pcServer;
+    }
+
+    public String GetTenant() {
+        return  tenantSuffix;
+    }
+    //endregion
 }
