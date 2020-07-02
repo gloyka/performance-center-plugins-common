@@ -124,11 +124,11 @@ public class Helper {
             theLreServer = theLreServer.replace("/login", "");
         }
         if(theLreServer != null && !theLreServer.isEmpty()) {
-            if(lreServer.contains("/"))
+            if(theLreServer.contains("/"))
             {
                 useDelimiter = delimiterSlash;
             }
-            else if(lreServer.contains("?"))
+            else if(theLreServer.contains("?"))
             {
                 useDelimiter = delimiterQuestionMark;
             }
