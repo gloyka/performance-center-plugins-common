@@ -16,6 +16,7 @@
 package com.microfocus.adm.performancecenter.plugins.common.pcentities;
 
 import com.microfocus.adm.performancecenter.plugins.common.rest.PcRestProxy;
+import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 
 public class PcRunRequest {
@@ -55,11 +56,12 @@ public class PcRunRequest {
 	public PcRunRequest() {}
 
 	public String objectToXML() {
-		XStream obj = new XStream();
-		obj.alias("Run", PcRunRequest.class);
-		obj.alias("TimeslotDuration", TimeslotDuration.class);
-		obj.useAttributeFor(PcRunRequest.class, "xmlns");
-		return obj.toXML(this);
+		XStream xstream = new XStream();
+		xstream = Helper.xstreamPermissions(xstream);
+		xstream.alias("Run", PcRunRequest.class);
+		xstream.alias("TimeslotDuration", TimeslotDuration.class);
+		xstream.useAttributeFor(PcRunRequest.class, "xmlns");
+		return xstream.toXML(this);
 	}
 	
 	public int getTestID() {

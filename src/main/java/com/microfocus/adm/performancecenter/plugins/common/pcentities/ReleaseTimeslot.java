@@ -16,6 +16,7 @@
 package com.microfocus.adm.performancecenter.plugins.common.pcentities;
 
 import com.microfocus.adm.performancecenter.plugins.common.rest.PcRestProxy;
+import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 
 public class ReleaseTimeslot {
@@ -33,10 +34,11 @@ public class ReleaseTimeslot {
 	}
 
 	public String objectToXML() {
-		XStream obj = new XStream();
-		obj.alias("PostRunActions", com.microfocus.adm.performancecenter.plugins.common.pcentities.ReleaseTimeslot.class);
-		obj.useAttributeFor(com.microfocus.adm.performancecenter.plugins.common.pcentities.ReleaseTimeslot.class, "xmlns");
-		return obj.toXML(this);
+		XStream xstream = new XStream();
+		xstream = Helper.xstreamPermissions(xstream);
+		xstream.alias("PostRunActions", com.microfocus.adm.performancecenter.plugins.common.pcentities.ReleaseTimeslot.class);
+		xstream.useAttributeFor(com.microfocus.adm.performancecenter.plugins.common.pcentities.ReleaseTimeslot.class, "xmlns");
+		return xstream.toXML(this);
 	}
 
 	public boolean isReleaseTimeslot() {
