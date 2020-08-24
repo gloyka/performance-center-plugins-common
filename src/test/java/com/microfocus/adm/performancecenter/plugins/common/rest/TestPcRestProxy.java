@@ -53,7 +53,7 @@ public class TestPcRestProxy {
         try {
             setUp();
             testLogin();
-            getTestInstancesByTestId(9);
+            getTestInstancesByTestId(PcRestProxyBase.TEST_INSTANCE_ID);
             getTestPlanFolders();
             PcTestPlanFolder pcTestPlanFolder = CreateTestPlanFolder("Subject\\coucou", "scripts2");
             verifyTestPlanFolderExist("Subject\\1coucou1");

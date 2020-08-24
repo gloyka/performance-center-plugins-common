@@ -7,13 +7,13 @@ import java.io.PrintStream;
 public interface PcRestProxyBase {
 
     public static final String SERVER_AND_PORT = "jenkins.server:8082";
-    public static final String LRE_SERVER_NAME_WITH_TENANT = "http://mylreserver/LRE/?tenant=eef598d6-c3d1-475e-a825-45abf39bd61a";
+    public static final String LRE_SERVER_NAME_WITH_TENANT = "http://mylreserver/LRE/?tenant=fa128c06-5436-413d-9cfa-9f04bb738df3";
     public static final String ALM_USER_NAME = "sa";
     public static final String ALM_PASSWORD = "blabla";
     public static final String ALM_DOMAIN = "DEFAULT";
-    public static final String ALM_PROJECT = "LRE_JENKINS1";
-    public static final String TEST_ID = "176";
-    public static final String TEST_INSTANCE_ID = "8";
+    public static final String ALM_PROJECT = "AUTOMATION_PROJECT";
+    public static final String TEST_ID = "186";
+    public static final int TEST_INSTANCE_ID = 67;
     public static final String TIMESLOT_DURATION_HOURS = "0";
     public static final String TIMESLOT_DURATION_MINUTES = "34";
     public static final String TIMESLOT_ID = "56";
