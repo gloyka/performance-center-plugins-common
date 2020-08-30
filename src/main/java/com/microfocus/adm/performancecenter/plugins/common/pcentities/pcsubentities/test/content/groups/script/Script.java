@@ -3,16 +3,11 @@ package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubenti
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Setter;
-import lombok.Getter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="Script")
 public class Script
@@ -65,5 +60,21 @@ public class Script
         xstream.setClassLoader(Script.class.getClassLoader());
         xstream.setMode(XStream.NO_REFERENCES);
         return (Script)xstream.fromXML(xml);
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public String getProtocolType() {
+        return ProtocolType;
+    }
+
+    public void setProtocolType(String protocolType) {
+        ProtocolType = protocolType;
     }
 }

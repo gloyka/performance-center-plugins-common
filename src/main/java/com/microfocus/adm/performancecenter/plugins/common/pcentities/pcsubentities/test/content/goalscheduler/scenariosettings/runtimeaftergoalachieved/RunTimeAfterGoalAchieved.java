@@ -4,16 +4,11 @@ package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubenti
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Setter;
-import lombok.Getter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="RunTimeAfterGoalAchieved")
 public class RunTimeAfterGoalAchieved {
@@ -57,6 +52,13 @@ public class RunTimeAfterGoalAchieved {
         return (RunTimeAfterGoalAchieved)xstream.fromXML(xml);
     }
 
+    public String getMinutes() {
+        return Minutes;
+    }
+
+    public void setMinutes(String minutes) {
+        Minutes = minutes;
+    }
 }
 
 

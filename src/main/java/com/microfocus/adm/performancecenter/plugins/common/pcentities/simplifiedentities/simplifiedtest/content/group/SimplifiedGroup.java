@@ -8,11 +8,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.Dom4JDriver;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 public class SimplifiedGroup {
 
     //default name will be used if not supplied
@@ -110,5 +106,69 @@ public class SimplifiedGroup {
         xstream.setClassLoader(SimplifiedGroup.class.getClassLoader());
         xstream.setMode(XStream.NO_REFERENCES);
         return (SimplifiedGroup)xstream.fromXML(xml);
+    }
+
+    public String getGroup_name() {
+        return group_name;
+    }
+
+    public void setGroup_name(String group_name) {
+        this.group_name = group_name;
+    }
+
+    public int getVusers() {
+        return vusers;
+    }
+
+    public void setVusers(int vusers) {
+        this.vusers = vusers;
+    }
+
+    public int getScript_id() {
+        return script_id;
+    }
+
+    public void setScript_id(int script_id) {
+        this.script_id = script_id;
+    }
+
+    public String getScript_path() {
+        return script_path;
+    }
+
+    public void setScript_path(String script_path) {
+        this.script_path = script_path;
+    }
+
+    public String[] getLg_name() {
+        return lg_name;
+    }
+
+    public void setLg_name(String[] lg_name) {
+        this.lg_name = lg_name;
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
+    }
+
+    public String getCommand_line() {
+        return command_line;
+    }
+
+    public void setCommand_line(String command_line) {
+        this.command_line = command_line;
+    }
+
+    public SimplifiedRTS getRts() {
+        return rts;
+    }
+
+    public void setRts(SimplifiedRTS rts) {
+        this.rts = rts;
     }
 }

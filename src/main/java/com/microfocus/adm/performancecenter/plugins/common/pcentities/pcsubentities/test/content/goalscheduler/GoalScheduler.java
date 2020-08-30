@@ -4,20 +4,14 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.goalscheduler.goalvirtualusers.GoalVirtualUsers;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.goalscheduler.goalhitspersecond.GoalHitsPerSecond;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.goalscheduler.goaltransactionspersecond.GoalTransactionsPerSecond;
-
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.enums.GoalTypeValues;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="GoalScheduler")
 public class GoalScheduler {
@@ -122,4 +116,55 @@ public class GoalScheduler {
         return (GoalScheduler)xstream.fromXML(xml);
     }
 
+    public String getGoalProfileName() {
+        return GoalProfileName;
+    }
+
+    public void setGoalProfileName(String goalProfileName) {
+        GoalProfileName = goalProfileName;
+    }
+
+    public String getGoalType() {
+        return GoalType;
+    }
+
+    public GoalHitsPerSecond getGoalHitsPerSecond() {
+        return GoalHitsPerSecond;
+    }
+
+    public void setGoalHitsPerSecond(GoalHitsPerSecond goalHitsPerSecond) {
+        GoalHitsPerSecond = goalHitsPerSecond;
+    }
+
+    public GoalTransactionsPerSecond getGoalTransactionsPerSecond() {
+        return GoalTransactionsPerSecond;
+    }
+
+    public void setGoalTransactionsPerSecond(GoalTransactionsPerSecond goalTransactionsPerSecond) {
+        GoalTransactionsPerSecond = goalTransactionsPerSecond;
+    }
+
+    public GoalVirtualUsers getGoalVirtualUsers() {
+        return GoalVirtualUsers;
+    }
+
+    public void setGoalVirtualUsers(GoalVirtualUsers goalVirtualUsers) {
+        GoalVirtualUsers = goalVirtualUsers;
+    }
+
+    public boolean isDoNotChangeScriptThinkTime() {
+        return DoNotChangeScriptThinkTime;
+    }
+
+    public void setDoNotChangeScriptThinkTime(boolean doNotChangeScriptThinkTime) {
+        DoNotChangeScriptThinkTime = doNotChangeScriptThinkTime;
+    }
+
+    public ScenarioSettings getScenarioSettings() {
+        return ScenarioSettings;
+    }
+
+    public void setScenarioSettings(ScenarioSettings scenarioSettings) {
+        ScenarioSettings = scenarioSettings;
+    }
 }

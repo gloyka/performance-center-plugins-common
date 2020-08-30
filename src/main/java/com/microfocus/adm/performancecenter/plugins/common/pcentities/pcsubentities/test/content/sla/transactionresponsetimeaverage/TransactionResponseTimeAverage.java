@@ -7,17 +7,12 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.enums.LoadCriterionValues;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Setter;
-import lombok.Getter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="TransactionResponseTimeAverage")
 public class TransactionResponseTimeAverage
@@ -93,4 +88,23 @@ public class TransactionResponseTimeAverage
         return (TransactionResponseTimeAverage)xstream.fromXML(xml);
     }
 
+    public String getLoadCriterion() {
+        return LoadCriterion;
+    }
+
+    public LoadValues getLoadValues() {
+        return LoadValues;
+    }
+
+    public void setLoadValues(LoadValues loadValues) {
+        LoadValues = loadValues;
+    }
+
+    public ArrayList<Transaction> getTransactions() {
+        return Transactions;
+    }
+
+    public void setTransactions(ArrayList<Transaction> transactions) {
+        Transactions = transactions;
+    }
 }

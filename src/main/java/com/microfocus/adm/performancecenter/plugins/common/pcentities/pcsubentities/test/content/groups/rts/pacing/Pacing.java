@@ -5,16 +5,11 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Setter;
-import lombok.Getter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="Pacing")
 public class Pacing
@@ -69,4 +64,19 @@ public class Pacing
         return (Pacing)xstream.fromXML(xml);
     }
 
+    public String getNumberOfIterations() {
+        return NumberOfIterations;
+    }
+
+    public void setNumberOfIterations(String numberOfIterations) {
+        NumberOfIterations = numberOfIterations;
+    }
+
+    public StartNewIteration getStartNewIteration() {
+        return StartNewIteration;
+    }
+
+    public void setStartNewIteration(StartNewIteration startNewIteration) {
+        StartNewIteration = startNewIteration;
+    }
 }

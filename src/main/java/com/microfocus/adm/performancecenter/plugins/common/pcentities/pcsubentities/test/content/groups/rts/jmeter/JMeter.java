@@ -3,16 +3,11 @@ package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubenti
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="JMeter")
 public class JMeter {
@@ -119,4 +114,59 @@ public class JMeter {
         return (JMeter)xstream.fromXML(xml);
     }
 
+    public boolean isStartMeasurements() {
+        return StartMeasurements;
+    }
+
+    public void setStartMeasurements(boolean startMeasurements) {
+        StartMeasurements = startMeasurements;
+    }
+
+    public String getJMeterHomePath() {
+        return JMeterHomePath;
+    }
+
+    public void setJMeterHomePath(String JMeterHomePath) {
+        this.JMeterHomePath = JMeterHomePath;
+    }
+
+    public boolean isJMeterUseDefaultPort() {
+        return JMeterUseDefaultPort;
+    }
+
+    public void setJMeterUseDefaultPort(boolean JMeterUseDefaultPort) {
+        this.JMeterUseDefaultPort = JMeterUseDefaultPort;
+    }
+
+    public String getJMeterMinPort() {
+        return JMeterMinPort;
+    }
+
+    public void setJMeterMinPort(String JMeterMinPort) {
+        this.JMeterMinPort = JMeterMinPort;
+    }
+
+    public String getJMeterMaxPort() {
+        return JMeterMaxPort;
+    }
+
+    public void setJMeterMaxPort(String JMeterMaxPort) {
+        this.JMeterMaxPort = JMeterMaxPort;
+    }
+
+    public boolean isJMeterDistributeMode() {
+        return JMeterDistributeMode;
+    }
+
+    public void setJMeterDistributeMode(boolean JMeterDistributeMode) {
+        this.JMeterDistributeMode = JMeterDistributeMode;
+    }
+
+    public String getJMeterAdditionalProperties() {
+        return JMeterAdditionalProperties;
+    }
+
+    public void setJMeterAdditionalProperties(String JMeterAdditionalProperties) {
+        this.JMeterAdditionalProperties = JMeterAdditionalProperties;
+    }
 }

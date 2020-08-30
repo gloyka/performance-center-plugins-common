@@ -8,13 +8,8 @@ import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.List;
 
-@Getter
-@Setter
 //@JsonIgnoreProperties
 public class SimplifiedContent {
 
@@ -104,5 +99,53 @@ public class SimplifiedContent {
         xstream.setClassLoader(SimplifiedContent.class.getClassLoader());
         xstream.setMode(XStream.NO_REFERENCES);
         return (SimplifiedContent)xstream.fromXML(xml);
+    }
+
+    public String getController() {
+        return controller;
+    }
+
+    public void setController(String controller) {
+        this.controller = controller;
+    }
+
+    public int getLg_amount() {
+        return lg_amount;
+    }
+
+    public void setLg_amount(int lg_amount) {
+        this.lg_amount = lg_amount;
+    }
+
+    public List<SimplifiedGroup> getGroup() {
+        return group;
+    }
+
+    public void setGroup(List<SimplifiedGroup> group) {
+        this.group = group;
+    }
+
+    public SimplifiedScheduler getScheduler() {
+        return scheduler;
+    }
+
+    public void setScheduler(SimplifiedScheduler scheduler) {
+        this.scheduler = scheduler;
+    }
+
+    public SimplifiedElasticConfiguration getLg_elastic_configuration() {
+        return lg_elastic_configuration;
+    }
+
+    public void setLg_elastic_configuration(SimplifiedElasticConfiguration lg_elastic_configuration) {
+        this.lg_elastic_configuration = lg_elastic_configuration;
+    }
+
+    public SimplifiedElasticConfiguration getController_elastic_configuration() {
+        return controller_elastic_configuration;
+    }
+
+    public void setController_elastic_configuration(SimplifiedElasticConfiguration controller_elastic_configuration) {
+        this.controller_elastic_configuration = controller_elastic_configuration;
     }
 }

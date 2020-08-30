@@ -5,16 +5,10 @@ import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import lombok.Setter;
-import lombok.Getter;
-
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.enums.StartNewIterationTypeValues;
 import javax.xml.bind.annotation.*;
-
 import static com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common.integerToString;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="StartNewIteration")
 public class StartNewIteration
@@ -143,4 +137,31 @@ public class StartNewIteration
         return (StartNewIteration)xstream.fromXML(xml);
     }
 
+    public String getType() {
+        return Type;
+    }
+
+    public String getDelayOfSeconds() {
+        return DelayOfSeconds;
+    }
+
+    public void setDelayOfSeconds(String delayOfSeconds) {
+        DelayOfSeconds = delayOfSeconds;
+    }
+
+    public String getDelayAtRangeOfSeconds() {
+        return DelayAtRangeOfSeconds;
+    }
+
+    public void setDelayAtRangeOfSeconds(String delayAtRangeOfSeconds) {
+        DelayAtRangeOfSeconds = delayAtRangeOfSeconds;
+    }
+
+    public String getDelayAtRangeToSeconds() {
+        return DelayAtRangeToSeconds;
+    }
+
+    public void setDelayAtRangeToSeconds(String delayAtRangeToSeconds) {
+        DelayAtRangeToSeconds = delayAtRangeToSeconds;
+    }
 }

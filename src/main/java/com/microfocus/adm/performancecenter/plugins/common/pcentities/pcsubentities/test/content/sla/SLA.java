@@ -11,19 +11,13 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.errorspersecond.ErrorsPerSecond;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.totalhits.TotalHits;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.transactionresponsetimepercentile.TransactionResponseTimePercentile;
-
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Setter;
-import lombok.Getter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="SLA")
 public class SLA
@@ -110,4 +104,59 @@ public class SLA
         return (SLA)xstream.fromXML(xml);
     }
 
+    public AverageThroughput getAverageThroughput() {
+        return AverageThroughput;
+    }
+
+    public void setAverageThroughput(AverageThroughput averageThroughput) {
+        AverageThroughput = averageThroughput;
+    }
+
+    public TransactionResponseTimeAverage getTransactionResponseTimeAverage() {
+        return TransactionResponseTimeAverage;
+    }
+
+    public void setTransactionResponseTimeAverage(TransactionResponseTimeAverage transactionResponseTimeAverage) {
+        TransactionResponseTimeAverage = transactionResponseTimeAverage;
+    }
+
+    public TransactionResponseTimePercentile getTransactionResponseTimePercentile() {
+        return TransactionResponseTimePercentile;
+    }
+
+    public void setTransactionResponseTimePercentile(TransactionResponseTimePercentile transactionResponseTimePercentile) {
+        TransactionResponseTimePercentile = transactionResponseTimePercentile;
+    }
+
+    public AverageHitsPerSecond getAverageHitsPerSecond() {
+        return AverageHitsPerSecond;
+    }
+
+    public void setAverageHitsPerSecond(AverageHitsPerSecond averageHitsPerSecond) {
+        AverageHitsPerSecond = averageHitsPerSecond;
+    }
+
+    public TotalThroughput getTotalThroughput() {
+        return TotalThroughput;
+    }
+
+    public void setTotalThroughput(TotalThroughput totalThroughput) {
+        TotalThroughput = totalThroughput;
+    }
+
+    public ErrorsPerSecond getErrorsPerSecond() {
+        return ErrorsPerSecond;
+    }
+
+    public void setErrorsPerSecond(ErrorsPerSecond errorsPerSecond) {
+        ErrorsPerSecond = errorsPerSecond;
+    }
+
+    public TotalHits getTotalHits() {
+        return TotalHits;
+    }
+
+    public void setTotalHits(TotalHits totalHits) {
+        TotalHits = totalHits;
+    }
 }

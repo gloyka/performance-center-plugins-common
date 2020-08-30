@@ -1,13 +1,9 @@
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.elasticconfiguration;
 
-
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
+
 public class SimplifiedElasticConfiguration {
 
     private int image_id;
@@ -54,4 +50,27 @@ public class SimplifiedElasticConfiguration {
         return (SimplifiedElasticConfiguration)xstream.fromXML(xml);
     }
 
+    public int getImage_id() {
+        return image_id;
+    }
+
+    public void setImage_id(int image_id) {
+        this.image_id = image_id;
+    }
+
+    public int getMemory_limit() {
+        return memory_limit;
+    }
+
+    public void setMemory_limit(int memory_limit) {
+        this.memory_limit = memory_limit;
+    }
+
+    public int getCpu_limit() {
+        return cpu_limit;
+    }
+
+    public void setCpu_limit(int cpu_limit) {
+        this.cpu_limit = cpu_limit;
+    }
 }

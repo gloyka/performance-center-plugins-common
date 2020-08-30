@@ -1,19 +1,13 @@
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.scheduler.actions.common;
 
-
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="WaitAfterInit")
 public class WaitAfterInit {
@@ -91,5 +85,37 @@ public class WaitAfterInit {
         xstream.setClassLoader(WaitAfterInit.class.getClassLoader());
         xstream.setMode(XStream.NO_REFERENCES);
         return (WaitAfterInit)xstream.fromXML(xml);
+    }
+
+    public String getDays() {
+        return Days;
+    }
+
+    public void setDays(String days) {
+        Days = days;
+    }
+
+    public String getHours() {
+        return Hours;
+    }
+
+    public void setHours(String hours) {
+        Hours = hours;
+    }
+
+    public String getMinutes() {
+        return Minutes;
+    }
+
+    public void setMinutes(String minutes) {
+        Minutes = minutes;
+    }
+
+    public String getSeconds() {
+        return Seconds;
+    }
+
+    public void setSeconds(String seconds) {
+        Seconds = seconds;
     }
 }

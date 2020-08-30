@@ -4,17 +4,12 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.common.loadvalues.betweens.Between;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Setter;
-import lombok.Getter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="LoadValues")
 public class LoadValues
@@ -82,6 +77,27 @@ public class LoadValues
     }
 
 
+    public String getLessThan() {
+        return LessThan;
+    }
 
+    public void setLessThan(String lessThan) {
+        LessThan = lessThan;
+    }
 
+    public ArrayList<Between> getBetweens() {
+        return Betweens;
+    }
+
+    public void setBetweens(ArrayList<Between> betweens) {
+        Betweens = betweens;
+    }
+
+    public String getGreaterThanOrEqual() {
+        return GreaterThanOrEqual;
+    }
+
+    public void setGreaterThanOrEqual(String greaterThanOrEqual) {
+        GreaterThanOrEqual = greaterThanOrEqual;
+    }
 }

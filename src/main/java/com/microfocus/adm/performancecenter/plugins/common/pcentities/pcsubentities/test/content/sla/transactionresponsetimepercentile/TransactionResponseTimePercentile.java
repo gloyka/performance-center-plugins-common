@@ -8,17 +8,12 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.common.transactions.Transaction;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Setter;
-import lombok.Getter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="TransactionResponseTimePercentile")
 public class TransactionResponseTimePercentile
@@ -80,4 +75,19 @@ public class TransactionResponseTimePercentile
         return (TransactionResponseTimePercentile)xstream.fromXML(xml);
     }
 
+    public ArrayList<Transaction> getTransactions() {
+        return Transactions;
+    }
+
+    public void setTransactions(ArrayList<Transaction> transactions) {
+        Transactions = transactions;
+    }
+
+    public String getPercentile() {
+        return Percentile;
+    }
+
+    public void setPercentile(String percentile) {
+        Percentile = percentile;
+    }
 }

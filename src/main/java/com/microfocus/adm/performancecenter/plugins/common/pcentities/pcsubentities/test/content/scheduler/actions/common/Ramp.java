@@ -3,16 +3,11 @@ package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubenti
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Setter;
-import lombok.Getter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="Ramp")
 public class Ramp
@@ -64,5 +59,19 @@ public class Ramp
     }
 
 
+    public String getVusers() {
+        return Vusers;
+    }
 
+    public void setVusers(String vusers) {
+        Vusers = vusers;
+    }
+
+    public TimeInterval getTimeInterval() {
+        return TimeInterval;
+    }
+
+    public void setTimeInterval(TimeInterval timeInterval) {
+        TimeInterval = timeInterval;
+    }
 }

@@ -2,16 +2,10 @@ package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubenti
 
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.log.logoptions.LogOptions;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.enums.LogTypeValues;
-
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.xml.bind.annotation.*;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="Log")
 public class Log {
@@ -98,4 +92,39 @@ public class Log {
         return (Log)xstream.fromXML(xml);
     }
 
+    public String getType() {
+        return Type;
+    }
+
+    public boolean isParametersSubstituion() {
+        return ParametersSubstituion;
+    }
+
+    public void setParametersSubstituion(boolean parametersSubstituion) {
+        ParametersSubstituion = parametersSubstituion;
+    }
+
+    public boolean isDataReturnedByServer() {
+        return DataReturnedByServer;
+    }
+
+    public void setDataReturnedByServer(boolean dataReturnedByServer) {
+        DataReturnedByServer = dataReturnedByServer;
+    }
+
+    public boolean isAdvanceTrace() {
+        return AdvanceTrace;
+    }
+
+    public void setAdvanceTrace(boolean advanceTrace) {
+        AdvanceTrace = advanceTrace;
+    }
+
+    public LogOptions getLogOptions() {
+        return LogOptions;
+    }
+
+    public void setLogOptions(LogOptions logOptions) {
+        LogOptions = logOptions;
+    }
 }

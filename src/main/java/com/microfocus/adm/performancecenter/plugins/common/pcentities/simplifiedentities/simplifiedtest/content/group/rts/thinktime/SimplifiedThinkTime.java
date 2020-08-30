@@ -6,11 +6,7 @@ import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 public class SimplifiedThinkTime {
 
     private String type;
@@ -84,5 +80,41 @@ public class SimplifiedThinkTime {
         xstream.setClassLoader(SimplifiedThinkTime.class.getClassLoader());
         xstream.setMode(XStream.NO_REFERENCES);
         return (SimplifiedThinkTime)xstream.fromXML(xml);
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public int getMin_percentage() {
+        return min_percentage;
+    }
+
+    public void setMin_percentage(int min_percentage) {
+        this.min_percentage = min_percentage;
+    }
+
+    public int getMax_percentage() {
+        return max_percentage;
+    }
+
+    public void setMax_percentage(int max_percentage) {
+        this.max_percentage = max_percentage;
+    }
+
+    public int getLimit_seconds() {
+        return limit_seconds;
+    }
+
+    public void setLimit_seconds(int limit_seconds) {
+        this.limit_seconds = limit_seconds;
+    }
+
+    public int getMultiply_factor() {
+        return multiply_factor;
+    }
+
+    public void setMultiply_factor(int multiply_factor) {
+        this.multiply_factor = multiply_factor;
     }
 }

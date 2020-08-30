@@ -1,10 +1,7 @@
 
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test;
-
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.Content;
-
 import javax.xml.bind.annotation.*;
-
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.globalcommandline.GlobalCommandLine;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.globalcommandline.commandline.CommandLine;
@@ -32,11 +29,7 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.rest.PcRestProxy;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Setter;
-import lombok.Getter;
 
-@Setter
-@Getter
 //@XmlAccessorType(XmlAccessType.FIELD)
 //@XmlRootElement //(name="Test", namespace= PcRestProxy.PC_API_XMLNS)
 public class Test
@@ -267,5 +260,60 @@ public class Test
         return test;
     }
 
+    public String getXmlns() {
+        return xmlns;
+    }
+
+    public void setXmlns(String xmlns) {
+        this.xmlns = xmlns;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public String getTestFolderPath() {
+        return TestFolderPath;
+    }
+
+    public void setTestFolderPath(String testFolderPath) {
+        TestFolderPath = testFolderPath;
+    }
+
+    public String getCreatedBy() {
+        return CreatedBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        CreatedBy = createdBy;
+    }
+
+    public String getLastModified() {
+        return LastModified;
+    }
+
+    public void setLastModified(String lastModified) {
+        LastModified = lastModified;
+    }
+
+    public Content getContent() {
+        return Content;
+    }
+
+    public void setContent(Content content) {
+        Content = content;
+    }
 }
 

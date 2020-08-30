@@ -3,17 +3,12 @@ package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubenti
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.javavm.javaenvclasspaths.JavaEnvClassPaths;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="JavaVM")
 public class JavaVM {
@@ -92,4 +87,51 @@ public class JavaVM {
         return (JavaVM)xstream.fromXML(xml);
     }
 
+    public JavaEnvClassPaths getJavaEnvClassPaths() {
+        return JavaEnvClassPaths;
+    }
+
+    public void setJavaEnvClassPaths(JavaEnvClassPaths javaEnvClassPaths) {
+        JavaEnvClassPaths = javaEnvClassPaths;
+    }
+
+    public boolean isUserSpecifiedJdk() {
+        return UserSpecifiedJdk;
+    }
+
+    public void setUserSpecifiedJdk(boolean userSpecifiedJdk) {
+        UserSpecifiedJdk = userSpecifiedJdk;
+    }
+
+    public String getJdkHome() {
+        return JdkHome;
+    }
+
+    public void setJdkHome(String jdkHome) {
+        JdkHome = jdkHome;
+    }
+
+    public String getJavaVmParameters() {
+        return JavaVmParameters;
+    }
+
+    public void setJavaVmParameters(String javaVmParameters) {
+        JavaVmParameters = javaVmParameters;
+    }
+
+    public boolean isUseXboot() {
+        return UseXboot;
+    }
+
+    public void setUseXboot(boolean useXboot) {
+        UseXboot = useXboot;
+    }
+
+    public boolean isEnableClassLoaderPerVuser() {
+        return EnableClassLoaderPerVuser;
+    }
+
+    public void setEnableClassLoaderPerVuser(boolean enableClassLoaderPerVuser) {
+        EnableClassLoaderPerVuser = enableClassLoaderPerVuser;
+    }
 }

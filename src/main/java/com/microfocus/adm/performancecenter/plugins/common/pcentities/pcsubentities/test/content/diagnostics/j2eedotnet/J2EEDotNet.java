@@ -3,16 +3,11 @@ package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubenti
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.diagnostics.Diagnostics;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Setter;
-import lombok.Getter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="J2EEDotNet")
 public class J2EEDotNet
@@ -70,4 +65,38 @@ public class J2EEDotNet
         return (J2EEDotNet)xstream.fromXML(xml);
     }
 
+    public boolean isEnabled() {
+        return Enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        Enabled = enabled;
+    }
+
+    public String getProbes() {
+        return Probes;
+    }
+
+    public void setProbes(String probes) {
+        Probes = probes;
+    }
+
+    public boolean isMediatorOFW() {
+        return IsMediatorOFW;
+    }
+
+    public void setMediatorOFW(boolean mediatorOFW) {
+        IsMediatorOFW = mediatorOFW;
+    }
+    public void setIsMediatorOFW(boolean mediatorOFW) {
+        IsMediatorOFW = mediatorOFW;
+    }
+
+    public boolean isMonitorServerRequests() {
+        return MonitorServerRequests;
+    }
+
+    public void setMonitorServerRequests(boolean monitorServerRequests) {
+        MonitorServerRequests = monitorServerRequests;
+    }
 }

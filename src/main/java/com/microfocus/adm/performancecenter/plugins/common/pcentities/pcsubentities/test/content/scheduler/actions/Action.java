@@ -1,24 +1,17 @@
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.scheduler.actions;
 
-
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.scheduler.actions.initialize.Initialize;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.scheduler.actions.startvusers.StartVusers;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.scheduler.actions.duration.Duration;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.scheduler.actions.stopvusers.StopVusers;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.scheduler.actions.startgroup.StartGroup;
-
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Setter;
-import lombok.Getter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="Action")
 public class Action
@@ -119,4 +112,43 @@ public class Action
         return (Action)xstream.fromXML(xml);
     }
 
+    public Initialize getInitialize() {
+        return Initialize;
+    }
+
+    public void setInitialize(Initialize initialize) {
+        Initialize = initialize;
+    }
+
+    public StartVusers getStartVusers() {
+        return StartVusers;
+    }
+
+    public void setStartVusers(StartVusers startVusers) {
+        StartVusers = startVusers;
+    }
+
+    public Duration getDuration() {
+        return Duration;
+    }
+
+    public void setDuration(Duration duration) {
+        Duration = duration;
+    }
+
+    public StopVusers getStopVusers() {
+        return StopVusers;
+    }
+
+    public void setStopVusers(StopVusers stopVusers) {
+        StopVusers = stopVusers;
+    }
+
+    public StartGroup getStartGroup() {
+        return StartGroup;
+    }
+
+    public void setStartGroup(StartGroup startGroup) {
+        StartGroup = startGroup;
+    }
 }

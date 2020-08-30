@@ -4,11 +4,7 @@ import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 public class SimplifiedJavaVM {
 
     private String jdk_home;
@@ -72,5 +68,45 @@ public class SimplifiedJavaVM {
         xstream.setClassLoader(SimplifiedJavaVM.class.getClassLoader());
         xstream.setMode(XStream.NO_REFERENCES);
         return (SimplifiedJavaVM)xstream.fromXML(xml);
+    }
+
+    public String getJdk_home() {
+        return jdk_home;
+    }
+
+    public void setJdk_home(String jdk_home) {
+        this.jdk_home = jdk_home;
+    }
+
+    public String getJava_vm_parameters() {
+        return java_vm_parameters;
+    }
+
+    public void setJava_vm_parameters(String java_vm_parameters) {
+        this.java_vm_parameters = java_vm_parameters;
+    }
+
+    public boolean isUse_xboot() {
+        return use_xboot;
+    }
+
+    public void setUse_xboot(boolean use_xboot) {
+        this.use_xboot = use_xboot;
+    }
+
+    public boolean isEnable_classloader_per_vuser() {
+        return enable_classloader_per_vuser;
+    }
+
+    public void setEnable_classloader_per_vuser(boolean enable_classloader_per_vuser) {
+        this.enable_classloader_per_vuser = enable_classloader_per_vuser;
+    }
+
+    public String[] getJava_env_class_paths() {
+        return java_env_class_paths;
+    }
+
+    public void setJava_env_class_paths(String[] java_env_class_paths) {
+        this.java_env_class_paths = java_env_class_paths;
     }
 }

@@ -2,20 +2,14 @@ package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubenti
 
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.common.Thresholds.Thresholds;
-
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.common.Thresholds.betweenthreshold.BetweenThreshold;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Setter;
-import lombok.Getter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="Transaction")
 public class Transaction
@@ -86,5 +80,28 @@ public class Transaction
     }
 
 
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public Thresholds getThresholds() {
+        return Thresholds;
+    }
+
+    public void setThresholds(Thresholds thresholds) {
+        Thresholds = thresholds;
+    }
+
+    public String getThreshold() {
+        return Threshold;
+    }
+
+    public void setThreshold(String threshold) {
+        Threshold = threshold;
+    }
 }
 

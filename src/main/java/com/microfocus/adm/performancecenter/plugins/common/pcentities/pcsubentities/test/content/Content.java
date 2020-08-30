@@ -35,13 +35,8 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.rest.PcRestProxy;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.ArrayList;
 
-@Setter
-@Getter
 //@XmlAccessorType(XmlAccessType.FIELD)
 //@XmlRootElement(name="Content")
 public class Content
@@ -333,4 +328,131 @@ public class Content
         return (Content)xstream.fromXML(xml);
     }
 
+    public String getXmlns() {
+        return xmlns;
+    }
+
+    public void setXmlns(String xmlns) {
+        this.xmlns = xmlns;
+    }
+
+    public String getController() {
+        return Controller;
+    }
+
+    public void setController(String controller) {
+        Controller = controller;
+    }
+
+    public WorkloadType getWorkloadType() {
+        return WorkloadType;
+    }
+
+    public void setWorkloadType(WorkloadType workloadType) {
+        WorkloadType = workloadType;
+    }
+
+    public LGDistribution getLGDistribution() {
+        return LGDistribution;
+    }
+
+    public void setLGDistribution(LGDistribution LGDistribution) {
+        this.LGDistribution = LGDistribution;
+    }
+
+    public ArrayList<MonitorProfile> getMonitorProfiles() {
+        return MonitorProfiles;
+    }
+
+    public void setMonitorProfiles(ArrayList<MonitorProfile> monitorProfiles) {
+        MonitorProfiles = monitorProfiles;
+    }
+
+    public ArrayList<Group> getGroups() {
+        return Groups;
+    }
+
+    public void setGroups(ArrayList<Group> groups) {
+        Groups = groups;
+    }
+
+    public Scheduler getScheduler() {
+        return Scheduler;
+    }
+
+    public void setScheduler(Scheduler scheduler) {
+        Scheduler = scheduler;
+    }
+
+    public AnalysisTemplate getAnalysisTemplate() {
+        return AnalysisTemplate;
+    }
+
+    public void setAnalysisTemplate(AnalysisTemplate analysisTemplate) {
+        AnalysisTemplate = analysisTemplate;
+    }
+
+    public SLA getSLA() {
+        return SLA;
+    }
+
+    public void setSLA(SLA SLA) {
+        this.SLA = SLA;
+    }
+
+    public Diagnostics getDiagnostics() {
+        return Diagnostics;
+    }
+
+    public void setDiagnostics(Diagnostics diagnostics) {
+        Diagnostics = diagnostics;
+    }
+
+    public AutomaticTrending getAutomaticTrending() {
+        return AutomaticTrending;
+    }
+
+    public void setAutomaticTrending(AutomaticTrending automaticTrending) {
+        AutomaticTrending = automaticTrending;
+    }
+
+    public ArrayList<MonitorOFW> getMonitorsOFW() {
+        return MonitorsOFW;
+    }
+
+    public void setMonitorsOFW(ArrayList<MonitorOFW> monitorsOFW) {
+        MonitorsOFW = monitorsOFW;
+    }
+
+    public GlobalCommandLine getGlobalCommandLine() {
+        return GlobalCommandLine;
+    }
+
+    public void setGlobalCommandLine(GlobalCommandLine globalCommandLine) {
+        GlobalCommandLine = globalCommandLine;
+    }
+
+    public GlobalRTS getGlobalRTS() {
+        return GlobalRTS;
+    }
+
+    public void setGlobalRTS(GlobalRTS globalRTS) {
+        GlobalRTS = globalRTS;
+    }
+
+    public ElasticLoadGeneratorConfiguration getElasticLoadGeneratorConfiguration() {
+        return ElasticLoadGeneratorConfiguration;
+    }
+
+    public void setElasticLoadGeneratorConfiguration(ElasticLoadGeneratorConfiguration elasticLoadGeneratorConfiguration) {
+        ElasticLoadGeneratorConfiguration = elasticLoadGeneratorConfiguration;
+    }
+
+    public ElasticControllerConfiguration getElasticControllerConfiguration() {
+        return ElasticControllerConfiguration;
+    }
+
+    public void setElasticControllerConfiguration(ElasticControllerConfiguration elasticControllerConfiguration) {
+        ElasticControllerConfiguration = elasticControllerConfiguration;
+    }
 }

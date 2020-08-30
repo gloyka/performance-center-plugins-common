@@ -8,11 +8,7 @@ import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 public class SimplifiedRTS {
 
     private SimplifiedJavaVM java_vm;
@@ -71,5 +67,37 @@ public class SimplifiedRTS {
         xstream.setClassLoader(SimplifiedRTS.class.getClassLoader());
         xstream.setMode(XStream.NO_REFERENCES);
         return (SimplifiedRTS)xstream.fromXML(xml);
+    }
+
+    public SimplifiedJavaVM getJava_vm() {
+        return java_vm;
+    }
+
+    public void setJava_vm(SimplifiedJavaVM java_vm) {
+        this.java_vm = java_vm;
+    }
+
+    public SimplifiedJMeter getJmeter() {
+        return jmeter;
+    }
+
+    public void setJmeter(SimplifiedJMeter jmeter) {
+        this.jmeter = jmeter;
+    }
+
+    public SimplifiedPacing getPacing() {
+        return pacing;
+    }
+
+    public void setPacing(SimplifiedPacing pacing) {
+        this.pacing = pacing;
+    }
+
+    public SimplifiedThinkTime getThinktime() {
+        return thinktime;
+    }
+
+    public void setThinktime(SimplifiedThinkTime thinktime) {
+        this.thinktime = thinktime;
     }
 }

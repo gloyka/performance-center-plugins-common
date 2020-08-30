@@ -1,17 +1,15 @@
 package com.microfocus.adm.performancecenter.plugins.common.pcentities;
 
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.Content;
-import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.SLA;
 import com.microfocus.adm.performancecenter.plugins.common.rest.PcRestProxy;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Setter;
-import lombok.Getter;
+
+
 
 import javax.xml.bind.annotation.*;
 
-@Setter
-@Getter
+
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="Test")
 public class TestRequest
@@ -95,5 +93,7 @@ public class TestRequest
         return (TestRequest)xstream.fromXML(xml);
     }
 
+    public void setXmlns(String xmlns) {
+        this.xmlns = xmlns;
+    }
 }
-

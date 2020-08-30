@@ -6,11 +6,7 @@ import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 public class SimplifiedPacing {
 
 
@@ -83,4 +79,31 @@ public class SimplifiedPacing {
         return (SimplifiedPacing)xstream.fromXML(xml);
     }
 
+    public int getNumber_of_iterations() {
+        return number_of_iterations;
+    }
+
+    public void setNumber_of_iterations(int number_of_iterations) {
+        this.number_of_iterations = number_of_iterations;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public int getDelay() {
+        return delay;
+    }
+
+    public void setDelay(int delay) {
+        this.delay = delay;
+    }
+
+    public int getDelay_random_range() {
+        return delay_random_range;
+    }
+
+    public void setDelay_random_range(int delay_random_range) {
+        this.delay_random_range = delay_random_range;
+    }
 }

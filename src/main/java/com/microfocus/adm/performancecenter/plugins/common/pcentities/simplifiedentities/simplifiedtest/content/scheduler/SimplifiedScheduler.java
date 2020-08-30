@@ -2,11 +2,7 @@ package com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifie
 
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 public class SimplifiedScheduler {
 
     //optional
@@ -48,5 +44,21 @@ public class SimplifiedScheduler {
         xstream.setClassLoader(SimplifiedScheduler.class.getClassLoader());
         xstream.setMode(XStream.NO_REFERENCES);
         return (SimplifiedScheduler)xstream.fromXML(xml);
+    }
+
+    public int getRampup() {
+        return rampup;
+    }
+
+    public void setRampup(int rampup) {
+        this.rampup = rampup;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 }

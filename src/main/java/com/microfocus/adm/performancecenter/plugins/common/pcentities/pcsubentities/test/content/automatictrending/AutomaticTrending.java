@@ -5,16 +5,11 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.enums.MaxRunsReachedOptionValues;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="AutomaticTrending")
 public class AutomaticTrending {
@@ -107,4 +102,27 @@ public class AutomaticTrending {
         return (AutomaticTrending)xstream.fromXML(xml);
     }
 
+    public String getReportId() {
+        return ReportId;
+    }
+
+    public void setReportId(String reportId) {
+        ReportId = reportId;
+    }
+
+    public String getMaxRunsInReport() {
+        return MaxRunsInReport;
+    }
+
+    public void setMaxRunsInReport(String maxRunsInReport) {
+        MaxRunsInReport = maxRunsInReport;
+    }
+
+    public String getTrendRangeType() {
+        return TrendRangeType;
+    }
+
+    public String getMaxRunsReachedOption() {
+        return MaxRunsReachedOption;
+    }
 }

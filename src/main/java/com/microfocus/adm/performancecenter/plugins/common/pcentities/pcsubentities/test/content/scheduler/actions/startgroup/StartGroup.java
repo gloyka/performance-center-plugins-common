@@ -1,18 +1,12 @@
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.scheduler.actions.startgroup;
 
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.scheduler.actions.common.TimeInterval;
-
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.enums.StartGroupTypeValues;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.xml.bind.annotation.*;
 
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="StartGroup")
 public class StartGroup {
@@ -85,5 +79,25 @@ public class StartGroup {
         xstream.setClassLoader(StartGroup.class.getClassLoader());
         xstream.setMode(XStream.NO_REFERENCES);
         return (StartGroup)xstream.fromXML(xml);
+    }
+
+    public String getType() {
+        return Type;
+    }
+
+    public TimeInterval getTimeInterval() {
+        return TimeInterval;
+    }
+
+    public void setTimeInterval(TimeInterval timeInterval) {
+        TimeInterval = timeInterval;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
     }
 }

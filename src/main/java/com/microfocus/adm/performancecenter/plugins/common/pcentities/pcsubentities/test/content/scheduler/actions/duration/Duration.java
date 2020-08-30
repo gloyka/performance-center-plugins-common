@@ -1,17 +1,11 @@
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.scheduler.actions.duration;
 
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.scheduler.actions.common.TimeInterval;
-
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.enums.DurationTypeValues;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Setter;
-import lombok.Getter;
-
 import javax.xml.bind.annotation.*;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="Duration")
 public class Duration
@@ -85,4 +79,15 @@ public class Duration
     }
 
 
+    public String getType() {
+        return Type;
+    }
+
+    public TimeInterval getTimeInterval() {
+        return TimeInterval;
+    }
+
+    public void setTimeInterval(TimeInterval timeInterval) {
+        TimeInterval = timeInterval;
+    }
 }

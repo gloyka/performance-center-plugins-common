@@ -5,14 +5,8 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.enums.StartStopVusersTypeValues;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.xml.bind.annotation.*;
 
-
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="StopVusers")
 public class StopVusers {
@@ -91,5 +85,25 @@ public class StopVusers {
         xstream.setClassLoader(StopVusers.class.getClassLoader());
         xstream.setMode(XStream.NO_REFERENCES);
         return (StopVusers)xstream.fromXML(xml);
+    }
+
+    public String getType() {
+        return Type;
+    }
+
+    public String getVusers() {
+        return Vusers;
+    }
+
+    public void setVusers(String vusers) {
+        Vusers = vusers;
+    }
+
+    public Ramp getRamp() {
+        return Ramp;
+    }
+
+    public void setRamp(Ramp ramp) {
+        Ramp = ramp;
     }
 }

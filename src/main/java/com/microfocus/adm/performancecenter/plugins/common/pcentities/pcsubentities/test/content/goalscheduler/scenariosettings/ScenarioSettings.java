@@ -4,16 +4,11 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.enums.GoalCannotBeReachedActionValues;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Setter;
-import lombok.Getter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="ScenarioSettings")
 public class ScenarioSettings {
@@ -86,4 +81,23 @@ public class ScenarioSettings {
         return (ScenarioSettings)xstream.fromXML(xml);
     }
 
+    public String getGoalCannotBeReachedAction() {
+        return GoalCannotBeReachedAction;
+    }
+
+    public RunTimeAfterGoalAchieved getRunTimeAfterGoalAchieved() {
+        return RunTimeAfterGoalAchieved;
+    }
+
+    public void setRunTimeAfterGoalAchieved(RunTimeAfterGoalAchieved runTimeAfterGoalAchieved) {
+        RunTimeAfterGoalAchieved = runTimeAfterGoalAchieved;
+    }
+
+    public boolean isReceiveNotification() {
+        return ReceiveNotification;
+    }
+
+    public void setReceiveNotification(boolean receiveNotification) {
+        ReceiveNotification = receiveNotification;
+    }
 }

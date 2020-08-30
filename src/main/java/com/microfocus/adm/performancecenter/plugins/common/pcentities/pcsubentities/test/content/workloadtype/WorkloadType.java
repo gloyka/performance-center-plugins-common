@@ -2,20 +2,14 @@ package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubenti
 
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.enums.WorkloadTypeSubTypeValues;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.enums.VusersDistributionModeValues;
-
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.enums.WorkloadTypeValues;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Setter;
-import lombok.Getter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="WorkloadType")
 public class WorkloadType
@@ -115,4 +109,15 @@ public class WorkloadType
     }
 
 
+    public String getType() {
+        return Type;
+    }
+
+    public String getSubType() {
+        return SubType;
+    }
+
+    public String getVusersDistributionMode() {
+        return VusersDistributionMode;
+    }
 }

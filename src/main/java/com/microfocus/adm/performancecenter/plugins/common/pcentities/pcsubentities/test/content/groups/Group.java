@@ -19,17 +19,12 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.scheduler.actions.stopvusers.StopVusers;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Setter;
-import lombok.Getter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="Group")
 public class Group
@@ -219,4 +214,71 @@ public class Group
         return (Group)xstream.fromXML(xml);
     }
 
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public String getVusers() {
+        return Vusers;
+    }
+
+    public Script getScript() {
+        return Script;
+    }
+
+    public void setScript(Script script) {
+        Script = script;
+    }
+
+    public ArrayList<Host> getHosts() {
+        return Hosts;
+    }
+
+    public void setHosts(ArrayList<Host> hosts) {
+        Hosts = hosts;
+    }
+
+    public RTS getRTS() {
+        return RTS;
+    }
+
+    public void setRTS(RTS RTS) {
+        this.RTS = RTS;
+    }
+
+    public String getGlobalCommandLine() {
+        return GlobalCommandLine;
+    }
+
+    public void setGlobalCommandLine(String globalCommandLine) {
+        GlobalCommandLine = globalCommandLine;
+    }
+
+    public String getCommandLine() {
+        return CommandLine;
+    }
+
+    public void setCommandLine(String commandLine) {
+        CommandLine = commandLine;
+    }
+
+    public String getGlobalRTS() {
+        return GlobalRTS;
+    }
+
+    public void setGlobalRTS(String globalRTS) {
+        GlobalRTS = globalRTS;
+    }
+
+    public Scheduler getScheduler() {
+        return Scheduler;
+    }
+
+    public void setScheduler(Scheduler scheduler) {
+        Scheduler = scheduler;
+    }
 }

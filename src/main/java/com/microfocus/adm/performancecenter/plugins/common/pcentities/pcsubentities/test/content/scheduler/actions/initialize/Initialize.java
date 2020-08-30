@@ -2,17 +2,11 @@ package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubenti
 
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.scheduler.actions.common.TimeInterval;
-
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.enums.InitializeTypeValues;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Setter;
-import lombok.Getter;
-
 import javax.xml.bind.annotation.*;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="Initialize")
 public class Initialize
@@ -115,5 +109,33 @@ public class Initialize
         xstream.setClassLoader(Initialize.class.getClassLoader());
         xstream.setMode(XStream.NO_REFERENCES);
         return (Initialize)xstream.fromXML(xml);
+    }
+
+    public String getType() {
+        return Type;
+    }
+
+    public String getVusers() {
+        return Vusers;
+    }
+
+    public void setVusers(String vusers) {
+        Vusers = vusers;
+    }
+
+    public TimeInterval getTimeInterval() {
+        return TimeInterval;
+    }
+
+    public void setTimeInterval(TimeInterval timeInterval) {
+        TimeInterval = timeInterval;
+    }
+
+    public TimeInterval getWaitAfterInit() {
+        return WaitAfterInit;
+    }
+
+    public void setWaitAfterInit(TimeInterval waitAfterInit) {
+        WaitAfterInit = waitAfterInit;
     }
 }

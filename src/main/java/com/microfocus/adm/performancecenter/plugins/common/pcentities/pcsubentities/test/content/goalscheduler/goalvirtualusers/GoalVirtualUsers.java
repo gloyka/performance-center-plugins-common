@@ -1,19 +1,13 @@
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.goalscheduler.goalvirtualusers;
 
-
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Setter;
-import lombok.Getter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="GoalVirtualUsers")
 public class GoalVirtualUsers {
@@ -56,5 +50,13 @@ public class GoalVirtualUsers {
         xstream.setClassLoader(GoalVirtualUsers.class.getClassLoader());
         xstream.setMode(XStream.NO_REFERENCES);
         return (GoalVirtualUsers)xstream.fromXML(xml);
+    }
+
+    public String getTargetVusersNumber() {
+        return TargetVusersNumber;
+    }
+
+    public void setTargetVusersNumber(String targetVusersNumber) {
+        TargetVusersNumber = targetVusersNumber;
     }
 }

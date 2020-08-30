@@ -3,9 +3,6 @@ package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubenti
 
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -13,8 +10,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import static com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common.integerToString;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="ElasticControllerConfiguration")
 public class ElasticControllerConfiguration {
@@ -64,4 +59,27 @@ public class ElasticControllerConfiguration {
         return (ElasticControllerConfiguration)xstream.fromXML(xml);
     }
 
+    public String getImageId() {
+        return ImageId;
+    }
+
+    public void setImageId(String imageId) {
+        ImageId = imageId;
+    }
+
+    public String getMemoryLimit() {
+        return MemoryLimit;
+    }
+
+    public void setMemoryLimit(String memoryLimit) {
+        MemoryLimit = memoryLimit;
+    }
+
+    public String getCpuLimit() {
+        return CpuLimit;
+    }
+
+    public void setCpuLimit(String cpuLimit) {
+        CpuLimit = cpuLimit;
+    }
 }

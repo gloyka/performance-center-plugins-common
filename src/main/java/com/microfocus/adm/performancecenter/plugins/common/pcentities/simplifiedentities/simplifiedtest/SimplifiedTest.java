@@ -7,11 +7,7 @@ import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 public class SimplifiedTest {
 
     private String test_name;
@@ -79,5 +75,29 @@ public class SimplifiedTest {
         xstream.setClassLoader(SimplifiedTest.class.getClassLoader());
         xstream.setMode(XStream.NO_REFERENCES);
         return (SimplifiedTest)xstream.fromXML(xml);
+    }
+
+    public String getTest_name() {
+        return test_name;
+    }
+
+    public void setTest_name(String test_name) {
+        this.test_name = test_name;
+    }
+
+    public String getTest_folder_path() {
+        return test_folder_path;
+    }
+
+    public void setTest_folder_path(String test_folder_path) {
+        this.test_folder_path = test_folder_path;
+    }
+
+    public SimplifiedContent getTest_content() {
+        return test_content;
+    }
+
+    public void setTest_content(SimplifiedContent test_content) {
+        this.test_content = test_content;
     }
 }

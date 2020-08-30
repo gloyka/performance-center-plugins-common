@@ -3,14 +3,9 @@ package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubenti
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.common.Thresholds.betweenthreshold.BetweenThreshold;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="JavaEnvClassPaths")
 public class JavaEnvClassPaths {
@@ -59,4 +54,11 @@ public class JavaEnvClassPaths {
         return (JavaEnvClassPaths)xstream.fromXML(xml);
     }
 
+    public ArrayList<String> getJavaEnvClassPath() {
+        return JavaEnvClassPath;
+    }
+
+    public void setJavaEnvClassPath(ArrayList<String> javaEnvClassPath) {
+        JavaEnvClassPath = javaEnvClassPath;
+    }
 }

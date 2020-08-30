@@ -1,21 +1,15 @@
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.globalcommandline;
 
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.globalcommandline.commandline.CommandLine;
-
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
-import lombok.Setter;
-import lombok.Getter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="GlobalCommandLine")
 public class GlobalCommandLine {
@@ -64,4 +58,11 @@ public class GlobalCommandLine {
         return (GlobalCommandLine)xstream.fromXML(xml);
     }
 
+    public ArrayList<CommandLine> getCommandLine() {
+        return CommandLine;
+    }
+
+    public void setCommandLine(ArrayList<CommandLine> commandLine) {
+        CommandLine = commandLine;
+    }
 }

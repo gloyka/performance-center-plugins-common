@@ -8,20 +8,14 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.thinktime.ThinkTime;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.pacing.Pacing;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.javavm.JavaVM;
-
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import lombok.Setter;
-import lombok.Getter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="RTS")
 public class RTS
@@ -131,4 +125,51 @@ public class RTS
         return (RTS)xstream.fromXML(xml);
     }
 
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public Pacing getPacing() {
+        return Pacing;
+    }
+
+    public void setPacing(Pacing pacing) {
+        Pacing = pacing;
+    }
+
+    public ThinkTime getThinkTime() {
+        return ThinkTime;
+    }
+
+    public void setThinkTime(ThinkTime thinkTime) {
+        ThinkTime = thinkTime;
+    }
+
+    public Log getLog() {
+        return Log;
+    }
+
+    public void setLog(Log log) {
+        Log = log;
+    }
+
+    public JMeter getJMeter() {
+        return JMeter;
+    }
+
+    public void setJMeter(JMeter JMeter) {
+        this.JMeter = JMeter;
+    }
+
+    public JavaVM getJavaVM() {
+        return JavaVM;
+    }
+
+    public void setJavaVM(JavaVM javaVM) {
+        JavaVM = javaVM;
+    }
 }

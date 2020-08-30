@@ -9,17 +9,12 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.thinktime.ThinkTime;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Setter;
-import lombok.Getter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="GlobalRTS")
 public class GlobalRTS {
@@ -94,5 +89,13 @@ public class GlobalRTS {
         xstream.setMode(XStream.NO_REFERENCES);
         xstream.setMode(XStream.NO_REFERENCES);
         return (GlobalRTS)xstream.fromXML(xml);
+    }
+
+    public ArrayList<RTS> getRTS() {
+        return RTS;
+    }
+
+    public void setRTS(ArrayList<RTS> RTS) {
+        this.RTS = RTS;
     }
 }

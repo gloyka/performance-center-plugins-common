@@ -3,16 +3,11 @@ package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubenti
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Setter;
-import lombok.Getter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="TotalThroughput")
 public class TotalThroughput
@@ -55,4 +50,11 @@ public class TotalThroughput
         return (TotalThroughput)xstream.fromXML(xml);
     }
 
+    public String getThreshold() {
+        return Threshold;
+    }
+
+    public void setThreshold(String threshold) {
+        Threshold = threshold;
+    }
 }

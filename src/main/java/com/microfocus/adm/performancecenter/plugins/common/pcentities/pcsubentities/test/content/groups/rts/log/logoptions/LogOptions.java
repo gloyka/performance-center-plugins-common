@@ -4,13 +4,8 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.enums.LogOptionsTypeValues;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.xml.bind.annotation.*;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="Log")
 public class LogOptions {
@@ -72,5 +67,17 @@ public class LogOptions {
         xstream.setClassLoader(LogOptions.class.getClassLoader());
         xstream.setMode(XStream.NO_REFERENCES);
         return (LogOptions)xstream.fromXML(xml);
+    }
+
+    public String getType() {
+        return Type;
+    }
+
+    public String getCacheSize() {
+        return CacheSize;
+    }
+
+    public void setCacheSize(String cacheSize) {
+        CacheSize = cacheSize;
     }
 }

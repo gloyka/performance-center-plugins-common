@@ -6,13 +6,8 @@ import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.xml.bind.annotation.*;
 
-@Setter
-@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="ThinkTime")
 public class ThinkTime {
@@ -152,4 +147,39 @@ public class ThinkTime {
         return (ThinkTime)xstream.fromXML(xml);
     }
 
+    public String getType() {
+        return Type;
+    }
+
+    public String getMinPercentage() {
+        return MinPercentage;
+    }
+
+    public void setMinPercentage(String minPercentage) {
+        MinPercentage = minPercentage;
+    }
+
+    public String getMaxPercentage() {
+        return MaxPercentage;
+    }
+
+    public void setMaxPercentage(String maxPercentage) {
+        MaxPercentage = maxPercentage;
+    }
+
+    public String getMultiplyFactor() {
+        return MultiplyFactor;
+    }
+
+    public void setMultiplyFactor(String multiplyFactor) {
+        MultiplyFactor = multiplyFactor;
+    }
+
+    public String getLimitThinkTimeSeconds() {
+        return LimitThinkTimeSeconds;
+    }
+
+    public void setLimitThinkTimeSeconds(String limitThinkTimeSeconds) {
+        LimitThinkTimeSeconds = limitThinkTimeSeconds;
+    }
 }
