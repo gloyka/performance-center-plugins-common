@@ -9,6 +9,8 @@ import com.thoughtworks.xstream.security.NullPermission;
 import com.thoughtworks.xstream.security.PrimitiveTypePermission;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,7 +43,7 @@ public class Helper {
             if (pcTestPlanFolders != null ) {
                 for (PcTestPlanFolder pcTestPlanFolder : pcTestPlanFolders.getPcTestPlanFolderList()
                         ) {
-                    if (pcTestPlanFolder.getFullPath().equals(fullpath)) {
+                    if (pcTestPlanFolder.getFullPath().equalsIgnoreCase(fullpath)) {
                         exist = true;
                         break;
                     }
@@ -158,4 +160,44 @@ public class Helper {
         return 0;
     }
 
+    public static Path getParent(Path path)
+    {
+        if(path.getParent() != null)
+            return path.getParent();
+        return Paths.get(getParent(path.toString()));
+    }
+
+    public static String getName(String strPath)
+    {
+        char chrSeparatorBackward = '\\';
+        char chrSeparatorForward = '/';
+        String strPathToHandle = strPath;
+        if(strPathToHandle == null || strPathToHandle.isEmpty() || !(strPathToHandle.indexOf(chrSeparatorBackward) != -1 || strPathToHandle.indexOf(chrSeparatorForward)!= -1))
+            return strPathToHandle;
+        if(strPathToHandle.indexOf(chrSeparatorForward) != -1 )
+            strPathToHandle = strPathToHandle.replace(chrSeparatorForward, chrSeparatorBackward);
+        if(strPathToHandle.endsWith(String.valueOf(chrSeparatorBackward)))
+            strPathToHandle = strPathToHandle.replaceAll("\\$", "");
+
+        int index = strPathToHandle.lastIndexOf(chrSeparatorBackward);
+        strPathToHandle = strPathToHandle.substring(index+1);
+        return strPathToHandle;
+    }
+
+    private static String getParent(String strPath)
+    {
+        char chrSeparatorBackward = '\\';
+        char chrSeparatorForward = '/';
+        String strPathToHandle = strPath;
+        if(strPathToHandle == null || strPathToHandle.isEmpty() || !(strPathToHandle.indexOf(chrSeparatorBackward) != -1 || strPathToHandle.indexOf(chrSeparatorForward)!= -1))
+            return "";
+        if(strPathToHandle.indexOf(chrSeparatorForward) != -1 )
+            strPathToHandle = strPathToHandle.replace(chrSeparatorForward, chrSeparatorBackward);
+        if(strPathToHandle.endsWith(String.valueOf(chrSeparatorBackward)))
+            strPathToHandle = strPathToHandle.replaceAll("\\$", "");
+
+        int index = strPathToHandle.lastIndexOf(chrSeparatorBackward);
+        strPathToHandle = strPathToHandle.substring(0, index);
+        return strPathToHandle;
+    }
 }

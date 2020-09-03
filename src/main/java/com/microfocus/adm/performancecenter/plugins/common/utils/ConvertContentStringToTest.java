@@ -45,6 +45,7 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplified
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.pacing.SimplifiedPacing;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.thinktime.SimplifiedThinkTime;
 import com.microfocus.adm.performancecenter.plugins.common.rest.PcRestProxy;
+import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 
 import java.io.File;
 import java.io.IOException;
@@ -218,7 +219,7 @@ public class ConvertContentStringToTest {
             PcScript pcScript = null;
             if(simplifiedGroup.getScript_id() == 0 && !simplifiedGroup.getScript_path().isEmpty()) { //retreiving the script ID + protocol from script name and script folder
                 File file = new File("Subject\\".concat(simplifiedGroup.getScript_path()));
-                pcScript = pcRestProxy.getScript(file.getParent().toString(), file.getName());
+                pcScript = pcRestProxy.getScript(Helper.getParent(file.toPath()).toString(), Helper.getName(file.getName()));
                 simplifiedGroup.setScript_id(pcScript.getID());
                 simplifiedGroup.setProtocol(pcScript.getProtocol());
                 simplifiedContent.setGroup(simplifiedGroups);
