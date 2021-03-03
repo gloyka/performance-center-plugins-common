@@ -23,11 +23,13 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.javavm.JavaVM;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.javavm.javaenvclasspaths.JavaEnvClassPaths;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.jmeter.JMeter;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.selenium.Selenium;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.log.Log;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.log.logoptions.LogOptions;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.pacing.Pacing;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.pacing.startnewiteration.StartNewIteration;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.thinktime.ThinkTime;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.selenium.Selenium;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.script.Script;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.lgdistribution.LGDistribution;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.monitorprofiles.MonitorProfile;
@@ -64,6 +66,7 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplified
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.SimplifiedRTS;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.javavm.SimplifiedJavaVM;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.jmeter.SimplifiedJMeter;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.selenium.SimplifiedSelenium;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.pacing.SimplifiedPacing;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.thinktime.SimplifiedThinkTime;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.scheduler.SimplifiedScheduler;
@@ -116,6 +119,17 @@ public class TestTest {
         verifyXML(xmlSimplifiedJMeter, xmlSimplifiedJMeter2);
         //endregion
 
+        //region SimplifiedSelenium
+        String jre_path = "jre_path";
+        String class_path = "class_path";
+        String test_ng_files = "test_ng_files";
+        SimplifiedSelenium simplifiedSelenium = new SimplifiedSelenium(jre_path, class_path, test_ng_files);
+        String xmlSimplifiedSelenium = simplifiedSelenium.objectToXML();
+        SimplifiedSelenium simplifiedSelenium2 = SimplifiedSelenium.xmlToObject(xmlSimplifiedSelenium);
+        String xmlSimplifiedSelenium2 = simplifiedSelenium2.objectToXML();
+        verifyXML(xmlSimplifiedSelenium, xmlSimplifiedSelenium2);
+        //endregion
+
         //region SimplifiedPacing
         int number_of_iterations = 3;
         String simplifiedPacingType = SimplifiedPacingTypeValues.RANDOM_INTERVAL.value();
@@ -142,7 +156,7 @@ public class TestTest {
         //endregion
 
         //region SimplifiedRTS
-        SimplifiedRTS simplifiedRTS = new SimplifiedRTS(simplifiedJavaVM, simplifiedJMeter, simplifiedPacing, simplifiedThinkTime );
+        SimplifiedRTS simplifiedRTS = new SimplifiedRTS(simplifiedJavaVM, simplifiedJMeter, simplifiedPacing, simplifiedThinkTime, simplifiedSelenium );
         String xmlSimplifiedRTS = simplifiedRTS.objectToXML();
         SimplifiedRTS simplifiedRTS2 = SimplifiedRTS.xmlToObject(xmlSimplifiedRTS);
         String xmlSimplifiedRTS2 = simplifiedRTS2.objectToXML();
@@ -450,16 +464,30 @@ public class TestTest {
                         /* verified JMeter */
         //endregion
 
+        //region Selenium
+                        /* verifying Selenium */
+                        String jrePath = "%JRE_PATH%";
+                        String classPath = "";
+                        String testNgFiles = "";
+
+                        Selenium selenium = new Selenium(jrePath, classPath, testNgFiles);
+                        String xmlSelenium = selenium.objectToXML();
+                        Selenium selenium2 = Selenium.xmlToObject(xmlSelenium);
+                        String xmlSelenium2 = selenium2.objectToXML();
+                        verifyXML(xmlSelenium, xmlSelenium2);
+                        /* verified JMeter */
+        //endregion
+
 
                         //verifying RTS
-                        RTS rts = new RTS(pacing, thinkTime, log, jMeter, javaVM);
+                        RTS rts = new RTS(pacing, thinkTime, log, jMeter, javaVM, selenium);
                         String xmlRTS = rts.objectToXML();
                         RTS rts2 = RTS.xmlToObject(xmlRTS);
                         String xmlRTS2 = rts2.objectToXML();
                         verifyXML(xmlRTS, xmlRTS2);
 
                         //verifying partial RTS
-                        RTS rtsPartial = new RTS("kuku", pacing, null, null, null, null);
+                        RTS rtsPartial = new RTS("kuku", pacing, null, null, null, null, null);
                         String xmlRTSPartial = rtsPartial.objectToXML();
                         RTS rtsPartial2 = RTS.xmlToObject(xmlRTSPartial);
                         String xmlRTSPartial2 = rtsPartial2.objectToXML();
@@ -526,12 +554,13 @@ public class TestTest {
                     //creating RTS for GlobalRTS
 
                     ArrayList<RTS> rtsList = new ArrayList<RTS>();
-                    rtsList.add(new RTS(globalRTSAll, pacing, thinkTime, log, jMeter, javaVM));
-                    rtsList.add(new RTS(globalRTSFirst, pacing, null, null, null, null));
-                    rtsList.add(new RTS(globalRTSsecond, null, thinkTime, null, null, null));
-                    rtsList.add(new RTS(globalRTSThird, null, null, log, null, null));
-                    rtsList.add(new RTS(globalRTSFourth, null, null, null, jMeter, null));
-                    rtsList.add(new RTS(globalRTSFifth, null, null, null, null, javaVM));
+                    rtsList.add(new RTS(globalRTSAll, pacing, thinkTime, log, jMeter, javaVM, selenium));
+                    rtsList.add(new RTS(globalRTSFirst, pacing, null, null, null, null, null));
+                    rtsList.add(new RTS(globalRTSsecond, null, thinkTime, null, null, null, null));
+                    rtsList.add(new RTS(globalRTSThird, null, null, log, null, null, null));
+                    rtsList.add(new RTS(globalRTSFourth, null, null, null, jMeter, null, null));
+                    rtsList.add(new RTS(globalRTSFifth, null, null, null, null, javaVM, null));
+                    rtsList.add(new RTS(globalRTSFifth, null, null, null, null, null, selenium));
 
                     //Verifying GlobalRTS
                     GlobalRTS globalRTS = new GlobalRTS(rtsList);

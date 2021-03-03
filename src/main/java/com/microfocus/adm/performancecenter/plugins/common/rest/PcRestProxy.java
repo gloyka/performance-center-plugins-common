@@ -64,6 +64,7 @@ public class PcRestProxy {
     protected static final String        BASE_PC_API_URL                = "%s://%s/LoadTest/rest";
     protected static final String        BASE_PC_API_AUTHENTICATION_URL = BASE_PC_API_URL + "/authentication-point";
     protected static final String        AUTHENTICATION_LOGIN_URL       = BASE_PC_API_AUTHENTICATION_URL + "/authenticate";
+    protected static final String        AUTHENTICATION_WITH_TOKEN_LOGIN_URL       = BASE_PC_API_AUTHENTICATION_URL + "/authenticateclient";
     protected static final String        AUTHENTICATION_LOGOUT_URL      = BASE_PC_API_AUTHENTICATION_URL + "/logout";
     protected static final String        PC_API_RESOURCES_TEMPLATE      = BASE_PC_API_URL + "/domains/%s/projects/%s";
     protected static final String        RUNS_RESOURCE_NAME             = "Runs";
@@ -95,22 +96,24 @@ public class PcRestProxy {
     private HttpContext context;
     private CookieStore cookieStore;
     private String tenantSuffix;
+    private boolean authenticateWithToken;
 
-    public PcRestProxy(String webProtocolName, String pcServerName, String almDomain, String almProject, String proxyOutURL, String proxyUser, String proxyPassword) throws PcException {
+    public PcRestProxy(String webProtocolName, String pcServerName, boolean authenticateWithToken, String almDomain, String almProject, String proxyOutURL, String proxyUser, String proxyPassword) throws PcException {
         String[] lreServerAndTenant = Helper.GetLreServerAndTenant(pcServerName);
-        pcServer = lreServerAndTenant[0];
-        tenantSuffix = lreServerAndTenant[1];
-    	domain = almDomain;
-    	project = almProject;
-    	webProtocol = webProtocolName;
-    	baseURL = String.format(PC_API_RESOURCES_TEMPLATE, webProtocol,pcServer, domain, project);
+        this.pcServer = lreServerAndTenant[0];
+        this.tenantSuffix = lreServerAndTenant[1];
+        this.domain = almDomain;
+        this.project = almProject;
+        this.webProtocol = webProtocolName;
+        this.baseURL = String.format(PC_API_RESOURCES_TEMPLATE, this.webProtocol, this.pcServer, this.domain, this.project);
+        this.authenticateWithToken = authenticateWithToken;
 
     	PoolingClientConnectionManager cxMgr = new PoolingClientConnectionManager(SchemeRegistryFactory.createDefault());
     	cxMgr.setMaxTotal(100);
     	cxMgr.setDefaultMaxPerRoute(20);
 
-    	
-    	client = new DefaultHttpClient(cxMgr);
+
+        this.client = new DefaultHttpClient(cxMgr);
         if (proxyOutURL != null && !proxyOutURL.isEmpty()) {
             // Setting proxy
             // we should get the full proxy URL from the user: http(s)://<server>:<port>
@@ -118,20 +121,20 @@ public class PcRestProxy {
             getProxyDataFromURL(proxyOutURL);
             this.proxyUser = proxyUser;
             this.proxyPassword = proxyPassword;
-            HttpHost proxy = new HttpHost(proxyHostName, proxyPort, proxyScheme);
+            HttpHost proxy = new HttpHost(this.proxyHostName, this.proxyPort, this.proxyScheme);
 
             if (proxyUser != null && !proxyUser.isEmpty()) {
                 Credentials credentials = new UsernamePasswordCredentials(proxyUser, proxyPassword);
-                AuthScope authScope = new AuthScope(proxyHostName, proxyPort);
+                AuthScope authScope = new AuthScope(this.proxyHostName, this.proxyPort);
                 CredentialsProvider credsProvider = new BasicCredentialsProvider();
-                client.getCredentialsProvider().setCredentials(authScope, credentials);
+                this.client.getCredentialsProvider().setCredentials(authScope, credentials);
             }
-            client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+            this.client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
 
         }
-    	context = new BasicHttpContext();
-    	cookieStore = new BasicCookieStore();
-    	context.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
+        this.context = new BasicHttpContext();
+        this.cookieStore = new BasicCookieStore();
+        this.context.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
 	}
 
     private void getProxyDataFromURL(String proxyURL) throws PcException {
@@ -156,11 +159,27 @@ public class PcRestProxy {
     }
 
     public boolean authenticate(String userName, String password) throws PcException, ClientProtocolException, IOException {
+        if(this.authenticateWithToken)
+            return authenticateWithToken(userName, password);
+        else
+            return authenticateWithoutToken(userName, password);
+    }
+
+    private boolean authenticateWithoutToken(String userName, String password) throws PcException, ClientProtocolException, IOException {
         String userNameAndPassword = userName + ":" + password;
         String encodedCredentials = Base64Encoder.encode(userNameAndPassword.getBytes());
         HttpGet authRequest = new HttpGet(String.format(AUTHENTICATION_LOGIN_URL + tenantSuffix, webProtocol, pcServer));
         authRequest.addHeader("Authorization", String.format("Basic %s", encodedCredentials));
         executeRequest(authRequest);
+        return true;
+    }
+
+    private boolean authenticateWithToken(String idKey, String secretkey) throws PcException, ClientProtocolException, IOException {
+        AuthenticationClient authenticationClient = new AuthenticationClient(idKey, secretkey);
+        HttpPost authRequestWithToken = new HttpPost(String.format(AUTHENTICATION_WITH_TOKEN_LOGIN_URL + tenantSuffix, webProtocol, pcServer));
+        authRequestWithToken.addHeader(RESTConstants.CONTENT_TYPE, CONTENT_TYPE_XML);
+        authRequestWithToken.setEntity(new StringEntity(authenticationClient.objectToXML(), org.apache.http.entity.ContentType.APPLICATION_XML));
+        executeRequest(authRequestWithToken);
         return true;
     }
 

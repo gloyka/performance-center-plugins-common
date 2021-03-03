@@ -2,6 +2,7 @@ package com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifie
 
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.javavm.SimplifiedJavaVM;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.jmeter.SimplifiedJMeter;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.selenium.SimplifiedSelenium;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.pacing.SimplifiedPacing;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.thinktime.SimplifiedThinkTime;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
@@ -15,17 +16,20 @@ public class SimplifiedRTS {
 
     private SimplifiedJMeter jmeter;
 
+    private SimplifiedSelenium selenium;
+
     private SimplifiedPacing pacing;
 
     private SimplifiedThinkTime thinktime;
 
     public SimplifiedRTS() { }
 
-    public SimplifiedRTS(SimplifiedJavaVM java_vm, SimplifiedJMeter jmeter, SimplifiedPacing pacing, SimplifiedThinkTime thinktime) {
+    public SimplifiedRTS(SimplifiedJavaVM java_vm, SimplifiedJMeter jmeter, SimplifiedPacing pacing, SimplifiedThinkTime thinktime, SimplifiedSelenium selenium) {
         this.java_vm = java_vm;
         this.jmeter = jmeter;
         this.pacing = pacing;
         this.thinktime = thinktime;
+        this.selenium = selenium;
     }
 
     @Override
@@ -35,6 +39,7 @@ public class SimplifiedRTS {
                 ", " + "pacing = " + pacing +
                 ", " + "thinktime = " + thinktime +
                 ", " + "jmeter = " + jmeter +
+                ", " + "selenium = " + selenium +
                 "}";
     }
 
@@ -47,6 +52,7 @@ public class SimplifiedRTS {
         xstream.aliasField("pacing", SimplifiedRTS.class, "pacing");
         xstream.aliasField("thinktime", SimplifiedRTS.class, "thinktime");
         xstream.aliasField("jmeter", SimplifiedRTS.class, "jmeter");
+        xstream.aliasField("selenium", SimplifiedRTS.class, "selenium");
 
         xstream.alias("java_env_class_paths", String.class);
         xstream.addImplicitCollection(SimplifiedJavaVM.class, "java_env_class_paths", "java_env_class_paths", String.class);
@@ -73,13 +79,11 @@ public class SimplifiedRTS {
         return java_vm;
     }
 
-    public void setJava_vm(SimplifiedJavaVM java_vm) {
-        this.java_vm = java_vm;
-    }
+    public void setJava_vm(SimplifiedJavaVM java_vm) { this.java_vm = java_vm; }
 
-    public SimplifiedJMeter getJmeter() {
-        return jmeter;
-    }
+    public SimplifiedJMeter getJmeter() { return jmeter; }
+
+    public SimplifiedSelenium getSelenium() { return selenium; }
 
     public void setJmeter(SimplifiedJMeter jmeter) {
         this.jmeter = jmeter;

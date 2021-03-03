@@ -27,9 +27,9 @@ public class Helper {
         xstream.allowTypesByWildcard(new String[] {
                 "com.microfocus.adm.performancecenter.plugins.common.pcentities.**"
         });
+        xstream.ignoreUnknownElements();
         return xstream;
     }
-
 
     //verifying the items in ArrayList list exist in PC, if yes, removing them from ArrayList
     //+ sorting the list so the folders creations depending on other folders creation come last .

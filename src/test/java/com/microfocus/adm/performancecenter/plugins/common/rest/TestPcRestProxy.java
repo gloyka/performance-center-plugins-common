@@ -1,17 +1,14 @@
 package com.microfocus.adm.performancecenter.plugins.common.rest;
 
-//import com.microfocus.adm.performancecenter.plugins.common.pcentities.RunState;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.*;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.Content;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.SimplifiedTest;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.SimplifiedContent;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.junit.Assert;
-import org.junit.Test;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -22,21 +19,20 @@ import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import static com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common.stringToInteger;
 import static org.apache.commons.lang.builder.ToStringStyle.MULTI_LINE_STYLE;
 
+//import org.junit.Test;
 public class TestPcRestProxy {
-
 
     //region intro
     private PcRestProxy pcRestProxy;
-
-
+    private PcRestProxy pcRestProxyWithToken;
+    private boolean useToken = false;
     public final String RESOURCES_DIR = getClass().getResource("").getPath();
 
-//    @BeforeClass
+    //@org.junit.BeforeClass
     public void setUp() throws  PcException, Exception {
         System.out.println("setUp: starts");
         try {
-            pcRestProxy = new PcRestProxy(PcRestProxyBase.WEB_PROTOCOL, PcRestProxyBase.LRE_SERVER_NAME_WITH_TENANT, PcRestProxyBase.ALM_DOMAIN, PcRestProxyBase.ALM_PROJECT, "","","");
-
+            pcRestProxy = new PcRestProxy(PcRestProxyBase.WEB_PROTOCOL, PcRestProxyBase.LRE_SERVER_NAME_WITH_TENANT, useToken, PcRestProxyBase.ALM_DOMAIN, PcRestProxyBase.ALM_PROJECT, "","","");
             System.out.println("setUp: setUp done.");
         } catch (PcException ex) {
             System.out.println("setUp: setUp failed. PcException = " + ex.getMessage());
@@ -46,8 +42,7 @@ public class TestPcRestProxy {
         System.out.println("setUp: ends");
     }
 
-
-    //@Test
+    //@org.junit.Test
     public void verifyAll() throws  PcException, Exception {
         System.out.println("verify starts");
         try {
@@ -80,38 +75,31 @@ public class TestPcRestProxy {
     //endregion
 
     //region create test
-    //@Test
+    //@org.junit.Test
     public void verifyTestCreationOrUpdate() throws  PcException, Exception {
         try {
-
-
-
-            setUp();
+            //setUp();
             testLogin();
-
             //create the test
             String xmlTestToCreate = fileToStringWithTrim("CreateTest.xml");
-            com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test testToCreate =
-                    com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test.xmlToObject(xmlTestToCreate);
-            com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test createdTest =
-                    createOrUpdateTestTest(testToCreate);
-            System.out.println(String.format("createdTest - ID=%s, Name=%s, TestFolderPath=%s", createdTest.getID(), createdTest.getName(), createdTest.getTestFolderPath()));
-            System.out.println(createdTest.objectToXML());
-
-
+            Test testToCreate = Test.xmlToObject(xmlTestToCreate);
+            Test createdTest = createOrUpdateTestTest(testToCreate);
+            if(createdTest != null) {
+                System.out.println(String.format("createdTest - ID=%s, Name=%s, TestFolderPath=%s", createdTest.getID(), createdTest.getName(), createdTest.getTestFolderPath()));
+                System.out.println(createdTest.objectToXML());
+            }
             //update the test
             String xmlTestToUpdate = fileToStringWithTrim("UpdateTest.xml");
-            com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test testToUpdate =
-                    com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test.xmlToObject(xmlTestToUpdate);
-            com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test updatedTest =
-                    createOrUpdateTestTest(testToUpdate);
-            System.out.println(String.format("updatedTest - ID=%s, Name=%s, TestFolderPath=%s", updatedTest.getID(), updatedTest.getName(), updatedTest.getTestFolderPath()));
-            System.out.println(updatedTest.objectToXML());
+            Test testToUpdate = Test.xmlToObject(xmlTestToUpdate);
+            Test updatedTest = createOrUpdateTestTest(testToUpdate);
+            if(updatedTest != null) {
+                System.out.println(String.format("updatedTest - ID=%s, Name=%s, TestFolderPath=%s", updatedTest.getID(), updatedTest.getName(), updatedTest.getTestFolderPath()));
+                System.out.println(updatedTest.objectToXML());
 
             //delete the test
             boolean testDeleted = deleteTest(stringToInteger(updatedTest.getID()));
             System.out.println("test was " + (testDeleted ? "":"not ") + "deleted");
-
+            }
         } catch (Exception e) {
             System.out.println("verifyTestCreation failed. Exception = " + e.getMessage());
             throw e;
@@ -154,10 +142,9 @@ public class TestPcRestProxy {
         return "";
     }
 
-    public com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test createOrUpdateTestTest(com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test test) throws PcException, IOException {
+    public Test createOrUpdateTestTest(Test test) throws PcException, IOException {
         System.out.println("createOrUpdateTestTest: starts");
-        com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test createdOrUpdatedTest = null;
-
+        Test createdOrUpdatedTest = null;
         try {
             String testname = test.getName();
             String folderPath = test.getTestFolderPath();
@@ -173,7 +160,7 @@ public class TestPcRestProxy {
         return createdOrUpdatedTest;
     }
 
-    public com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test updateTest(int testId, com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test test) throws PcException, IOException {
+    public Test updateTest(int testId, Test test) throws PcException, IOException {
         System.out.println("updateTest: starts");
         com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test testUpdated = null;
         try {
@@ -215,55 +202,42 @@ public class TestPcRestProxy {
         }
         return 0;
     }
-
-
     //endregion
 
     //region create test from yaml
     //@Test
     public void verifyTestCreationOrUpdateViaXmlOrYaml() throws  PcException, Exception {
         try {
-
+            boolean useToken = true;
             setUp();
             testLogin();
-
             ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-
-
             //reading CreateTestFromContent.yaml and creating simplifiedTest.Content object
             File contentFile_61 = new File("src/test/resources/microfocus/adm/performancecenter/plugins/common/rest/".concat("CreateTestFromContent.yaml"));
             File contentFile_62 = new File("src/test/resources/microfocus/adm/performancecenter/plugins/common/rest/".concat("CreateTestFromContent_62.yaml"));
-
             SimplifiedContent content_61 = mapper.readValue(contentFile_61, SimplifiedContent.class);
             SimplifiedContent content_62 = mapper.readValue(contentFile_62, SimplifiedContent.class);
             System.out.println(ReflectionToStringBuilder.toString(content_61, MULTI_LINE_STYLE));
             System.out.println(ReflectionToStringBuilder.toString(content_62, MULTI_LINE_STYLE));
-
             //reading CreateTestFromSimplifiedTest.yaml and creating SimplifiedTest object
 //            File simplifiedTestFile = new File("src/test/resources/microfocus/adm/performancecenter/plugins/common/rest/".concat("CreateTestFromSimplifiedTest.yaml"));
 //            SimplifiedTest simplifiedTest = mapper.readValue(simplifiedTestFile, SimplifiedTest.class);
 //            System.out.println(ReflectionToStringBuilder.toString(simplifiedTest, MULTI_LINE_STYLE));
-
             //reading string and creating simplifiedTest.Content object
             String contentString_61 = fileToStringWithoutTrim("CreateTestFromContent.yaml");
 //            SimplifiedContent content2 =   mapper.readValue(contentString, SimplifiedContent.class);
 //            System.out.println(ReflectionToStringBuilder.toString(content2, MULTI_LINE_STYLE));
-
             //reading string and creating simplifiedTest.Content object
             String contentString_62 = fileToStringWithoutTrim("CreateTestFromContent_62.yaml");
 //            SimplifiedContent content2 =   mapper.readValue(contentString, SimplifiedContent.class);
 //            System.out.println(ReflectionToStringBuilder.toString(content2, MULTI_LINE_STYLE));
-
             //reading CreateTestFromSimplifiedTest.yaml and creating SimplifiedTest object
 //            String simplifiedTestString = fileToStringWithoutTrim("CreateTestFromSimplifiedTest.yaml");
 //            SimplifiedTest simplifiedTest2 = mapper.readValue(simplifiedTestString, SimplifiedTest.class);
 //            System.out.println(ReflectionToStringBuilder.toString(simplifiedTest2, MULTI_LINE_STYLE));
-
             //createUpdateDeleteTest(pcRestProxy_61, pcRestProxy_61.createOrUpdateTestFromYamlContent("verifyTestCreationOrUpdateViaXmlOrYaml", "Subject\\FolderCreatedBy_VerifyTestCreationOrUpdateViaXmlOrYaml", contentString_61));
             createUpdateDeleteTest(pcRestProxy, pcRestProxy.createOrUpdateTestFromYamlContent("verifyTestCreationOrUpdateViaXmlOrYaml", "Subject\\FolderCreatedBy_VerifyTestCreationOrUpdateViaXmlOrYaml", contentString_62));
-
             //createUpdateDeleteTest(pcRestProxy_61.createOrUpdateTestFromYamlTest(simplifiedTestString));
-
         } catch (Exception e) {
             System.out.println("verifyTestCreationOrUpdateViaXmlOrYaml failed. Exception = " + e.getMessage());
             throw e;
@@ -272,39 +246,36 @@ public class TestPcRestProxy {
         }
     }
 
-    private void createUpdateDeleteTest(PcRestProxy pcRestProxy, com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test createdOrUpdateTestFromYamlTest) throws IOException, PcException {
-        com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.Test test2 =
-                createdOrUpdateTestFromYamlTest;
-
+    private void createUpdateDeleteTest(PcRestProxy pcRestProxy, Test createdOrUpdateTestFromYamlTest) throws IOException, PcException {
+        Test test2 = createdOrUpdateTestFromYamlTest;
         System.out.println(String.format("the following test was created/updated successfully: id: %s, testname: %s, path: %s", test2.getID(), test2.getName(), test2.getTestFolderPath()));
-
         pcRestProxy.deleteTest(stringToInteger(test2.getID()));
-
         System.out.println(String.format("test ID %s deleted successfully", test2.getID()));
     }
-
-
     //endregion
 
     //region others
-
     private void testLogin() throws PcException, IOException {
         System.out.println("testLogin: starts");
         try {
             System.out.println("testLogin: Testing Login to PC server");
-            Assert.assertTrue("testLogin: Authenticate success", pcRestProxy.authenticate(PcRestProxyBase.ALM_USER_NAME, PcRestProxyBase.ALM_PASSWORD));
+            if(useToken) {
+                Assert.assertTrue("testLogin: Authenticate success", pcRestProxy.authenticate(PcRestProxyBase.LRE_ID_KEY, PcRestProxyBase.LRE_SECRET_KEY));
+            } else {
+                Assert.assertTrue("testLogin: Authenticate success", pcRestProxy.authenticate(PcRestProxyBase.ALM_USER_NAME, PcRestProxyBase.ALM_PASSWORD));
+            }
             //Assert.assertTrue("testLogin: Authenticate success", pcRestProxy.authenticate(PcRestProxyBase.ALM_USER_NAME, PcRestProxyBase.ALM_PASSWORD));
         }
         catch (PcException ex) {
             System.out.println("testLogin: Failed to Authenticate. PcException = " + ex.getMessage());
+            throw ex;
         }
         catch (IOException ex) {
             System.out.println("testLogin: Failed to Authenticate. IOException = " + ex.getMessage());
+            throw ex;
         }
         System.out.println("testLogin: ends");
     }
-
-
 
     public PcTestInstances getTestInstancesByTestId(int testID) {
         System.out.println("getTestInstancesByTestId: starts");
@@ -318,7 +289,6 @@ public class TestPcRestProxy {
         System.out.println("testGetAllTestSets: ends");
         return  null;
     }
-
 
     private void testGetAllTestSets () throws PcException, IOException {
         System.out.println("testGetAllTestSets: starts");
@@ -419,7 +389,6 @@ public class TestPcRestProxy {
         catch (PcException|IOException ex) {
             System.out.println("getTestPlan: getting TestPlanFolders failed. PcException = " + ex.getMessage());
         }
-
         System.out.println("getTestPlan: ends");
         return null;
     }
@@ -428,18 +397,14 @@ public class TestPcRestProxy {
     private PcTestPlanFolder CreateTestPlanFolder (String path, String name) throws PcException, IOException {
         System.out.println("CreateTestPlanFolder: starts");
         try {
-
             System.out.println(String.format("CreateTestPlanFolder: requesting to create Folder '%s' under folder path '%s'", path, name));
             PcTestPlanFolder pcTestPlanFolder = pcRestProxy.createTestPlanFolder(path, name);
             System.out.println(String.format("Folder created: Id = %s, Name = %s, ParentId = %s, FullPath = %s", pcTestPlanFolder.getId(), pcTestPlanFolder.getName(), pcTestPlanFolder.getParentId(), pcTestPlanFolder.getFullPath() ));
-
-
             return pcTestPlanFolder;
         }
         catch (PcException|IOException ex) {
             System.out.println("CreateTestPlanFolder: creating TestPlan Folder failed. PcException = " + ex.getMessage());
         }
-
         System.out.println("CreateTestPlanFolder: ends");
         return null;
     }
@@ -447,11 +412,9 @@ public class TestPcRestProxy {
     private boolean verifyTestPlanFolderExist(String path) {
         System.out.println("verifyTestPlanFolderExist: starts");
         try {
-
             System.out.println(String.format("verifyTestPlanFolderExist: Verifying if Folder '%s' exists", path));
             boolean testPlanfolderExist = pcRestProxy.verifyTestPlanFolderExist(path);
             System.out.println(String.format(testPlanfolderExist ? "verifyTestPlanFolderExist: Folder '%s' does exist" : "verifyTestPlanFolderExist: Folder '%s' does not exist", path));
-
             return testPlanfolderExist;
         }
         catch (PcException|IOException ex) {
@@ -478,7 +441,6 @@ public class TestPcRestProxy {
         System.out.println("verifyTestPlanFolderExist: ends");
         return pcTestPlanFolders;
     }
-
 
     private PcScript getScript (String testFolderPath, String scriptName) throws PcException, IOException {
         System.out.println("getScript: starts");
@@ -534,5 +496,4 @@ public class TestPcRestProxy {
         System.out.println("testLogout: ends");
     }
     //endregion
-
 }

@@ -31,6 +31,12 @@ public class PcScript {
         return Protocol;
     }
 
+    public String getLastModifyDate() { return LastModifyDate; }
+
+    public String getCreationDate() { return CreationDate; }
+
+    public boolean getIsScriptLocked() { return IsScriptLocked; }
+
     public static PcScript xmlToObject(String xml)
     {
         XStream xstream = new XStream();
@@ -48,5 +54,8 @@ public class PcScript {
     private String TestFolderPath;
     private String WorkingMode;
     private  String Protocol;
+    private String LastModifyDate;
+    private String CreationDate;
+    private boolean IsScriptLocked;
 
 }

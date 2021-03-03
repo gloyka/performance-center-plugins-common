@@ -17,6 +17,7 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.javavm.JavaVM;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.javavm.javaenvclasspaths.JavaEnvClassPaths;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.jmeter.JMeter;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.selenium.Selenium;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.log.Log;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.pacing.Pacing;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.pacing.startnewiteration.StartNewIteration;
@@ -42,6 +43,7 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplified
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.SimplifiedGroup;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.javavm.SimplifiedJavaVM;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.jmeter.SimplifiedJMeter;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.selenium.SimplifiedSelenium;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.pacing.SimplifiedPacing;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.thinktime.SimplifiedThinkTime;
 import com.microfocus.adm.performancecenter.plugins.common.rest.PcRestProxy;
@@ -348,6 +350,7 @@ public class ConvertContentStringToTest {
         Log log = null;
         JMeter jMeter = null;
         ThinkTime thinkTime = null;
+        Selenium selenium = null;
 
         if(simplifiedGroup.getRts() != null) {
             //region pacing
@@ -365,9 +368,13 @@ public class ConvertContentStringToTest {
             //region JMeter
             jMeter = defineJMeter(simplifiedGroup);
             //endregion
+
+            //region Selenium
+            selenium = defineSelenium(simplifiedGroup);
+            //endregion
         }
 
-        return new RTS(pacing, thinkTime, log, jMeter, javaVM);
+        return new RTS(pacing, thinkTime, log, jMeter, javaVM, selenium);
     }
 
     private String defineGlobalCommandLine(SimplifiedGroup simplifiedGroup) {
@@ -423,6 +430,16 @@ public class ConvertContentStringToTest {
                     simplifiedJMeter.getJmeter_max_port(),
                     useJMeterAdditionalProperties,
                     useJMeterAdditionalProperties ? simplifiedJMeter.getJmeter_additional_properties() : null);
+        }
+        return null;
+    }
+
+    private Selenium defineSelenium(SimplifiedGroup simplifiedGroup) {
+        SimplifiedSelenium simplifiedSelenium = simplifiedGroup.getRts().getSelenium();
+        if(simplifiedSelenium != null) {
+            return new Selenium(simplifiedSelenium.getJre_path(),
+                    simplifiedSelenium.getClass_path(),
+                    simplifiedSelenium.getTest_ng_files());
         }
         return null;
     }

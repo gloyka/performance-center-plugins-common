@@ -5,6 +5,7 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.log.Log;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.log.logoptions.LogOptions;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.pacing.startnewiteration.StartNewIteration;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.selenium.Selenium;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.thinktime.ThinkTime;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.pacing.Pacing;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.javavm.JavaVM;
@@ -41,26 +42,32 @@ public class RTS
     private JMeter JMeter;
 
     @XmlElement(required = false)
+    @XStreamAlias("Selenium")
+    private Selenium Selenium;
+
+    @XmlElement(required = false)
     @XStreamAlias("JavaVM")
     private JavaVM JavaVM;
 
     public RTS () {}
 
-    public RTS(String name, Pacing pacing, ThinkTime thinkTime, Log log, JMeter jMeter, JavaVM javaVM ) {
+    public RTS(String name, Pacing pacing, ThinkTime thinkTime, Log log, JMeter jMeter, JavaVM javaVM, Selenium selenium ) {
         setName(name);
         setPacing(pacing);
         setThinkTime(thinkTime);
         setLog(log);
         setJMeter(jMeter);
         setJavaVM(javaVM);
+        setSelenium(selenium);
     }
 
-    public RTS(Pacing pacing, ThinkTime thinkTime, Log log, JMeter jMeter, JavaVM javaVM ) {
+    public RTS(Pacing pacing, ThinkTime thinkTime, Log log, JMeter jMeter, JavaVM javaVM, Selenium selenium ) {
         setPacing(pacing);
         setThinkTime(thinkTime);
         setLog(log);
         setJMeter(jMeter);
         setJavaVM(javaVM);
+        setSelenium(selenium);
     }
 
     @Override
@@ -70,7 +77,8 @@ public class RTS
                 ", ThinkTimeTypeValues = " + ThinkTime +
                 ", LogTypeValues = " + Log +
                 ", JMeter = " + JMeter +
-                ", JavaVM = " + JavaVM + "}";
+                ", JavaVM = " + JavaVM +
+                ", Selenium = " + Selenium + "}";
     }
 
 
@@ -91,6 +99,7 @@ public class RTS
         xstream.aliasField("LogOptions", Log.class, "LogOptions");
         xstream.useAttributeFor(LogOptions.class, "Type");
         xstream.aliasField("JMeter", RTS.class, "JMeter");
+        xstream.aliasField("Selenium", RTS.class, "Selenium");
         xstream.aliasField("JavaVM", RTS.class, "JavaVM");
 
         //JavaEnvClassPaths
@@ -161,9 +170,15 @@ public class RTS
         return JMeter;
     }
 
-    public void setJMeter(JMeter JMeter) {
-        this.JMeter = JMeter;
+    public void setJMeter(JMeter jmeter) {
+        this.JMeter = jmeter;
     }
+
+    public Selenium getSelenium() {
+        return Selenium;
+    }
+
+    public void setSelenium(Selenium selenium) { this.Selenium = selenium; }
 
     public JavaVM getJavaVM() {
         return JavaVM;
