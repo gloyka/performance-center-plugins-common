@@ -48,6 +48,7 @@ public class TestPcRestProxy {
         try {
             setUp();
             testLogin();
+            getOpenedTimeslots();
             getTestInstancesByTestId(PcRestProxyBase.TEST_INSTANCE_ID);
             getTestPlanFolders();
             PcTestPlanFolder pcTestPlanFolder = CreateTestPlanFolder("Subject\\coucou", "scripts2");
@@ -64,7 +65,6 @@ public class TestPcRestProxy {
             if (scriptId > 0)
                 deleteScript(scriptId);
             testLogout();
-
         } catch (PcException ex) {
             System.out.println("verify failed. PcException = " + ex.getMessage());
         } catch (Exception ex) {
@@ -393,6 +393,18 @@ public class TestPcRestProxy {
         return null;
     }
 
+    private Timeslots getOpenedTimeslots () throws PcException, IOException {
+        System.out.println("getOpenedTimeslots: starts");
+        try {
+            Timeslots openedTimeslots = pcRestProxy.GetOpenTimeslotsByTestId(Integer.parseInt(PcRestProxyBase.TEST_ID));
+            openedTimeslots.getTimeslotsList().forEach((n) -> System.out.println(n.ID));
+        }
+        catch (PcException|IOException ex) {
+            System.out.println("getOpenedTimeslots: getting getOpenedTimeslots failed. PcException = " + ex.getMessage());
+        }
+        System.out.println("getOpenedTimeslots: ends");
+        return null;
+    }
 
     private PcTestPlanFolder CreateTestPlanFolder (String path, String name) throws PcException, IOException {
         System.out.println("CreateTestPlanFolder: starts");

@@ -56,7 +56,10 @@ import java.io.*;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.apache.commons.httpclient.HttpStatus.*;
 
 public class PcRestProxy {
@@ -78,6 +81,7 @@ public class PcRestProxy {
     protected static final String        CONTENT_TYPE_XML               = "application/xml";
     protected static final String        SCRIPTS_RESOURCE_NAME          = "Scripts";
     protected static final String        TESTPLAN_RESOURCE_NAME          = "testplan";
+    protected static final String        TIMESLOTS                      = "timeslots";
     protected static final List<Integer> validStatusCodes = Arrays.asList(SC_OK, SC_CREATED, SC_ACCEPTED, SC_NO_CONTENT);
 
     public static final String           PC_API_XMLNS                   = "http://www.hp.com/PC/REST/API";
@@ -184,10 +188,10 @@ public class PcRestProxy {
     }
 
     public PcRunResponse startRun(int testId, int testInstanceId, TimeslotDuration timeslotDuration,
-                                  String postRunAction, boolean vudsMode) throws PcException, ClientProtocolException, IOException {
+                                  String postRunAction, boolean vudsMode, int timeslot) throws PcException, ClientProtocolException, IOException {
         HttpPost startRunRequest = new HttpPost(String.format(baseURL + "/%s", RUNS_RESOURCE_NAME));
         startRunRequest.addHeader(RESTConstants.CONTENT_TYPE, CONTENT_TYPE_XML);
-        PcRunRequest runRequestData = new PcRunRequest(testId, testInstanceId, 0, timeslotDuration, postRunAction, vudsMode);
+        PcRunRequest runRequestData = new PcRunRequest(testId, testInstanceId, timeslot, timeslotDuration, postRunAction, vudsMode);
         startRunRequest.setEntity(new StringEntity(runRequestData.objectToXML(), org.apache.http.entity.ContentType.APPLICATION_XML));
         HttpResponse response = executeRequest(startRunRequest);
         String startRunResponse = IOUtils.toString(response.getEntity().getContent());
@@ -314,6 +318,17 @@ public class PcRestProxy {
         HttpResponse response = executeRequest(getRunEventLogRequest);
         String runEventLog = IOUtils.toString(response.getEntity().getContent());
         return PcRunEventLog.xmlToObject(runEventLog);
+    }
+
+    public Timeslots GetOpenTimeslotsByTestId(int testId) throws PcException,IOException{
+        String uri = String.format(baseURL + "/%s?%s=%s", TIMESLOTS,"query",URLEncoder.encode("{LoadTestID[" + testId + "]}","UTF-8"));
+        HttpGet getTimeslotsByTestID = new HttpGet(uri);
+        HttpResponse response = executeRequest(getTimeslotsByTestID);
+        String allTimeslots = IOUtils.toString(response.getEntity().getContent());
+        Timeslots timeslots = Timeslots.xmlToObject(allTimeslots);
+        ArrayList<Timeslot> openedTimeslots = new ArrayList<Timeslot>(timeslots.getTimeslotsList().stream().filter(timeslot -> "open".equals(timeslot.OpenStatus.toLowerCase())).collect(Collectors.toList()));
+        timeslots.setTimeslotsList(openedTimeslots);
+        return timeslots;
     }
 
     public boolean logout() throws PcException, ClientProtocolException, IOException {

@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.microfocus.adm.performancecenter</groupId>
     <artifactId>plugins-common</artifactId>
-    <version>1.1.9</version>
+    <version>1.1.10-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Performance Center plugins common</name>
     <description>The plugin is a common code for other plugins integrated with Performance Center.</description>
@@ -18,8 +18,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.9</maven.compiler.source>
+        <maven.compiler.target>1.9</maven.compiler.target>
         <java.level>8</java.level>
     </properties>
     <developers>
