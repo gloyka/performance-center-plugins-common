@@ -18,32 +18,31 @@ package com.microfocus.adm.performancecenter.plugins.common.pcentities;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 
-/**
- * Created by bemh on 6/1/2017.
- */
-public class PcTestInstance {
-    public int TestID;
-    public int TestSetID;
-    public int TestInstanceID;
+import java.util.ArrayList;
 
-    public static PcTestInstance xmlToObject(String xml)
+public class Timeslots {
+
+    private ArrayList<Timeslot> TimeslotsList;
+
+    public Timeslots() {
+        TimeslotsList = new ArrayList<Timeslot>();
+    }
+
+    public static Timeslots xmlToObject(String xml)
     {
         XStream xstream = new XStream();
         xstream = Helper.xstreamPermissions(xstream);
-        xstream.alias("TestInstanceID" , PcTestInstance.class);
-        xstream.setClassLoader(PcTestInstance.class.getClassLoader());
-        return (PcTestInstance)xstream.fromXML(xml);
+        xstream.alias("Timeslot" , Timeslot.class);
+        xstream.alias("Timeslots" , Timeslots.class);
+        xstream.addImplicitCollection(Timeslots.class, "TimeslotsList");
+        xstream.setClassLoader(Timeslots.class.getClassLoader());
+        return (Timeslots)xstream.fromXML(xml);
     }
 
-    public int getInstanceId() {
-        return TestInstanceID;
+    public ArrayList<Timeslot> getTimeslotsList() {
+        return TimeslotsList;
     }
-
-    public int getTestId(){
-        return TestID;
-    }
-
-    public int getTestSetId(){
-        return TestSetID;
+    public void setTimeslotsList(ArrayList<Timeslot> timeslotsList) {
+        TimeslotsList = timeslotsList;
     }
 }

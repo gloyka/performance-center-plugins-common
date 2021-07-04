@@ -7,18 +7,18 @@ import java.io.PrintStream;
 public interface PcRestProxyBase {
 
     public static final String SERVER_AND_PORT = "jenkins.server:8082";
-    public static final String LRE_SERVER_NAME_WITH_TENANT = "http://myd-hvm06319.swinfra.net/LRE/?tenant=fa128c06-5436-413d-9cfa-9f04bb738df3";
+    public static final String LRE_SERVER_NAME_WITH_TENANT = "http://myd-hvm00224.swinfra.net/LRE/?tenant=fa128c06-5436-413d-9cfa-9f04bb738df3";
     public static final String ALM_USER_NAME = "sa";
-    public static final String ALM_PASSWORD = "blabla";
-    public static final String LRE_ID_KEY = "I_KEY_f66d6ed7-e89a-487c-8dbe-26e95db2260a";
-    public static final String LRE_SECRET_KEY = "S_KEY_af86d17b-c2c4-4be0-8bbb-f1b2279fd6ed";
-    public static final String ALM_DOMAIN = "DEFAULT";
-    public static final String ALM_PROJECT = "MQM";
-    public static final String TEST_ID = "186";
-    public static final int TEST_INSTANCE_ID = 67;
+    public static final String ALM_PASSWORD = "saqa";
+    public static final String LRE_ID_KEY = "I_KEY_cff520f7-244d-4abd-983a-8c0baf1bb121";
+    public static final String LRE_SECRET_KEY = "S_KEY_7b839669-11d5-45ac-96f0-311b8e56bc6e";
+    public static final String ALM_DOMAIN = "DANIEL";
+    public static final String ALM_PROJECT = "daniel1";
+    public static final String TEST_ID = "176";
+    public static final int TEST_INSTANCE_ID = 8;
     public static final String TIMESLOT_DURATION_HOURS = "0";
     public static final String TIMESLOT_DURATION_MINUTES = "34";
-    public static final String TIMESLOT_ID = "56";
+    public static final String TIMESLOT_ID = "3178";
     public static final PostRunAction POST_RUN_ACTION = PostRunAction.COLLATE_AND_ANALYZE;
     public static final boolean VUDS_MODE = false;
     //public static final String DESCRIPTION = "Testing HPE Performance Center Jenkins plugin";
