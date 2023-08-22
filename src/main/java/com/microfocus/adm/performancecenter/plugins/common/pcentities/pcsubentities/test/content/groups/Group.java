@@ -1,15 +1,29 @@
+/**
+ * Copyright © 2023 Open Text Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups;
 
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.host.Host;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.RTS;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.javavm.javaenvclasspaths.JavaEnvClassPaths;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.log.Log;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.log.logoptions.LogOptions;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.pacing.startnewiteration.StartNewIteration;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.thinktime.ThinkTime;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.script.Script;
-import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.host.Host;
-import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.RTS ;
-
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.scheduler.Scheduler;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.scheduler.actions.Action;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.scheduler.actions.duration.Duration;
@@ -19,6 +33,7 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.scheduler.actions.stopvusers.StopVusers;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -26,9 +41,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="Group")
-public class Group
-{
+@XmlRootElement(name = "Group")
+public class Group {
     @XmlElement
     private String Name;
 
@@ -56,7 +70,8 @@ public class Group
     @XmlElement
     private Scheduler Scheduler;
 
-    public Group() {}
+    public Group() {
+    }
 
     public Group(String name, int vusers, Script script, ArrayList<Host> hosts, RTS RTS, String globalCommandLine, String commandLine, String globalRTS) {
         setName(name);
@@ -104,14 +119,44 @@ public class Group
         setScheduler(scheduler);
     }
 
-    public void setVusers(int value) {
-        this.Vusers = Common.integerToString(value);
-    }
+    public static Group xmlToObject(String xml) {
+        XStream xstream = new XStream();
+        xstream = Helper.xstreamPermissions(xstream);
+        xstream.alias("Group", Group.class);
 
-    public void setVusers(String value) {
-        this.Vusers = value;
-    }
+        xstream.aliasField("Pacing", RTS.class, "Pacing");
+        xstream.useAttributeFor(StartNewIteration.class, "Type");
+        xstream.aliasField("Type", StartNewIteration.class, "Type");
+        xstream.aliasField("ThinkTime", RTS.class, "ThinkTime");
+        xstream.useAttributeFor(ThinkTime.class, "Type");
+        xstream.aliasField("Type", ThinkTime.class, "Type");
+        xstream.aliasField("Log", RTS.class, "Log");
+        xstream.useAttributeFor(Log.class, "Type");
+        xstream.aliasField("LogOptions", Log.class, "LogOptions");
+        xstream.useAttributeFor(LogOptions.class, "Type");
+        xstream.aliasField("JMeter", RTS.class, "JMeter");
+        xstream.alias("Host", Host.class, Host.class);
+        xstream.useAttributeFor(StopVusers.class, "Type");
+        xstream.aliasField("Type", StopVusers.class, "Type");
+        xstream.useAttributeFor(StartVusers.class, "Type");
+        xstream.aliasField("Type", StartVusers.class, "Type");
+        xstream.useAttributeFor(StartGroup.class, "Type");
+        xstream.aliasField("Type", StartGroup.class, "Type");
+        xstream.useAttributeFor(Initialize.class, "Type");
+        xstream.aliasField("Type", Initialize.class, "Type");
+        xstream.useAttributeFor(Duration.class, "Type");
+        xstream.aliasField("Type", Duration.class, "Type");
+        xstream.alias("Action", Action.class, Action.class);
+        xstream.omitField(Script.class, "ProtocolType");
 
+        //JavaEnvClassPaths
+        xstream.alias("JavaEnvClassPath", String.class);
+        xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
+
+        xstream.setClassLoader(Group.class.getClassLoader());
+        xstream.setMode(XStream.NO_REFERENCES);
+        return (Group) xstream.fromXML(xml);
+    }
 
     @Override
     public String toString() {
@@ -174,46 +219,6 @@ public class Group
         return xstream.toXML(this);
     }
 
-    public static Group xmlToObject(String xml)
-    {
-        XStream xstream = new XStream();
-        xstream = Helper.xstreamPermissions(xstream);
-        xstream.alias("Group" , Group.class);
-
-        xstream.aliasField("Pacing", RTS.class, "Pacing");
-        xstream.useAttributeFor(StartNewIteration.class, "Type");
-        xstream.aliasField("Type", StartNewIteration.class, "Type");
-        xstream.aliasField("ThinkTime", RTS.class, "ThinkTime");
-        xstream.useAttributeFor(ThinkTime.class, "Type");
-        xstream.aliasField("Type", ThinkTime.class, "Type");
-        xstream.aliasField("Log", RTS.class, "Log");
-        xstream.useAttributeFor(Log.class, "Type");
-        xstream.aliasField("LogOptions", Log.class, "LogOptions");
-        xstream.useAttributeFor(LogOptions.class, "Type");
-        xstream.aliasField("JMeter", RTS.class, "JMeter");
-        xstream.alias("Host", Host.class,Host.class);
-        xstream.useAttributeFor(StopVusers.class, "Type");
-        xstream.aliasField("Type", StopVusers.class, "Type");
-        xstream.useAttributeFor(StartVusers.class, "Type");
-        xstream.aliasField("Type", StartVusers.class, "Type");
-        xstream.useAttributeFor(StartGroup.class, "Type");
-        xstream.aliasField("Type", StartGroup.class, "Type");
-        xstream.useAttributeFor(Initialize.class, "Type");
-        xstream.aliasField("Type", Initialize.class, "Type");
-        xstream.useAttributeFor(Duration.class, "Type");
-        xstream.aliasField("Type", Duration.class, "Type");
-        xstream.alias("Action", Action.class, Action.class);
-        xstream.omitField(Script.class, "ProtocolType" );
-
-        //JavaEnvClassPaths
-        xstream.alias("JavaEnvClassPath", String.class);
-        xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
-
-        xstream.setClassLoader(Group.class.getClassLoader());
-        xstream.setMode(XStream.NO_REFERENCES);
-        return (Group)xstream.fromXML(xml);
-    }
-
     public String getName() {
         return Name;
     }
@@ -224,6 +229,14 @@ public class Group
 
     public String getVusers() {
         return Vusers;
+    }
+
+    public void setVusers(int value) {
+        this.Vusers = Common.integerToString(value);
+    }
+
+    public void setVusers(String value) {
+        this.Vusers = value;
     }
 
     public Script getScript() {

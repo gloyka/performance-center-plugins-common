@@ -14,16 +14,15 @@ public enum HostNameLGValues {
         this.value = value;
     }
 
-    public String value() {
-        return value;
-    }
-
-
-    public static HostNameLGValues get(String val){
+    public static HostNameLGValues get(String val) {
         for (HostNameLGValues hostNameLGValues : HostNameLGValues.values()) {
             if (val.equals(hostNameLGValues.value()))
                 return hostNameLGValues;
         }
         return null;
+    }
+
+    public String value() {
+        return value;
     }
 }

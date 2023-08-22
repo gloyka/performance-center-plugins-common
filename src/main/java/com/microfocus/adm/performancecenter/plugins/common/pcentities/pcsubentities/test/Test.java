@@ -1,7 +1,21 @@
-
+/**
+ * Copyright © 2023 Open Text Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test;
+
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.Content;
-import javax.xml.bind.annotation.*;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.globalcommandline.GlobalCommandLine;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.globalcommandline.commandline.CommandLine;
@@ -32,10 +46,9 @@ import com.thoughtworks.xstream.XStream;
 
 //@XmlAccessorType(XmlAccessType.FIELD)
 //@XmlRootElement //(name="Test", namespace= PcRestProxy.PC_API_XMLNS)
-public class Test
-{
-    @XmlAttribute
-    private String xmlns=PcRestProxy.PC_API_XMLNS;
+public class Test {
+    //@XmlAttribute
+    private String xmlns = PcRestProxy.PC_API_XMLNS;
 
     //@XmlElement(required = false)
     private String ID;
@@ -55,10 +68,11 @@ public class Test
     //@XmlElement
     private Content Content;
 
-    public Test(){}
+    public Test() {
+    }
 
     //for parsing result
-    public Test(int id, String name, String testFolderPath, String createdBy, String lastModified, Content content  ){
+    public Test(int id, String name, String testFolderPath, String createdBy, String lastModified, Content content) {
         setID(id);
         setName(name);
         setTestFolderPath(testFolderPath);
@@ -68,19 +82,99 @@ public class Test
     }
 
     //for creation
-    public Test(String name, String testFolderPath, Content content  ){
+    public Test(String name, String testFolderPath, Content content) {
         setID(0);
         setName(name);
         setTestFolderPath(testFolderPath);
         setContent(content);
     }
 
-    public void setID(int id) {
-        this.ID = Common.integerToString(id);
+    public static Test xmlToObject(String xml) {
+        XStream xstream = new XStream();
+        xstream = Helper.xstreamPermissions(xstream);
+        xstream.alias("Test", Test.class);
+        xstream.useAttributeFor(Test.class, "xmlns");
+
+        //Content
+        xstream.omitField(Content.class, "xmlns");
+        xstream.alias("MonitorProfile", MonitorProfile.class, MonitorProfile.class);
+        xstream.alias("Group", Group.class, Group.class);
+        xstream.alias("MonitorOFW", MonitorOFW.class, MonitorOFW.class);
+
+
+        //GlobalCommandLine
+        xstream.addImplicitCollection(GlobalCommandLine.class, "CommandLine");
+        xstream.alias("CommandLine", CommandLine.class, CommandLine.class);
+
+        //GlobalRTS
+        xstream.addImplicitCollection(GlobalRTS.class, "RTS");
+        xstream.alias("RTS", RTS.class, RTS.class);
+        xstream.useAttributeFor(StartNewIteration.class, "Type");
+        xstream.aliasField("Type", StartNewIteration.class, "Type");
+        xstream.aliasField("Log", RTS.class, "Log");
+        xstream.useAttributeFor(ThinkTime.class, "Type");
+        xstream.aliasField("Type", ThinkTime.class, "Type");
+        xstream.useAttributeFor(Log.class, "Type");
+        xstream.aliasField("LogOptions", Log.class, "LogOptions");
+        xstream.useAttributeFor(LogOptions.class, "Type");
+
+        //Groups
+        xstream.aliasField("Pacing", RTS.class, "Pacing");
+        xstream.useAttributeFor(StartNewIteration.class, "Type");
+        xstream.aliasField("Type", StartNewIteration.class, "Type");
+        xstream.aliasField("ThinkTime", RTS.class, "ThinkTime");
+        xstream.useAttributeFor(ThinkTime.class, "Type");
+        xstream.aliasField("Type", ThinkTime.class, "Type");
+        xstream.aliasField("Log", RTS.class, "Log");
+        xstream.useAttributeFor(Log.class, "Type");
+        xstream.aliasField("LogOptions", Log.class, "LogOptions");
+        xstream.useAttributeFor(LogOptions.class, "Type");
+        xstream.aliasField("JMeter", RTS.class, "JMeter");
+        xstream.alias("Host", Host.class, Host.class);
+        xstream.useAttributeFor(StopVusers.class, "Type");
+        xstream.aliasField("Type", StopVusers.class, "Type");
+        xstream.useAttributeFor(StartVusers.class, "Type");
+        xstream.aliasField("Type", StartVusers.class, "Type");
+        xstream.useAttributeFor(StartGroup.class, "Type");
+        xstream.aliasField("Type", StartGroup.class, "Type");
+        xstream.useAttributeFor(Initialize.class, "Type");
+        xstream.aliasField("Type", Initialize.class, "Type");
+        xstream.useAttributeFor(Duration.class, "Type");
+        xstream.aliasField("Type", Duration.class, "Type");
+        xstream.alias("Action", Action.class, Action.class);
+        xstream.omitField(Script.class, "ProtocolType");
+
+        //JavaEnvClassPaths
+        xstream.alias("JavaEnvClassPath", String.class);
+        xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
+
+        //SimplifiedScheduler
+        xstream.useAttributeFor(StopVusers.class, "Type");
+        xstream.aliasField("Type", StopVusers.class, "Type");
+        xstream.useAttributeFor(StartVusers.class, "Type");
+        xstream.aliasField("Type", StartVusers.class, "Type");
+        xstream.useAttributeFor(StartGroup.class, "Type");
+        xstream.aliasField("Type", StartGroup.class, "Type");
+        xstream.useAttributeFor(Initialize.class, "Type");
+        xstream.aliasField("Type", Initialize.class, "Type");
+        xstream.useAttributeFor(Duration.class, "Type");
+        xstream.aliasField("Type", Duration.class, "Type");
+        xstream.alias("Action", Action.class, Action.class);
+
+        //SLA
+        xstream.alias("Transaction", Transaction.class, Transaction.class);
+        xstream.alias("Between", Between.class, Between.class);
+        xstream.alias("Threshold", String.class);
+        xstream.addImplicitCollection(BetweenThreshold.class, "Threshold", "Threshold", String.class);
+
+        xstream.setClassLoader(Test.class.getClassLoader());
+        xstream.setMode(XStream.NO_REFERENCES);
+        Test test = (Test) xstream.fromXML(xml);
+        return test;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "Test{" + "ID = " + ID +
                 ", Name = " + Name +
                 ", TestFolderPath = " + TestFolderPath +
@@ -103,17 +197,17 @@ public class Test
 
         //Content
         xstream.omitField(Content.class, "xmlns");
-        xstream.alias("MonitorProfile", MonitorProfile.class,MonitorProfile.class);
-        xstream.alias("Group", Group.class,Group.class);
+        xstream.alias("MonitorProfile", MonitorProfile.class, MonitorProfile.class);
+        xstream.alias("Group", Group.class, Group.class);
         xstream.alias("MonitorOFW", MonitorOFW.class, MonitorOFW.class);
 
         //GlobalCommandLine
         xstream.addImplicitCollection(GlobalCommandLine.class, "CommandLine");
-        xstream.alias("CommandLine", CommandLine.class,CommandLine.class);
+        xstream.alias("CommandLine", CommandLine.class, CommandLine.class);
 
         //GlobalRTS
         xstream.addImplicitCollection(GlobalRTS.class, "RTS");
-        xstream.alias("RTS", RTS.class,RTS.class);
+        xstream.alias("RTS", RTS.class, RTS.class);
         xstream.useAttributeFor(StartNewIteration.class, "Type");
         xstream.aliasField("Type", StartNewIteration.class, "Type");
         xstream.aliasField("Log", RTS.class, "Log");
@@ -135,7 +229,7 @@ public class Test
         xstream.aliasField("LogOptions", Log.class, "LogOptions");
         xstream.useAttributeFor(LogOptions.class, "Type");
         xstream.aliasField("JMeter", RTS.class, "JMeter");
-        xstream.alias("Host", Host.class,Host.class);
+        xstream.alias("Host", Host.class, Host.class);
         xstream.useAttributeFor(StopVusers.class, "Type");
         xstream.aliasField("Type", StopVusers.class, "Type");
         xstream.useAttributeFor(StartVusers.class, "Type");
@@ -166,98 +260,13 @@ public class Test
         xstream.alias("Action", Action.class, Action.class);
 
         //SLA
-        xstream.alias("Transaction", Transaction.class,Transaction.class);
-        xstream.alias("Between", Between.class,Between.class);
+        xstream.alias("Transaction", Transaction.class, Transaction.class);
+        xstream.alias("Between", Between.class, Between.class);
         xstream.alias("Threshold", String.class);
         xstream.addImplicitCollection(BetweenThreshold.class, "Threshold", "Threshold", String.class);
 
         xstream.setMode(XStream.NO_REFERENCES);
         return xstream.toXML(this);
-    }
-
-    public static Test xmlToObject(String xml)
-    {
-        XStream xstream = new XStream();
-        xstream = Helper.xstreamPermissions(xstream);
-        xstream.alias("Test" , Test.class);
-        xstream.useAttributeFor(Test.class, "xmlns");
-
-        //Content
-        xstream.omitField(Content.class, "xmlns");
-        xstream.alias("MonitorProfile", MonitorProfile.class,MonitorProfile.class);
-        xstream.alias("Group", Group.class,Group.class);
-        xstream.alias("MonitorOFW", MonitorOFW.class, MonitorOFW.class);
-
-
-        //GlobalCommandLine
-        xstream.addImplicitCollection(GlobalCommandLine.class, "CommandLine");
-        xstream.alias("CommandLine", CommandLine.class,CommandLine.class);
-
-        //GlobalRTS
-        xstream.addImplicitCollection(GlobalRTS.class, "RTS");
-        xstream.alias("RTS", RTS.class,RTS.class);
-        xstream.useAttributeFor(StartNewIteration.class, "Type");
-        xstream.aliasField("Type", StartNewIteration.class, "Type");
-        xstream.aliasField("Log", RTS.class, "Log");
-        xstream.useAttributeFor(ThinkTime.class, "Type");
-        xstream.aliasField("Type", ThinkTime.class, "Type");
-        xstream.useAttributeFor(Log.class, "Type");
-        xstream.aliasField("LogOptions", Log.class, "LogOptions");
-        xstream.useAttributeFor(LogOptions.class, "Type");
-
-        //Groups
-        xstream.aliasField("Pacing", RTS.class, "Pacing");
-        xstream.useAttributeFor(StartNewIteration.class, "Type");
-        xstream.aliasField("Type", StartNewIteration.class, "Type");
-        xstream.aliasField("ThinkTime", RTS.class, "ThinkTime");
-        xstream.useAttributeFor(ThinkTime.class, "Type");
-        xstream.aliasField("Type", ThinkTime.class, "Type");
-        xstream.aliasField("Log", RTS.class, "Log");
-        xstream.useAttributeFor(Log.class, "Type");
-        xstream.aliasField("LogOptions", Log.class, "LogOptions");
-        xstream.useAttributeFor(LogOptions.class, "Type");
-        xstream.aliasField("JMeter", RTS.class, "JMeter");
-        xstream.alias("Host", Host.class,Host.class);
-        xstream.useAttributeFor(StopVusers.class, "Type");
-        xstream.aliasField("Type", StopVusers.class, "Type");
-        xstream.useAttributeFor(StartVusers.class, "Type");
-        xstream.aliasField("Type", StartVusers.class, "Type");
-        xstream.useAttributeFor(StartGroup.class, "Type");
-        xstream.aliasField("Type", StartGroup.class, "Type");
-        xstream.useAttributeFor(Initialize.class, "Type");
-        xstream.aliasField("Type", Initialize.class, "Type");
-        xstream.useAttributeFor(Duration.class, "Type");
-        xstream.aliasField("Type", Duration.class, "Type");
-        xstream.alias("Action", Action.class, Action.class);
-        xstream.omitField(Script.class, "ProtocolType" );
-
-        //JavaEnvClassPaths
-        xstream.alias("JavaEnvClassPath", String.class);
-        xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
-
-        //SimplifiedScheduler
-        xstream.useAttributeFor(StopVusers.class, "Type");
-        xstream.aliasField("Type", StopVusers.class, "Type");
-        xstream.useAttributeFor(StartVusers.class, "Type");
-        xstream.aliasField("Type", StartVusers.class, "Type");
-        xstream.useAttributeFor(StartGroup.class, "Type");
-        xstream.aliasField("Type", StartGroup.class, "Type");
-        xstream.useAttributeFor(Initialize.class, "Type");
-        xstream.aliasField("Type", Initialize.class, "Type");
-        xstream.useAttributeFor(Duration.class, "Type");
-        xstream.aliasField("Type", Duration.class, "Type");
-        xstream.alias("Action", Action.class, Action.class);
-
-        //SLA
-        xstream.alias("Transaction", Transaction.class,Transaction.class);
-        xstream.alias("Between", Between.class,Between.class);
-        xstream.alias("Threshold", String.class);
-        xstream.addImplicitCollection(BetweenThreshold.class, "Threshold", "Threshold", String.class);
-
-        xstream.setClassLoader(Test.class.getClassLoader());
-        xstream.setMode(XStream.NO_REFERENCES);
-        Test test = (Test)xstream.fromXML(xml);
-        return test;
     }
 
     public String getXmlns() {
@@ -270,6 +279,10 @@ public class Test
 
     public String getID() {
         return ID;
+    }
+
+    public void setID(int id) {
+        this.ID = Common.integerToString(id);
     }
 
     public void setID(String ID) {

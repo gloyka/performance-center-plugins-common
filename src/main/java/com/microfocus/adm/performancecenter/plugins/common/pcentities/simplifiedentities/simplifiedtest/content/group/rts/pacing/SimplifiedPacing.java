@@ -1,3 +1,18 @@
+/**
+ * Copyright © 2023 Open Text Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.pacing;
 
 
@@ -37,8 +52,14 @@ public class SimplifiedPacing {
 //        this.delay_random_range = delay_random_range;
 //    }
 
-    public void setType (String type) {
-        this.type = type;
+    public static SimplifiedPacing xmlToObject(String xml) {
+        XStream xstream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("_-", "_")));
+        xstream = Helper.xstreamPermissions(xstream);
+        xstream.alias("SimplifiedPacing", SimplifiedPacing.class);
+
+        xstream.setClassLoader(SimplifiedPacing.class.getClassLoader());
+        xstream.setMode(XStream.NO_REFERENCES);
+        return (SimplifiedPacing) xstream.fromXML(xml);
     }
 
 //    public void setType (SimplifiedPacingTypeValues type) {
@@ -69,16 +90,6 @@ public class SimplifiedPacing {
         return xstream.toXML(this);
     }
 
-    public static SimplifiedPacing xmlToObject(String xml) {
-        XStream xstream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("_-", "_")));
-        xstream = Helper.xstreamPermissions(xstream);
-        xstream.alias("SimplifiedPacing" , SimplifiedPacing.class);
-
-        xstream.setClassLoader(SimplifiedPacing.class.getClassLoader());
-        xstream.setMode(XStream.NO_REFERENCES);
-        return (SimplifiedPacing)xstream.fromXML(xml);
-    }
-
     public int getNumber_of_iterations() {
         return number_of_iterations;
     }
@@ -89,6 +100,10 @@ public class SimplifiedPacing {
 
     public String getType() {
         return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public int getDelay() {

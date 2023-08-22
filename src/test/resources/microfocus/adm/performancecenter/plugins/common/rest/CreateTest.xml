@@ -17,7 +17,7 @@
                 <Name>kilimanjaro_tc_1</Name>
                 <Vusers>1</Vusers>
                 <Script>
-                    <ID>662</ID>
+                    <ID>204</ID>
                 </Script>
                 <RTS>
                     <Pacing>
@@ -33,10 +33,10 @@
                 </RTS>
             </Group>
             <Group>
-                <Name>kilimanjaro_tc_2</Name>
+                <Name>30_transactions_Copy_1</Name>
                 <Vusers>1</Vusers>
                 <Script>
-                    <ID>871</ID>
+                    <ID>176</ID>
                 </Script>
                 <RTS>
                     <Pacing>
@@ -65,16 +65,12 @@
                 </Action>
             </Actions>
         </Scheduler>
-        <Diagnostics>
-            <Enabled>false</Enabled>
-            <VusersPercentage>1</VusersPercentage>
-            <EnableWebPage>false</EnableWebPage>
-            <J2EEDotNet>
-                <Enabled>false</Enabled>
-                <Probes></Probes>
-                <IsMediatorOFW>false</IsMediatorOFW>
-                <MonitorServerRequests>false</MonitorServerRequests>
-            </J2EEDotNet>
-        </Diagnostics>
+        <Diagnostics/>
+        <AutomaticTrending>
+            <ReportId>5</ReportId>
+            <MaxRunsInReport>4</MaxRunsInReport>
+            <TrendRangeType>CompleteRun</TrendRangeType>
+            <MaxRunsReachedOption>DeleteFirstSetNewBaseline</MaxRunsReachedOption>
+        </AutomaticTrending>
     </Content>
 </Test>

@@ -1,15 +1,31 @@
+/**
+ * Copyright © 2023 Open Text Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.goalscheduler.goalhitspersecond;
 
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="GoalHitsPerSecond")
+@XmlRootElement(name = "GoalHitsPerSecond")
 public class GoalHitsPerSecond {
 
     @XmlElement
@@ -22,7 +38,8 @@ public class GoalHitsPerSecond {
     private String MaxVusers;
 
 
-    public GoalHitsPerSecond() { }
+    public GoalHitsPerSecond() {
+    }
 
     public GoalHitsPerSecond(int targetHitsPerSecond, int minVusers, int maxVusers) {
         setTargetHitsPerSecond(targetHitsPerSecond);
@@ -30,16 +47,13 @@ public class GoalHitsPerSecond {
         setMaxVusers(maxVusers);
     }
 
-    public void setTargetHitsPerSecond(int targetHitsPerSecond) {
-            this.TargetHitsPerSecond = Common.integerToString(targetHitsPerSecond);
-    }
-
-    public void setMinVusers(int minVusers) {
-            this.MinVusers = Common.integerToString(minVusers);
-    }
-
-    public void setMaxVusers(int maxVusers) {
-            this.MaxVusers = Common.integerToString(maxVusers);
+    public static GoalHitsPerSecond xmlToObject(String xml) {
+        XStream xstream = new XStream();
+        xstream = Helper.xstreamPermissions(xstream);
+        xstream.alias("GoalHitsPerSecond", GoalHitsPerSecond.class);
+        xstream.setClassLoader(GoalHitsPerSecond.class.getClassLoader());
+        xstream.setMode(XStream.NO_REFERENCES);
+        return (GoalHitsPerSecond) xstream.fromXML(xml);
     }
 
     @Override
@@ -62,18 +76,12 @@ public class GoalHitsPerSecond {
         return xstream.toXML(this);
     }
 
-    public static GoalHitsPerSecond xmlToObject(String xml) {
-        XStream xstream = new XStream();
-        xstream = Helper.xstreamPermissions(xstream);
-        xstream.alias("GoalHitsPerSecond" , GoalHitsPerSecond.class);
-        xstream.setClassLoader(GoalHitsPerSecond.class.getClassLoader());
-        xstream.setMode(XStream.NO_REFERENCES);
-        return (GoalHitsPerSecond)xstream.fromXML(xml);
-    }
-
-
     public String getTargetHitsPerSecond() {
         return TargetHitsPerSecond;
+    }
+
+    public void setTargetHitsPerSecond(int targetHitsPerSecond) {
+        this.TargetHitsPerSecond = Common.integerToString(targetHitsPerSecond);
     }
 
     public void setTargetHitsPerSecond(String targetHitsPerSecond) {
@@ -84,12 +92,20 @@ public class GoalHitsPerSecond {
         return MinVusers;
     }
 
+    public void setMinVusers(int minVusers) {
+        this.MinVusers = Common.integerToString(minVusers);
+    }
+
     public void setMinVusers(String minVusers) {
         MinVusers = minVusers;
     }
 
     public String getMaxVusers() {
         return MaxVusers;
+    }
+
+    public void setMaxVusers(int maxVusers) {
+        this.MaxVusers = Common.integerToString(maxVusers);
     }
 
     public void setMaxVusers(String maxVusers) {

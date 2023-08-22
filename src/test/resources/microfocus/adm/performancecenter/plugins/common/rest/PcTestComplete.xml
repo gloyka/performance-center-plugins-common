@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Test xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mysite.com/abc.xsd">
+<Test>
     <ID>2</ID>
     <Name>kuku</Name>
     <TestFolderPath>Subject\mypctests</TestFolderPath>

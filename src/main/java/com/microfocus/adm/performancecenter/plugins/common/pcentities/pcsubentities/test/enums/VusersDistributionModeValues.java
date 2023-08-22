@@ -11,16 +11,15 @@ public enum VusersDistributionModeValues {
         this.value = value;
     }
 
-    public String value() {
-        return value;
-    }
-
-
-    public static VusersDistributionModeValues get(String val){
+    public static VusersDistributionModeValues get(String val) {
         for (VusersDistributionModeValues vusersDistributionModeValues : VusersDistributionModeValues.values()) {
             if (val.equals(vusersDistributionModeValues.value()))
                 return vusersDistributionModeValues;
         }
         return null;
+    }
+
+    public String value() {
+        return value;
     }
 }

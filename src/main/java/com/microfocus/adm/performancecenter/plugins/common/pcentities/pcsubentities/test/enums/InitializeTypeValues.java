@@ -12,17 +12,16 @@ public enum InitializeTypeValues {
         this.value = value;
     }
 
-    public String value() {
-        return value;
-    }
-
-
-    public static InitializeTypeValues get(String val){
+    public static InitializeTypeValues get(String val) {
         for (InitializeTypeValues initializeTypeValues : InitializeTypeValues.values()) {
             if (val.equals(initializeTypeValues.value()))
                 return initializeTypeValues;
         }
         return null;
+    }
+
+    public String value() {
+        return value;
     }
 
 }

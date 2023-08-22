@@ -12,17 +12,16 @@ public enum LogTypeValues {
         this.value = value;
     }
 
-    public String value() {
-        return value;
-    }
-
-
-    public static LogTypeValues get(String val){
+    public static LogTypeValues get(String val) {
         for (LogTypeValues logTypeValues : LogTypeValues.values()) {
             if (val.equals(logTypeValues.value()))
                 return logTypeValues;
         }
         return null;
+    }
+
+    public String value() {
+        return value;
     }
 
 

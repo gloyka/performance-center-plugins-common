@@ -1,20 +1,23 @@
-controller: "[test]controller1"
-lg_amount: 3
+controller: "danieldb.aws.swinfra.net"
+#lg_amount: 3
 group:
-  - group_name: group1
+  - group_name: kilimanjaro_tc
     vusers: 20
-    script_id: 5
-    script_path: "scripts\\folder1\\scriptname"
+    #script_id: 5
+    script_path: "scripts\\kilimanjaro_tc"
     lg_name:
       - LG1
       - LG2
-  - group_name: group1
+  - group_name: 90_Web_MessagesPrint
     vusers: 20
-    script_id: 5
-    script_path: "scripts\\folder1\\scriptname"
+    #script_id: 5
+    script_path: "scripts\\90_Web_MessagesPrint"
     lg_name:
       - LG1
       - LG2
 scheduler:
-    rampup: 300
-    duration: 600
+  rampup: 300
+  duration: 600
+automatic_trending:
+  report_id: 5
+  max_runs_in_report: 8

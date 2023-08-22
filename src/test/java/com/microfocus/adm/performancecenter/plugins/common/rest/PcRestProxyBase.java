@@ -1,3 +1,18 @@
+/**
+ * Copyright © 2023 Open Text Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.microfocus.adm.performancecenter.plugins.common.rest;
 
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.PostRunAction;
@@ -7,24 +22,24 @@ import java.io.PrintStream;
 public interface PcRestProxyBase {
 
     public static final String SERVER_AND_PORT = "jenkins.server:8082";
-    public static final String LRE_SERVER_NAME_WITH_TENANT = "http://myd-hvm00224.swinfra.net/LRE/?tenant=fa128c06-5436-413d-9cfa-9f04bb738df3";
+    public static final String LRE_SERVER_NAME_WITH_TENANT = "http://mylreserver/LRE/?tenant=fa128c06-5436-413d-9cfa-9f04bb738df3";
     public static final String ALM_USER_NAME = "sa";
     public static final String ALM_PASSWORD = "saqa";
-    public static final String LRE_ID_KEY = "I_KEY_cff520f7-244d-4abd-983a-8c0baf1bb121";
-    public static final String LRE_SECRET_KEY = "S_KEY_7b839669-11d5-45ac-96f0-311b8e56bc6e";
+    public static final String LRE_ID_KEY = "I_KEY_64e99e22-4fa7-436b-a629-5387a67aa66d";
+    public static final String LRE_SECRET_KEY = "S_KEY_80f55a6f-01aa-4e2c-9262-af634b8aa2bc";
     public static final String ALM_DOMAIN = "DANIEL";
-    public static final String ALM_PROJECT = "daniel1";
-    public static final String TEST_ID = "176";
+    public static final String ALM_PROJECT = "proj1";
+    public static final String TEST_ID = "175";
     public static final int TEST_INSTANCE_ID = 8;
     public static final String TIMESLOT_DURATION_HOURS = "0";
     public static final String TIMESLOT_DURATION_MINUTES = "34";
-    public static final String TIMESLOT_ID = "3178";
+    public static final String TIMESLOT_ID = "1097";
     public static final PostRunAction POST_RUN_ACTION = PostRunAction.COLLATE_AND_ANALYZE;
     public static final boolean VUDS_MODE = false;
     //public static final String DESCRIPTION = "Testing HPE Performance Center Jenkins plugin";
-    public static final String RUN_ID = "7";
+    public static final String RUN_ID = "13";
     public static final String RUN_ID_WAIT = "8";
-    public static final String REPORT_ID = "9";
+    public static final String REPORT_ID = "1058";
     public static final String STOP_MODE = "stop";
     public static final String WEB_PROTOCOL = "http";
     public static final String WEB_PROTOCOL_62 = "http";
@@ -39,9 +54,7 @@ public interface PcRestProxyBase {
     public static final boolean Overwrite = true;
     public static final boolean RuntimeOnly = true;
     public static final boolean KeepCheckedOut = false;
-    public static final String scriptPath = "C:\\PCScript\\kilimanjaro.zip";
-
-
+    public static final String scriptPath = "C:\\temp\\kilimanjaro.zip";
 
 
     public static final String runResponseEntity = "<Run xmlns=\"http://www.hp.com/PC/REST/API\">" +

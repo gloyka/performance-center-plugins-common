@@ -12,15 +12,15 @@ public enum ThinkTimeTypeValues {
         this.value = value;
     }
 
-    public String value() {
-        return value;
-    }
-
-    public static ThinkTimeTypeValues get(String val){
+    public static ThinkTimeTypeValues get(String val) {
         for (ThinkTimeTypeValues ThinkTimeTypeValues : ThinkTimeTypeValues.values()) {
             if (val.equals(ThinkTimeTypeValues.value()))
                 return ThinkTimeTypeValues;
         }
         return null;
+    }
+
+    public String value() {
+        return value;
     }
 }

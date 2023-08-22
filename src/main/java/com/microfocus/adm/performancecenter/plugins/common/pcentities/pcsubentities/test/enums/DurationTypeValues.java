@@ -12,17 +12,16 @@ public enum DurationTypeValues {
         this.value = value;
     }
 
-    public String value() {
-        return value;
-    }
-
-
-    public static DurationTypeValues get(String val){
+    public static DurationTypeValues get(String val) {
         for (DurationTypeValues durationTypeValues : DurationTypeValues.values()) {
             if (val.equals(durationTypeValues.value()))
                 return durationTypeValues;
         }
         return null;
+    }
+
+    public String value() {
+        return value;
     }
 
 }

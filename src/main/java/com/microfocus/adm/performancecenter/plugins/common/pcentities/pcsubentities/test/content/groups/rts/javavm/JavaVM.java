@@ -1,16 +1,31 @@
+/**
+ * Copyright © 2023 Open Text Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.javavm;
 
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.javavm.javaenvclasspaths.JavaEnvClassPaths;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="JavaVM")
+@XmlRootElement(name = "JavaVM")
 public class JavaVM {
 
 
@@ -32,7 +47,8 @@ public class JavaVM {
     @XmlElement
     private boolean EnableClassLoaderPerVuser;
 
-    public JavaVM() {}
+    public JavaVM() {
+    }
 
     public JavaVM(JavaEnvClassPaths javaEnvClassPaths, boolean userSpecifiedJdk, String jdkHome, String javaVmParameters, boolean useXboot, boolean enableClassLoaderPerVuser) {
         this.setJavaEnvClassPaths(javaEnvClassPaths);
@@ -43,6 +59,19 @@ public class JavaVM {
         setEnableClassLoaderPerVuser(enableClassLoaderPerVuser);
     }
 
+    public static JavaVM xmlToObject(String xml) {
+        XStream xstream = new XStream();
+        xstream = Helper.xstreamPermissions(xstream);
+        xstream.alias("JavaVM", JavaVM.class);
+
+        //JavaEnvClassPaths
+        xstream.alias("JavaEnvClassPath", String.class);
+        xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
+
+        xstream.setClassLoader(JavaVM.class.getClassLoader());
+        xstream.setMode(XStream.NO_REFERENCES);
+        return (JavaVM) xstream.fromXML(xml);
+    }
 
     @Override
     public String toString() {
@@ -71,20 +100,6 @@ public class JavaVM {
         xstream.aliasField("JavaVM", JavaVM.class, "JavaVM");
         xstream.setMode(XStream.NO_REFERENCES);
         return xstream.toXML(this);
-    }
-
-    public static JavaVM xmlToObject(String xml) {
-        XStream xstream = new XStream();
-        xstream = Helper.xstreamPermissions(xstream);
-        xstream.alias("JavaVM" , JavaVM.class);
-
-        //JavaEnvClassPaths
-        xstream.alias("JavaEnvClassPath", String.class);
-        xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
-
-        xstream.setClassLoader(JavaVM.class.getClassLoader());
-        xstream.setMode(XStream.NO_REFERENCES);
-        return (JavaVM)xstream.fromXML(xml);
     }
 
     public JavaEnvClassPaths getJavaEnvClassPaths() {

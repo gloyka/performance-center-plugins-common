@@ -1,3 +1,18 @@
+/**
+ * Copyright © 2023 Open Text Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.javavm;
 
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
@@ -17,7 +32,8 @@ public class SimplifiedJavaVM {
 
     private String[] java_env_class_paths;
 
-    public SimplifiedJavaVM() { }
+    public SimplifiedJavaVM() {
+    }
 
     public SimplifiedJavaVM(String jdk_home, String java_vm_parameters, boolean use_xboot, boolean enable_classloader_per_vuser, String[] java_env_class_paths) {
         this.jdk_home = jdk_home;
@@ -27,6 +43,18 @@ public class SimplifiedJavaVM {
         this.java_env_class_paths = java_env_class_paths;
     }
 
+    public static SimplifiedJavaVM xmlToObject(String xml) {
+        XStream xstream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("_-", "_")));
+        xstream = Helper.xstreamPermissions(xstream);
+        xstream.alias("SimplifiedJavaVM", SimplifiedJavaVM.class);
+
+        xstream.alias("java_env_class_paths", String.class);
+        xstream.addImplicitCollection(SimplifiedJavaVM.class, "java_env_class_paths", "java_env_class_paths", String.class);
+
+        xstream.setClassLoader(SimplifiedJavaVM.class.getClassLoader());
+        xstream.setMode(XStream.NO_REFERENCES);
+        return (SimplifiedJavaVM) xstream.fromXML(xml);
+    }
 
     @Override
     public String toString() {
@@ -38,7 +66,6 @@ public class SimplifiedJavaVM {
                 ", " + "java_env_class_paths = " + java_env_class_paths +
                 "}";
     }
-
 
     public String objectToXML() {
         XStream xstream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("_-", "_")));
@@ -55,19 +82,6 @@ public class SimplifiedJavaVM {
         xstream.aliasField("SimplifiedJavaVM", SimplifiedJavaVM.class, "SimplifiedJavaVM");
         xstream.setMode(XStream.NO_REFERENCES);
         return xstream.toXML(this);
-    }
-
-    public static SimplifiedJavaVM xmlToObject(String xml) {
-        XStream xstream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("_-", "_")));
-        xstream = Helper.xstreamPermissions(xstream);
-        xstream.alias("SimplifiedJavaVM" , SimplifiedJavaVM.class);
-
-        xstream.alias("java_env_class_paths", String.class);
-        xstream.addImplicitCollection(SimplifiedJavaVM.class, "java_env_class_paths", "java_env_class_paths", String.class);
-
-        xstream.setClassLoader(SimplifiedJavaVM.class.getClassLoader());
-        xstream.setMode(XStream.NO_REFERENCES);
-        return (SimplifiedJavaVM)xstream.fromXML(xml);
     }
 
     public String getJdk_home() {

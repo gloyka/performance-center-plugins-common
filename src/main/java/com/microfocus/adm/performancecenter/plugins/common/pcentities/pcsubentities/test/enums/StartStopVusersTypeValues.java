@@ -10,17 +10,16 @@ public enum StartStopVusersTypeValues {
         this.value = value;
     }
 
-    public String value() {
-        return value;
-    }
-
-
-    public static StartStopVusersTypeValues get(String val){
+    public static StartStopVusersTypeValues get(String val) {
         for (StartStopVusersTypeValues startStopVusersTypeValues : StartStopVusersTypeValues.values()) {
             if (val.equals(startStopVusersTypeValues.value()))
                 return startStopVusersTypeValues;
         }
         return null;
+    }
+
+    public String value() {
+        return value;
     }
 
 }

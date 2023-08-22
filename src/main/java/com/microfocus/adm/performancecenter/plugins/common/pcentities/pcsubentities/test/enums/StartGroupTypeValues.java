@@ -12,16 +12,15 @@ public enum StartGroupTypeValues {
         this.value = value;
     }
 
-    public String value() {
-        return value;
-    }
-
-
-    public static StartGroupTypeValues get(String val){
+    public static StartGroupTypeValues get(String val) {
         for (StartGroupTypeValues startGroupTypeValues : StartGroupTypeValues.values()) {
             if (val.equals(startGroupTypeValues.value()))
                 return startGroupTypeValues;
         }
         return null;
+    }
+
+    public String value() {
+        return value;
     }
 }

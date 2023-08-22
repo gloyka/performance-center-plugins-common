@@ -12,17 +12,16 @@ public enum WorkloadTypeValues {
         this.value = value;
     }
 
-    public String value() {
-        return value;
-    }
-
-
     public static WorkloadTypeValues get(String val) {
         for (WorkloadTypeValues workloadTypeValues : WorkloadTypeValues.values()) {
             if (val.equals(workloadTypeValues.value()))
                 return workloadTypeValues;
         }
         return null;
+    }
+
+    public String value() {
+        return value;
     }
 
 }

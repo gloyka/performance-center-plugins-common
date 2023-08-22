@@ -6,10 +6,11 @@ import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
 import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="ThinkTime")
+@XmlRootElement(name = "ThinkTime")
 public class ThinkTime {
 
     @XmlAttribute
@@ -36,7 +37,7 @@ public class ThinkTime {
         setType(ThinkTimeTypeValues.IGNORE);
     }
 
-    public ThinkTime(String type, int limitThinkTimeSeconds, int minPercentage, int maxPercentage, int multiplyFactor ) {
+    public ThinkTime(String type, int limitThinkTimeSeconds, int minPercentage, int maxPercentage, int multiplyFactor) {
         setType(type);
         if (this.Type.equals(ThinkTimeTypeValues.IGNORE.value())) {
             setLimitThinkTimeSeconds(-1);
@@ -86,30 +87,16 @@ public class ThinkTime {
         }
     }
 
-    public void setType (String type) {
-        this.Type = type;
+    public static ThinkTime xmlToObject(String xml) {
+        XStream xstream = new XStream();
+        xstream = Helper.xstreamPermissions(xstream);
+        xstream.useAttributeFor(ThinkTime.class, "Type");
+        xstream.aliasField("Type", ThinkTime.class, "Type");
+        xstream.alias("ThinkTime", ThinkTime.class);
+        xstream.setClassLoader(ThinkTime.class.getClassLoader());
+        xstream.setMode(XStream.NO_REFERENCES);
+        return (ThinkTime) xstream.fromXML(xml);
     }
-
-    public void setType (ThinkTimeTypeValues type) {
-        this.Type = type.value();
-    }
-
-    public void setMinPercentage(int value) {
-        this.MinPercentage = Common.integerToString(value);
-    }
-
-    public void setMaxPercentage(int value) {
-        this.MaxPercentage = Common.integerToString(value);
-    }
-
-    public void setMultiplyFactor(int value) {
-        this.MultiplyFactor = Common.integerToString(value);
-    }
-
-    public void setLimitThinkTimeSeconds(int value) {
-        this.LimitThinkTimeSeconds = Common.integerToString(value);
-    }
-
 
     @Override
     public String toString() {
@@ -136,23 +123,24 @@ public class ThinkTime {
         return xstream.toXML(this);
     }
 
-    public static ThinkTime xmlToObject(String xml) {
-        XStream xstream = new XStream();
-        xstream = Helper.xstreamPermissions(xstream);
-        xstream.useAttributeFor(ThinkTime.class, "Type");
-        xstream.aliasField("Type", ThinkTime.class, "Type");
-        xstream.alias("ThinkTime" , ThinkTime.class);
-        xstream.setClassLoader(ThinkTime.class.getClassLoader());
-        xstream.setMode(XStream.NO_REFERENCES);
-        return (ThinkTime)xstream.fromXML(xml);
-    }
-
     public String getType() {
         return Type;
     }
 
+    public void setType(String type) {
+        this.Type = type;
+    }
+
+    public void setType(ThinkTimeTypeValues type) {
+        this.Type = type.value();
+    }
+
     public String getMinPercentage() {
         return MinPercentage;
+    }
+
+    public void setMinPercentage(int value) {
+        this.MinPercentage = Common.integerToString(value);
     }
 
     public void setMinPercentage(String minPercentage) {
@@ -163,6 +151,10 @@ public class ThinkTime {
         return MaxPercentage;
     }
 
+    public void setMaxPercentage(int value) {
+        this.MaxPercentage = Common.integerToString(value);
+    }
+
     public void setMaxPercentage(String maxPercentage) {
         MaxPercentage = maxPercentage;
     }
@@ -171,12 +163,20 @@ public class ThinkTime {
         return MultiplyFactor;
     }
 
+    public void setMultiplyFactor(int value) {
+        this.MultiplyFactor = Common.integerToString(value);
+    }
+
     public void setMultiplyFactor(String multiplyFactor) {
         MultiplyFactor = multiplyFactor;
     }
 
     public String getLimitThinkTimeSeconds() {
         return LimitThinkTimeSeconds;
+    }
+
+    public void setLimitThinkTimeSeconds(int value) {
+        this.LimitThinkTimeSeconds = Common.integerToString(value);
     }
 
     public void setLimitThinkTimeSeconds(String limitThinkTimeSeconds) {

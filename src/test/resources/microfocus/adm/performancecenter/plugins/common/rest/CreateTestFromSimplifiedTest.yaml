@@ -4,7 +4,7 @@ test_name: mytestname
 test_folder_path: "Tests\\mytests"
 
 test_content:
-#  controller: "[test]controller"
+  #  controller: "[test]controller"
 
   lg_amount: 3
 
@@ -14,16 +14,16 @@ test_content:
       vusers: 50
       #script_id: 390
       script_path: "scripts\\javascripts\\calc_test_ju4"
-#      lg_name:
-#        - "LG1"
-#        - "LG2"
+    #      lg_name:
+    #        - "LG1"
+    #        - "LG2"
     - group_name: "kilimanjaro_tc_2"
       vusers: 50
       #script_id: '391'
       script_path: "scripts\\javascripts\\JavaHTTP_BigXML"
-#      lg_name:
-#        - "LG3"
-#        - "LG4"
+  #      lg_name:
+  #        - "LG3"
+  #        - "LG4"
 
   scheduler:
     rampup: 120

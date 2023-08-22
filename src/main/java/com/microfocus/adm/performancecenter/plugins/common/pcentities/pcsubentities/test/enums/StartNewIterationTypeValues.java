@@ -15,17 +15,16 @@ public enum StartNewIterationTypeValues {
         this.value = value;
     }
 
-    public String value() {
-        return value;
-    }
-
-
-    public static StartNewIterationTypeValues get(String val){
+    public static StartNewIterationTypeValues get(String val) {
         for (StartNewIterationTypeValues startNewIterationTypeValues : StartNewIterationTypeValues.values()) {
             if (val.equals(startNewIterationTypeValues.value()))
                 return startNewIterationTypeValues;
         }
         return null;
+    }
+
+    public String value() {
+        return value;
     }
 
 }

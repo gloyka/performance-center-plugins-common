@@ -14,17 +14,16 @@ public enum HostNameDynamicValues {
         this.value = value;
     }
 
-    public String value() {
-        return value;
-    }
-
-
-    public static HostNameDynamicValues get(String val){
+    public static HostNameDynamicValues get(String val) {
         for (HostNameDynamicValues hostNameDynamicValues : HostNameDynamicValues.values()) {
             if (val.equals(hostNameDynamicValues.value()))
                 return hostNameDynamicValues;
         }
         return null;
+    }
+
+    public String value() {
+        return value;
     }
 
 

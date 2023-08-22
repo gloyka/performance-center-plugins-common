@@ -11,17 +11,16 @@ public enum GoalCannotBeReachedActionValues {
         this.value = value;
     }
 
-    public String value() {
-        return value;
-    }
-
-
-    public static GoalCannotBeReachedActionValues get(String val){
+    public static GoalCannotBeReachedActionValues get(String val) {
         for (GoalCannotBeReachedActionValues goalCannotBeReachedActionValues : GoalCannotBeReachedActionValues.values()) {
             if (val.equals(goalCannotBeReachedActionValues.value()))
                 return goalCannotBeReachedActionValues;
         }
         return null;
+    }
+
+    public String value() {
+        return value;
     }
 
 }

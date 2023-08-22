@@ -1,3 +1,18 @@
+/**
+ * Copyright © 2023 Open Text Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.group.rts.jmeter;
 
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
@@ -17,22 +32,33 @@ public class SimplifiedJMeter {
 
     private String jmeter_additional_properties;
 
-    public SimplifiedJMeter() { }
+    public SimplifiedJMeter() {
+    }
 
 
-    public SimplifiedJMeter(boolean start_measurements, String jmeter_home_path,  int jmeter_min_port, int jmeter_max_port) {
+    public SimplifiedJMeter(boolean start_measurements, String jmeter_home_path, int jmeter_min_port, int jmeter_max_port) {
         this.start_measurements = start_measurements;
         this.jmeter_home_path = jmeter_home_path;
         this.jmeter_min_port = jmeter_min_port;
         this.jmeter_max_port = jmeter_max_port;
     }
 
-    public SimplifiedJMeter(boolean start_measurements, String jmeter_home_path,  int jmeter_min_port, int jmeter_max_port, String jmeter_additional_properties) {
+    public SimplifiedJMeter(boolean start_measurements, String jmeter_home_path, int jmeter_min_port, int jmeter_max_port, String jmeter_additional_properties) {
         this.start_measurements = start_measurements;
         this.jmeter_home_path = jmeter_home_path;
         this.jmeter_min_port = jmeter_min_port;
         this.jmeter_max_port = jmeter_max_port;
         this.jmeter_additional_properties = jmeter_additional_properties;
+    }
+
+    public static SimplifiedJMeter xmlToObject(String xml) {
+        XStream xstream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("_-", "_")));
+        xstream = Helper.xstreamPermissions(xstream);
+        xstream.alias("SimplifiedJMeter", SimplifiedJMeter.class);
+
+        xstream.setClassLoader(SimplifiedJMeter.class.getClassLoader());
+        xstream.setMode(XStream.NO_REFERENCES);
+        return (SimplifiedJMeter) xstream.fromXML(xml);
     }
 
     @Override
@@ -59,16 +85,6 @@ public class SimplifiedJMeter {
         xstream.aliasField("SimplifiedJMeter", SimplifiedJMeter.class, "SimplifiedJMeter");
         xstream.setMode(XStream.NO_REFERENCES);
         return xstream.toXML(this);
-    }
-
-    public static SimplifiedJMeter xmlToObject(String xml) {
-        XStream xstream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("_-", "_")));
-        xstream = Helper.xstreamPermissions(xstream);
-        xstream.alias("SimplifiedJMeter" , SimplifiedJMeter.class);
-
-        xstream.setClassLoader(SimplifiedJMeter.class.getClassLoader());
-        xstream.setMode(XStream.NO_REFERENCES);
-        return (SimplifiedJMeter)xstream.fromXML(xml);
     }
 
     public boolean isStart_measurements() {

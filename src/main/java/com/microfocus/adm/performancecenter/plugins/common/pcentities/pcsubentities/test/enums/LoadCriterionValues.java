@@ -13,17 +13,16 @@ public enum LoadCriterionValues {
         this.value = value;
     }
 
-    public String value() {
-        return value;
-    }
-
-
     public static LoadCriterionValues get(String val) {
         for (LoadCriterionValues loadCriterionValues : LoadCriterionValues.values()) {
             if (val.equals(loadCriterionValues.value()))
                 return loadCriterionValues;
         }
         return null;
+    }
+
+    public String value() {
+        return value;
     }
 
 }

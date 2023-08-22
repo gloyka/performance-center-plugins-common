@@ -14,10 +14,10 @@
         <MonitorProfiles/>
         <Groups>
             <Group>
-                <Name>kilimanjaro_tc_1_kuku</Name>
+                <Name>30_transactions_Copy_1_updated</Name>
                 <Vusers>1</Vusers>
                 <Script>
-                    <ID>1</ID>
+                    <ID>176</ID>
                 </Script>
                 <RTS>
                     <Pacing>
@@ -33,10 +33,10 @@
                 </RTS>
             </Group>
             <Group>
-                <Name>kilimanjaro_tc_2_kuku</Name>
+                <Name>kilimanjaro_tc_1_updated</Name>
                 <Vusers>1</Vusers>
                 <Script>
-                    <ID>1</ID>
+                    <ID>204</ID>
                 </Script>
                 <RTS>
                     <Pacing>
@@ -76,5 +76,11 @@
                 <MonitorServerRequests>false</MonitorServerRequests>
             </J2EEDotNet>
         </Diagnostics>
+        <!--AutomaticTrending>
+            <ReportId>6</ReportId>
+            <MaxRunsInReport>7</MaxRunsInReport>
+            <TrendRangeType>CompleteRun</TrendRangeType>
+            <MaxRunsReachedOption>DeleteFirstSetNewBaseline</MaxRunsReachedOption>
+        </AutomaticTrending-->
     </Content>
 </Test>

@@ -12,17 +12,16 @@ public enum GoalTypeValues {
         this.value = value;
     }
 
-    public String value() {
-        return value;
-    }
-
-
-    public static GoalTypeValues get(String val){
+    public static GoalTypeValues get(String val) {
         for (GoalTypeValues goalTypeValues : GoalTypeValues.values()) {
             if (val.equals(goalTypeValues.value()))
                 return goalTypeValues;
         }
         return null;
+    }
+
+    public String value() {
+        return value;
     }
 
 }

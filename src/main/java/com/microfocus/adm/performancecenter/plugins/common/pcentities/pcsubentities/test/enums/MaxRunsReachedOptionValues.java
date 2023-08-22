@@ -11,16 +11,15 @@ public enum MaxRunsReachedOptionValues {
         this.value = value;
     }
 
-    public String value() {
-        return value;
-    }
-
-
-    public static MaxRunsReachedOptionValues get(String val){
+    public static MaxRunsReachedOptionValues get(String val) {
         for (MaxRunsReachedOptionValues maxRunsReachedOptionValues : MaxRunsReachedOptionValues.values()) {
             if (val.equals(maxRunsReachedOptionValues.value()))
                 return maxRunsReachedOptionValues;
         }
         return null;
+    }
+
+    public String value() {
+        return value;
     }
 }

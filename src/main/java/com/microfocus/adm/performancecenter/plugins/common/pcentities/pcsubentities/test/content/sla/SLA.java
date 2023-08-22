@@ -1,27 +1,41 @@
+/**
+ * Copyright © 2023 Open Text Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla;
 
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.averagehitspersecond.AverageHitsPerSecond;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.averagethroughput.AverageThroughput;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.common.Thresholds.betweenthreshold.BetweenThreshold;
-import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.common.loadvalues.LoadValues;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.common.loadvalues.betweens.Between;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.common.transactions.Transaction;
-import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.transactionresponsetimeaverage.TransactionResponseTimeAverage;
-import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.averagehitspersecond.AverageHitsPerSecond;
-import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.totalthroughput.TotalThroughput;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.errorspersecond.ErrorsPerSecond;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.totalhits.TotalHits;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.totalthroughput.TotalThroughput;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.transactionresponsetimeaverage.TransactionResponseTimeAverage;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.transactionresponsetimepercentile.TransactionResponseTimePercentile;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="SLA")
-public class SLA
-{
+@XmlRootElement(name = "SLA")
+public class SLA {
 
     @XmlElement
     private AverageThroughput AverageThroughput;
@@ -44,7 +58,8 @@ public class SLA
     @XmlElement
     private TotalHits TotalHits;
 
-    public SLA() {}
+    public SLA() {
+    }
 
     public SLA(AverageThroughput averageThroughput, TransactionResponseTimeAverage transactionResponseTimeAverage, TransactionResponseTimePercentile transactionResponseTimePercentile, AverageHitsPerSecond averageHitsPerSecond, TotalThroughput totalThroughput, ErrorsPerSecond errorsPerSecond, TotalHits totalHits) {
         setAverageThroughput(averageThroughput);
@@ -56,6 +71,21 @@ public class SLA
         setTotalHits(totalHits);
     }
 
+    public static SLA xmlToObject(String xml) {
+        XStream xstream = new XStream();
+        xstream = Helper.xstreamPermissions(xstream);
+        xstream.alias("SLA", SLA.class);
+
+        xstream.alias("Transaction", Transaction.class, Transaction.class);
+        xstream.alias("Between", Between.class, Between.class);
+        xstream.alias("Threshold", String.class);
+        xstream.addImplicitCollection(BetweenThreshold.class, "Threshold", "Threshold", String.class);
+
+        xstream.setClassLoader(SLA.class.getClassLoader());
+        xstream.setMode(XStream.NO_REFERENCES);
+        return (SLA) xstream.fromXML(xml);
+    }
+
     @Override
     public String toString() {
         return "SLA{" + "AverageThroughput = " + AverageThroughput +
@@ -65,7 +95,6 @@ public class SLA
                 ", ErrorsPerSecond = " + ErrorsPerSecond +
                 ", TotalHits = " + TotalHits + "}";
     }
-
 
     public String objectToXML() {
         XStream xstream = new XStream();
@@ -79,29 +108,14 @@ public class SLA
         xstream.aliasField("ErrorsPerSecond", SLA.class, "ErrorsPerSecond");
         xstream.aliasField("TotalHits", SLA.class, "TotalHits");
 
-        xstream.alias("Transaction", Transaction.class,Transaction.class);
-        xstream.alias("Between", Between.class,Between.class);
+        xstream.alias("Transaction", Transaction.class, Transaction.class);
+        xstream.alias("Between", Between.class, Between.class);
         xstream.alias("Threshold", String.class);
         xstream.addImplicitCollection(BetweenThreshold.class, "Threshold", "Threshold", String.class);
 
         xstream.aliasField("SLA", SLA.class, "SLA");
         xstream.setMode(XStream.NO_REFERENCES);
         return xstream.toXML(this);
-    }
-
-    public static SLA xmlToObject(String xml) {
-        XStream xstream = new XStream();
-        xstream = Helper.xstreamPermissions(xstream);
-        xstream.alias("SLA" , SLA.class);
-
-        xstream.alias("Transaction", Transaction.class,Transaction.class);
-        xstream.alias("Between", Between.class,Between.class);
-        xstream.alias("Threshold", String.class);
-        xstream.addImplicitCollection(BetweenThreshold.class, "Threshold", "Threshold", String.class);
-
-        xstream.setClassLoader(SLA.class.getClassLoader());
-        xstream.setMode(XStream.NO_REFERENCES);
-        return (SLA)xstream.fromXML(xml);
     }
 
     public AverageThroughput getAverageThroughput() {

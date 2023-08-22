@@ -11,17 +11,16 @@ public enum LGDistributionTypeValues {
         this.value = value;
     }
 
-    public String value() {
-        return value;
-    }
-
-
-    public static LGDistributionTypeValues get(String val){
+    public static LGDistributionTypeValues get(String val) {
         for (LGDistributionTypeValues lgDistributionTypeValues : LGDistributionTypeValues.values()) {
             if (val.equals(lgDistributionTypeValues.value()))
                 return lgDistributionTypeValues;
         }
         return null;
+    }
+
+    public String value() {
+        return value;
     }
 
 }

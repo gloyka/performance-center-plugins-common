@@ -12,17 +12,16 @@ public enum HostTypeValues {
         this.value = value;
     }
 
-    public String value() {
-        return value;
-    }
-
-
-    public static HostTypeValues get(String val){
+    public static HostTypeValues get(String val) {
         for (HostTypeValues hostTypeValues : HostTypeValues.values()) {
             if (val.equals(hostTypeValues.value()))
                 return hostTypeValues;
         }
         return null;
+    }
+
+    public String value() {
+        return value;
     }
 
 }

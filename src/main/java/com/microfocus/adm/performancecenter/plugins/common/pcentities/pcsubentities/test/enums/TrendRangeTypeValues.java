@@ -12,16 +12,16 @@ public enum TrendRangeTypeValues {
         this.value = value;
     }
 
-    public String value() {
-        return value;
-    }
-
-    public static TrendRangeTypeValues get(String val){
+    public static TrendRangeTypeValues get(String val) {
         for (TrendRangeTypeValues trendRangeTypeValues : TrendRangeTypeValues.values()) {
             if (val.equals(trendRangeTypeValues.value()))
                 return trendRangeTypeValues;
         }
         return null;
+    }
+
+    public String value() {
+        return value;
     }
 
 }

@@ -11,16 +11,15 @@ public enum LogOptionsTypeValues {
         this.value = value;
     }
 
-    public String value() {
-        return value;
-    }
-
-
-    public static LogOptionsTypeValues get(String val){
+    public static LogOptionsTypeValues get(String val) {
         for (LogOptionsTypeValues logOptionsTypeValues : LogOptionsTypeValues.values()) {
             if (val.equals(logOptionsTypeValues.value()))
                 return logOptionsTypeValues;
         }
         return null;
+    }
+
+    public String value() {
+        return value;
     }
 }

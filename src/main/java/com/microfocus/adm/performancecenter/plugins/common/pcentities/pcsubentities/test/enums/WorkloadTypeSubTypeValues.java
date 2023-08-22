@@ -11,17 +11,16 @@ public enum WorkloadTypeSubTypeValues {
         this.value = value;
     }
 
-    public String value() {
-        return value;
-    }
-
-
     public static WorkloadTypeSubTypeValues get(String val) {
         for (WorkloadTypeSubTypeValues workloadTypeSubTypeValues : WorkloadTypeSubTypeValues.values()) {
             if (val.equals(workloadTypeSubTypeValues.value()))
                 return workloadTypeSubTypeValues;
         }
         return null;
+    }
+
+    public String value() {
+        return value;
     }
 
 }

@@ -1,7 +1,21 @@
+/**
+ * Copyright © 2023 Open Text Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.microfocus.adm.performancecenter.plugins.common.pcentities;
 
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.Content;
-import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.sla.SLA;
 import com.microfocus.adm.performancecenter.plugins.common.rest.PcRestProxy;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
@@ -9,28 +23,21 @@ import com.thoughtworks.xstream.XStream;
 import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="Test")
-public class TestResponse
-{
-
+@XmlRootElement(name = "Test")
+public class TestResponse {
     private String xmlns = PcRestProxy.PC_API_XMLNS;
-
     private int ID;
-
     private String Name;
-
     private String TestFolderPath;
-
     private String CreatedBy;
-
     private String LastModified;
-
     private Content Content;
 
-    public TestResponse(){}
+    public TestResponse() {
+    }
 
-
-    public TestResponse(int ID, String name, String testFolderPath, String createdBy, String lastModified, Content content){
+    public TestResponse(int ID, String name, String testFolderPath,
+                        String createdBy, String lastModified, Content content) {
         this.ID = ID;
         this.Name = name;
         this.TestFolderPath = testFolderPath;
@@ -39,9 +46,21 @@ public class TestResponse
         this.Content = content;
     }
 
+    public static TestResponse xmlToObject(String xml) {
+        XStream xstream = new XStream();
+        xstream = Helper.xstreamPermissions(xstream);
+        xstream.alias("Test", TestResponse.class);
+        xstream.setClassLoader(TestResponse.class.getClassLoader());
+        return (TestResponse) xstream.fromXML(xml);
+    }
+
     @XmlAttribute
     public String getXmlns() {
         return xmlns;
+    }
+
+    public void setXmlns(String xmlns) {
+        this.xmlns = xmlns;
     }
 
     @XmlAttribute
@@ -49,9 +68,17 @@ public class TestResponse
         return ID;
     }
 
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
     @XmlElement
     public String getName() {
         return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
     }
 
     @XmlElement
@@ -59,9 +86,17 @@ public class TestResponse
         return TestFolderPath;
     }
 
+    public void setTestFolderPath(String testFolderPath) {
+        TestFolderPath = testFolderPath;
+    }
+
     @XmlElement
     public String getCreatedBy() {
         return CreatedBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        CreatedBy = createdBy;
     }
 
     @XmlElement
@@ -69,37 +104,20 @@ public class TestResponse
         return LastModified;
     }
 
-    public Content getContent() {
-        return Content;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
-    }
-
-    public void setName(String name) {
-        Name = name;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        CreatedBy = createdBy;
-    }
-
     public void setLastModified(String lastModified) {
         LastModified = lastModified;
     }
 
-    public void setTestFolderPath(String testFolderPath) {
-        TestFolderPath = testFolderPath;
+    public Content getContent() {
+        return Content;
     }
 
     public void setContent(Content content) {
         Content = content;
     }
 
-
     @Override
-    public String toString(){
+    public String toString() {
         return "TestRequest{" + "ID = " + ID +
                 ", Name = " + Name +
                 ", TestFolderPath = " + TestFolderPath +
@@ -120,19 +138,6 @@ public class TestResponse
         xstream.aliasField("LastModified", TestResponse.class, "LastModified");
         xstream.aliasField("Content", TestResponse.class, "Content");
         return xstream.toXML(this);
-    }
-
-    public static TestResponse xmlToObject(String xml)
-    {
-        XStream xstream = new XStream();
-        xstream = Helper.xstreamPermissions(xstream);
-        xstream.alias("Test" , TestResponse.class);
-        xstream.setClassLoader(TestResponse.class.getClassLoader());
-        return (TestResponse)xstream.fromXML(xml);
-    }
-
-    public void setXmlns(String xmlns) {
-        this.xmlns = xmlns;
     }
 }
 

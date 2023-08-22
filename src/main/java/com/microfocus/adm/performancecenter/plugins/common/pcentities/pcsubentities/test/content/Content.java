@@ -1,3 +1,18 @@
+/**
+ * Copyright © 2023 Open Text Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content;
 
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.analysistemplate.AnalysisTemplate;
@@ -35,12 +50,12 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.rest.PcRestProxy;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
+
 import java.util.ArrayList;
 
 //@XmlAccessorType(XmlAccessType.FIELD)
 //@XmlRootElement(name="Content")
-public class Content
-{
+public class Content {
     //@XmlAttribute
     private String xmlns;
 
@@ -75,7 +90,7 @@ public class Content
     private AutomaticTrending AutomaticTrending;
 
     //@XmlElement
-    private ArrayList<MonitorOFW>  MonitorsOFW;
+    private ArrayList<MonitorOFW> MonitorsOFW;
 
     //@XmlElement
     private GlobalCommandLine GlobalCommandLine;
@@ -87,12 +102,13 @@ public class Content
 
     private ElasticControllerConfiguration ElasticControllerConfiguration;
 
-    public Content() {}
+    public Content() {
+    }
 
     public Content(WorkloadType workloadType, LGDistribution lgDistribution, ArrayList<MonitorProfile> monitorProfiles,
                    ArrayList<Group> groups, Scheduler scheduler, AnalysisTemplate analysisTemplate, AutomaticTrending automaticTrending,
                    ArrayList<MonitorOFW> monitorsOFW, SLA sla, Diagnostics diagnostics, GlobalCommandLine globalCommandLine, GlobalRTS globalRTS,
-                   ElasticLoadGeneratorConfiguration elasticLoadGeneratorConfiguration ,ElasticControllerConfiguration elasticControllerConfiguration) {
+                   ElasticLoadGeneratorConfiguration elasticLoadGeneratorConfiguration, ElasticControllerConfiguration elasticControllerConfiguration) {
         setWorkloadType(workloadType);
         setLGDistribution(lgDistribution);
         setMonitorProfiles(monitorProfiles);
@@ -130,6 +146,77 @@ public class Content
         setElasticControllerConfiguration(elasticControllerConfiguration);
     }
 
+    public static Content xmlToObject(String xml) {
+        XStream xstream = new XStream();
+        xstream = Helper.xstreamPermissions(xstream);
+        xstream.alias("Content", Content.class);
+        //Content
+        xstream.useAttributeFor(Content.class, "xmlns");
+        xstream.alias("MonitorProfile", MonitorProfile.class, MonitorProfile.class);
+        xstream.alias("Group", Group.class, Group.class);
+        xstream.alias("MonitorOFW", MonitorOFW.class, MonitorOFW.class);
+        //GlobalCommandLine
+        xstream.addImplicitCollection(GlobalCommandLine.class, "CommandLine");
+        xstream.alias("CommandLine", CommandLine.class, CommandLine.class);
+        //GlobalRTS
+        xstream.addImplicitCollection(GlobalRTS.class, "RTS");
+        xstream.alias("RTS", RTS.class, RTS.class);
+        xstream.useAttributeFor(StartNewIteration.class, "Type");
+        xstream.aliasField("Type", StartNewIteration.class, "Type");
+        xstream.aliasField("Log", RTS.class, "Log");
+        xstream.useAttributeFor(ThinkTime.class, "Type");
+        xstream.aliasField("Type", ThinkTime.class, "Type");
+        xstream.useAttributeFor(Log.class, "Type");
+        xstream.aliasField("LogOptions", Log.class, "LogOptions");
+        xstream.useAttributeFor(LogOptions.class, "Type");
+        //Groups
+        xstream.aliasField("Pacing", RTS.class, "Pacing");
+        xstream.useAttributeFor(StartNewIteration.class, "Type");
+        xstream.aliasField("Type", StartNewIteration.class, "Type");
+        xstream.aliasField("ThinkTime", RTS.class, "ThinkTime");
+        xstream.useAttributeFor(ThinkTime.class, "Type");
+        xstream.aliasField("Type", ThinkTime.class, "Type");
+        xstream.aliasField("Log", RTS.class, "Log");
+        xstream.useAttributeFor(Log.class, "Type");
+        xstream.aliasField("LogOptions", Log.class, "LogOptions");
+        xstream.useAttributeFor(LogOptions.class, "Type");
+        xstream.aliasField("JMeter", RTS.class, "JMeter");
+        xstream.alias("Host", Host.class, Host.class);
+        xstream.useAttributeFor(StopVusers.class, "Type");
+        xstream.aliasField("Type", StopVusers.class, "Type");
+        xstream.useAttributeFor(StartVusers.class, "Type");
+        xstream.aliasField("Type", StartVusers.class, "Type");
+        xstream.useAttributeFor(StartGroup.class, "Type");
+        xstream.aliasField("Type", StartGroup.class, "Type");
+        xstream.useAttributeFor(Initialize.class, "Type");
+        xstream.aliasField("Type", Initialize.class, "Type");
+        xstream.useAttributeFor(Duration.class, "Type");
+        xstream.aliasField("Type", Duration.class, "Type");
+        xstream.alias("Action", Action.class, Action.class);
+        //JavaEnvClassPaths
+        xstream.alias("JavaEnvClassPath", String.class);
+        xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
+        //SimplifiedScheduler
+        xstream.useAttributeFor(StopVusers.class, "Type");
+        xstream.aliasField("Type", StopVusers.class, "Type");
+        xstream.useAttributeFor(StartVusers.class, "Type");
+        xstream.aliasField("Type", StartVusers.class, "Type");
+        xstream.useAttributeFor(StartGroup.class, "Type");
+        xstream.aliasField("Type", StartGroup.class, "Type");
+        xstream.useAttributeFor(Initialize.class, "Type");
+        xstream.aliasField("Type", Initialize.class, "Type");
+        xstream.useAttributeFor(Duration.class, "Type");
+        xstream.aliasField("Type", Duration.class, "Type");
+        xstream.alias("Action", Action.class, Action.class);
+        //SLA
+        xstream.alias("Transaction", Transaction.class, Transaction.class);
+        xstream.alias("Between", Between.class, Between.class);
+        xstream.alias("Threshold", String.class);
+        xstream.addImplicitCollection(BetweenThreshold.class, "Threshold", "Threshold", String.class);
+        xstream.setClassLoader(Content.class.getClassLoader());
+        xstream.setMode(XStream.NO_REFERENCES);
+        return (Content) xstream.fromXML(xml);
+    }
 
     @Override
     public String toString() {
@@ -140,7 +227,7 @@ public class Content
                 ", Groups = " + Groups +
                 ", SimplifiedScheduler = " + Scheduler +
                 ", AnalysisTemplate = " + AnalysisTemplate +
-                ", AutomaticTrending = " + AutomaticTrending  +
+                ", AutomaticTrending = " + AutomaticTrending +
                 ", MonitorsOFW = " + MonitorsOFW +
                 ", SLA = " + SLA +
                 ", Diagnostics = " + Diagnostics +
@@ -151,12 +238,12 @@ public class Content
                 "}";
     }
 
-    public String objectToXML(boolean withXmlns ) {
+    public String objectToXML(boolean withXmlns) {
         XStream xstream = new XStream();
         xstream = Helper.xstreamPermissions(xstream);
         xstream.alias("Content", Content.class);
-        if(withXmlns) {
-            xmlns= PcRestProxy.PC_API_XMLNS;
+        if (withXmlns) {
+            xmlns = PcRestProxy.PC_API_XMLNS;
             xstream.useAttributeFor(Content.class, "xmlns");
         }
         xstream.aliasField("Controller", Content.class, "Controller");
@@ -171,19 +258,16 @@ public class Content
         xstream.aliasField("AutomaticTrending", Content.class, "AutomaticTrending");
         xstream.aliasField("ElasticLoadGeneratorConfiguration", Content.class, "ElasticLoadGeneratorConfiguration");
         xstream.aliasField("ElasticControllerConfiguration", Content.class, "ElasticControllerConfiguration");
-
         //Content
-        xstream.alias("MonitorProfile", MonitorProfile.class,MonitorProfile.class);
-        xstream.alias("Group", Group.class,Group.class);
+        xstream.alias("MonitorProfile", MonitorProfile.class, MonitorProfile.class);
+        xstream.alias("Group", Group.class, Group.class);
         xstream.alias("MonitorOFW", MonitorOFW.class, MonitorOFW.class);
-
         //GlobalCommandLine
         xstream.addImplicitCollection(GlobalCommandLine.class, "CommandLine");
-        xstream.alias("CommandLine", CommandLine.class,CommandLine.class);
-
+        xstream.alias("CommandLine", CommandLine.class, CommandLine.class);
         //GlobalRTS
         xstream.addImplicitCollection(GlobalRTS.class, "RTS");
-        xstream.alias("RTS", RTS.class,RTS.class);
+        xstream.alias("RTS", RTS.class, RTS.class);
         xstream.useAttributeFor(StartNewIteration.class, "Type");
         xstream.aliasField("Type", StartNewIteration.class, "Type");
         xstream.aliasField("Log", RTS.class, "Log");
@@ -192,7 +276,6 @@ public class Content
         xstream.useAttributeFor(Log.class, "Type");
         xstream.aliasField("LogOptions", Log.class, "LogOptions");
         xstream.useAttributeFor(LogOptions.class, "Type");
-
         //Groups
         xstream.aliasField("Pacing", RTS.class, "Pacing");
         xstream.useAttributeFor(StartNewIteration.class, "Type");
@@ -205,7 +288,7 @@ public class Content
         xstream.aliasField("LogOptions", Log.class, "LogOptions");
         xstream.useAttributeFor(LogOptions.class, "Type");
         xstream.aliasField("JMeter", RTS.class, "JMeter");
-        xstream.alias("Host", Host.class,Host.class);
+        xstream.alias("Host", Host.class, Host.class);
         xstream.useAttributeFor(StopVusers.class, "Type");
         xstream.aliasField("Type", StopVusers.class, "Type");
         xstream.useAttributeFor(StartVusers.class, "Type");
@@ -217,12 +300,10 @@ public class Content
         xstream.useAttributeFor(Duration.class, "Type");
         xstream.aliasField("Type", Duration.class, "Type");
         xstream.alias("Action", Action.class, Action.class);
-        xstream.omitField(Script.class, "ProtocolType" );
-
+        xstream.omitField(Script.class, "ProtocolType");
         //JavaEnvClassPaths
         xstream.alias("JavaEnvClassPath", String.class);
         xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
-
         //SimplifiedScheduler
         xstream.useAttributeFor(StopVusers.class, "Type");
         xstream.aliasField("Type", StopVusers.class, "Type");
@@ -235,97 +316,14 @@ public class Content
         xstream.useAttributeFor(Duration.class, "Type");
         xstream.aliasField("Type", Duration.class, "Type");
         xstream.alias("Action", Action.class, Action.class);
-
         //SLA
-        xstream.alias("Transaction", Transaction.class,Transaction.class);
-        xstream.alias("Between", Between.class,Between.class);
+        xstream.alias("Transaction", Transaction.class, Transaction.class);
+        xstream.alias("Between", Between.class, Between.class);
         xstream.alias("Threshold", String.class);
         xstream.addImplicitCollection(BetweenThreshold.class, "Threshold", "Threshold", String.class);
-
         xstream.aliasField("Content", Content.class, "Content");
         xstream.setMode(XStream.NO_REFERENCES);
         return xstream.toXML(this);
-    }
-
-    public static Content xmlToObject(String xml)
-    {
-        XStream xstream = new XStream();
-        xstream = Helper.xstreamPermissions(xstream);
-        xstream.alias("Content" , Content.class);
-
-        //Content
-        xstream.useAttributeFor(Content.class, "xmlns");
-        xstream.alias("MonitorProfile", MonitorProfile.class,MonitorProfile.class);
-        xstream.alias("Group", Group.class,Group.class);
-        xstream.alias("MonitorOFW", MonitorOFW.class, MonitorOFW.class);
-
-        //GlobalCommandLine
-        xstream.addImplicitCollection(GlobalCommandLine.class, "CommandLine");
-        xstream.alias("CommandLine", CommandLine.class,CommandLine.class);
-
-        //GlobalRTS
-        xstream.addImplicitCollection(GlobalRTS.class, "RTS");
-        xstream.alias("RTS", RTS.class,RTS.class);
-        xstream.useAttributeFor(StartNewIteration.class, "Type");
-        xstream.aliasField("Type", StartNewIteration.class, "Type");
-        xstream.aliasField("Log", RTS.class, "Log");
-        xstream.useAttributeFor(ThinkTime.class, "Type");
-        xstream.aliasField("Type", ThinkTime.class, "Type");
-        xstream.useAttributeFor(Log.class, "Type");
-        xstream.aliasField("LogOptions", Log.class, "LogOptions");
-        xstream.useAttributeFor(LogOptions.class, "Type");
-
-        //Groups
-        xstream.aliasField("Pacing", RTS.class, "Pacing");
-        xstream.useAttributeFor(StartNewIteration.class, "Type");
-        xstream.aliasField("Type", StartNewIteration.class, "Type");
-        xstream.aliasField("ThinkTime", RTS.class, "ThinkTime");
-        xstream.useAttributeFor(ThinkTime.class, "Type");
-        xstream.aliasField("Type", ThinkTime.class, "Type");
-        xstream.aliasField("Log", RTS.class, "Log");
-        xstream.useAttributeFor(Log.class, "Type");
-        xstream.aliasField("LogOptions", Log.class, "LogOptions");
-        xstream.useAttributeFor(LogOptions.class, "Type");
-        xstream.aliasField("JMeter", RTS.class, "JMeter");
-        xstream.alias("Host", Host.class,Host.class);
-        xstream.useAttributeFor(StopVusers.class, "Type");
-        xstream.aliasField("Type", StopVusers.class, "Type");
-        xstream.useAttributeFor(StartVusers.class, "Type");
-        xstream.aliasField("Type", StartVusers.class, "Type");
-        xstream.useAttributeFor(StartGroup.class, "Type");
-        xstream.aliasField("Type", StartGroup.class, "Type");
-        xstream.useAttributeFor(Initialize.class, "Type");
-        xstream.aliasField("Type", Initialize.class, "Type");
-        xstream.useAttributeFor(Duration.class, "Type");
-        xstream.aliasField("Type", Duration.class, "Type");
-        xstream.alias("Action", Action.class, Action.class);
-
-        //JavaEnvClassPaths
-        xstream.alias("JavaEnvClassPath", String.class);
-        xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
-
-        //SimplifiedScheduler
-        xstream.useAttributeFor(StopVusers.class, "Type");
-        xstream.aliasField("Type", StopVusers.class, "Type");
-        xstream.useAttributeFor(StartVusers.class, "Type");
-        xstream.aliasField("Type", StartVusers.class, "Type");
-        xstream.useAttributeFor(StartGroup.class, "Type");
-        xstream.aliasField("Type", StartGroup.class, "Type");
-        xstream.useAttributeFor(Initialize.class, "Type");
-        xstream.aliasField("Type", Initialize.class, "Type");
-        xstream.useAttributeFor(Duration.class, "Type");
-        xstream.aliasField("Type", Duration.class, "Type");
-        xstream.alias("Action", Action.class, Action.class);
-
-        //SLA
-        xstream.alias("Transaction", Transaction.class,Transaction.class);
-        xstream.alias("Between", Between.class,Between.class);
-        xstream.alias("Threshold", String.class);
-        xstream.addImplicitCollection(BetweenThreshold.class, "Threshold", "Threshold", String.class);
-
-        xstream.setClassLoader(Content.class.getClassLoader());
-        xstream.setMode(XStream.NO_REFERENCES);
-        return (Content)xstream.fromXML(xml);
     }
 
     public String getXmlns() {

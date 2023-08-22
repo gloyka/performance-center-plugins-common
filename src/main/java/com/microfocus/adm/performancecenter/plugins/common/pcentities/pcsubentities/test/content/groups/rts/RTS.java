@@ -1,26 +1,41 @@
+/**
+ * Copyright © 2023 Open Text Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts;
 
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.javavm.JavaVM;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.javavm.javaenvclasspaths.JavaEnvClassPaths;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.jmeter.JMeter;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.log.Log;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.log.logoptions.LogOptions;
+import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.pacing.Pacing;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.pacing.startnewiteration.StartNewIteration;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.selenium.Selenium;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.thinktime.ThinkTime;
-import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.pacing.Pacing;
-import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.javavm.JavaVM;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="RTS")
-public class RTS
-{
+@XmlRootElement(name = "RTS")
+public class RTS {
     @XmlElement(required = false)
     @XStreamAlias("Name")
     private String Name;
@@ -49,9 +64,10 @@ public class RTS
     @XStreamAlias("JavaVM")
     private JavaVM JavaVM;
 
-    public RTS () {}
+    public RTS() {
+    }
 
-    public RTS(String name, Pacing pacing, ThinkTime thinkTime, Log log, JMeter jMeter, JavaVM javaVM, Selenium selenium ) {
+    public RTS(String name, Pacing pacing, ThinkTime thinkTime, Log log, JMeter jMeter, JavaVM javaVM, Selenium selenium) {
         setName(name);
         setPacing(pacing);
         setThinkTime(thinkTime);
@@ -61,13 +77,35 @@ public class RTS
         setSelenium(selenium);
     }
 
-    public RTS(Pacing pacing, ThinkTime thinkTime, Log log, JMeter jMeter, JavaVM javaVM, Selenium selenium ) {
+    public RTS(Pacing pacing, ThinkTime thinkTime, Log log, JMeter jMeter, JavaVM javaVM, Selenium selenium) {
         setPacing(pacing);
         setThinkTime(thinkTime);
         setLog(log);
         setJMeter(jMeter);
         setJavaVM(javaVM);
         setSelenium(selenium);
+    }
+
+    public static RTS xmlToObject(String xml) {
+        XStream xstream = new XStream();
+        xstream = Helper.xstreamPermissions(xstream);
+        xstream.alias("RTS", RTS.class);
+        xstream.useAttributeFor(StartNewIteration.class, "Type");
+        xstream.aliasField("Type", StartNewIteration.class, "Type");
+        xstream.aliasField("Log", RTS.class, "Log");
+        xstream.useAttributeFor(ThinkTime.class, "Type");
+        xstream.aliasField("Type", ThinkTime.class, "Type");
+        xstream.useAttributeFor(Log.class, "Type");
+        xstream.aliasField("LogOptions", Log.class, "LogOptions");
+
+        //JavaEnvClassPaths
+        xstream.alias("JavaEnvClassPath", String.class);
+        xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
+
+        xstream.useAttributeFor(LogOptions.class, "Type");
+        xstream.setClassLoader(RTS.class.getClassLoader());
+        xstream.setMode(XStream.NO_REFERENCES);
+        return (RTS) xstream.fromXML(xml);
     }
 
     @Override
@@ -80,7 +118,6 @@ public class RTS
                 ", JavaVM = " + JavaVM +
                 ", Selenium = " + Selenium + "}";
     }
-
 
     public String objectToXML() {
         XStream xstream = new XStream();
@@ -109,29 +146,6 @@ public class RTS
         xstream.aliasField("RTS", RTS.class, "RTS");
         xstream.setMode(XStream.NO_REFERENCES);
         return xstream.toXML(this);
-    }
-
-    public static RTS xmlToObject(String xml)
-    {
-        XStream xstream = new XStream();
-        xstream = Helper.xstreamPermissions(xstream);
-        xstream.alias("RTS" , RTS.class);
-        xstream.useAttributeFor(StartNewIteration.class, "Type");
-        xstream.aliasField("Type", StartNewIteration.class, "Type");
-        xstream.aliasField("Log", RTS.class, "Log");
-        xstream.useAttributeFor(ThinkTime.class, "Type");
-        xstream.aliasField("Type", ThinkTime.class, "Type");
-        xstream.useAttributeFor(Log.class, "Type");
-        xstream.aliasField("LogOptions", Log.class, "LogOptions");
-
-        //JavaEnvClassPaths
-        xstream.alias("JavaEnvClassPath", String.class);
-        xstream.addImplicitCollection(JavaEnvClassPaths.class, "JavaEnvClassPath", "JavaEnvClassPath", String.class);
-
-        xstream.useAttributeFor(LogOptions.class, "Type");
-        xstream.setClassLoader(RTS.class.getClassLoader());
-        xstream.setMode(XStream.NO_REFERENCES);
-        return (RTS)xstream.fromXML(xml);
     }
 
     public String getName() {
@@ -178,7 +192,9 @@ public class RTS
         return Selenium;
     }
 
-    public void setSelenium(Selenium selenium) { this.Selenium = selenium; }
+    public void setSelenium(Selenium selenium) {
+        this.Selenium = selenium;
+    }
 
     public JavaVM getJavaVM() {
         return JavaVM;

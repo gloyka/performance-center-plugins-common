@@ -1,3 +1,18 @@
+/**
+ * Copyright © 2023 Open Text Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.scheduler.actions.initialize;
 
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common;
@@ -5,12 +20,12 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.enums.InitializeTypeValues;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
+
 import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="Initialize")
-public class Initialize
-{
+@XmlRootElement(name = "Initialize")
+public class Initialize {
 
     /*Possible values:
         Type="gradually"
@@ -61,16 +76,17 @@ public class Initialize
         setWaitAfterInit(waitAfterInit);
     }
 
-    public void setType(String type) {
-        this.Type = type;
-    }
+    public static Initialize xmlToObject(String xml) {
+        XStream xstream = new XStream();
+        xstream = Helper.xstreamPermissions(xstream);
 
-    public void setType(InitializeTypeValues type) {
-        this.Type = type.value();
-    }
+        xstream.useAttributeFor(Initialize.class, "Type");
+        xstream.aliasField("Type", Initialize.class, "Type");
 
-    public void setVusers(int vusers) {
-        this.Vusers = Common.integerToString(vusers);
+        xstream.alias("Initialize", Initialize.class);
+        xstream.setClassLoader(Initialize.class.getClassLoader());
+        xstream.setMode(XStream.NO_REFERENCES);
+        return (Initialize) xstream.fromXML(xml);
     }
 
     @Override
@@ -98,25 +114,24 @@ public class Initialize
         return xstream.toXML(this);
     }
 
-    public static Initialize xmlToObject(String xml) {
-        XStream xstream = new XStream();
-        xstream = Helper.xstreamPermissions(xstream);
-
-        xstream.useAttributeFor(Initialize.class, "Type");
-        xstream.aliasField("Type", Initialize.class, "Type");
-
-        xstream.alias("Initialize" , Initialize.class);
-        xstream.setClassLoader(Initialize.class.getClassLoader());
-        xstream.setMode(XStream.NO_REFERENCES);
-        return (Initialize)xstream.fromXML(xml);
-    }
-
     public String getType() {
         return Type;
     }
 
+    public void setType(String type) {
+        this.Type = type;
+    }
+
+    public void setType(InitializeTypeValues type) {
+        this.Type = type.value();
+    }
+
     public String getVusers() {
         return Vusers;
+    }
+
+    public void setVusers(int vusers) {
+        this.Vusers = Common.integerToString(vusers);
     }
 
     public void setVusers(String vusers) {

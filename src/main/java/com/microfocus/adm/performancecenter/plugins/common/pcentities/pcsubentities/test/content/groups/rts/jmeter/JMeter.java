@@ -1,15 +1,31 @@
+/**
+ * Copyright © 2023 Open Text Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.groups.rts.jmeter;
 
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
 import com.thoughtworks.xstream.XStream;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="JMeter")
+@XmlRootElement(name = "JMeter")
 public class JMeter {
 
     @XmlElement
@@ -66,15 +82,14 @@ public class JMeter {
         setJMeterAdditionalProperties(jMeterAdditionalProperties);
     }
 
-
-    public void setJMeterMinPort(int JMeterMinPort) {
-            this.JMeterMinPort = Common.integerToString(JMeterMinPort);
+    public static JMeter xmlToObject(String xml) {
+        XStream xstream = new XStream();
+        xstream = Helper.xstreamPermissions(xstream);
+        xstream.alias("JMeter", JMeter.class);
+        xstream.setClassLoader(JMeter.class.getClassLoader());
+        xstream.setMode(XStream.NO_REFERENCES);
+        return (JMeter) xstream.fromXML(xml);
     }
-
-    public void setJMeterMaxPort(int JMeterMaxPort) {
-            this.JMeterMaxPort = Common.integerToString(JMeterMaxPort);
-    }
-
 
     @Override
     public String toString() {
@@ -102,16 +117,6 @@ public class JMeter {
         xstream.aliasField("JMeter", JMeter.class, "JMeter");
         xstream.setMode(XStream.NO_REFERENCES);
         return xstream.toXML(this);
-    }
-
-    public static JMeter xmlToObject(String xml)
-    {
-        XStream xstream = new XStream();
-        xstream = Helper.xstreamPermissions(xstream);
-        xstream.alias("JMeter" , JMeter.class);
-        xstream.setClassLoader(JMeter.class.getClassLoader());
-        xstream.setMode(XStream.NO_REFERENCES);
-        return (JMeter)xstream.fromXML(xml);
     }
 
     public boolean isStartMeasurements() {
@@ -142,12 +147,20 @@ public class JMeter {
         return JMeterMinPort;
     }
 
+    public void setJMeterMinPort(int JMeterMinPort) {
+        this.JMeterMinPort = Common.integerToString(JMeterMinPort);
+    }
+
     public void setJMeterMinPort(String JMeterMinPort) {
         this.JMeterMinPort = JMeterMinPort;
     }
 
     public String getJMeterMaxPort() {
         return JMeterMaxPort;
+    }
+
+    public void setJMeterMaxPort(int JMeterMaxPort) {
+        this.JMeterMaxPort = Common.integerToString(JMeterMaxPort);
     }
 
     public void setJMeterMaxPort(String JMeterMaxPort) {
