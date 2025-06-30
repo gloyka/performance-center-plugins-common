@@ -61,7 +61,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.apache.commons.httpclient.HttpStatus.*;
+import static org.apache.hc.core5.http.HttpStatus.*;
 
 public class PcRestProxy {
 

@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.microfocus.adm.performancecenter</groupId>
     <artifactId>plugins-common</artifactId>
-    <version>1.1.11</version>
+    <version>1.1.12</version>
     <packaging>jar</packaging>
-    <name>LoadRunner Enterprise plugins common</name>
-    <description>The plugin is a common code for plugins integrated with LoadRunner Enterprise via public REST API.</description>
-    <url>https://software.microfocus.com/en-us/products/performance-center/overview</url>
+    <name>OpenText Enterprise Performance Engineering plugins common</name>
+    <description>The plugin is a common code for plugins integrated with OpenText Enterprise Performance Engineering via public REST API.</description>
+    <url>https://www.opentext.com/products/loadrunner-enterprise</url>
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
@@ -30,7 +30,7 @@
                 <role>Plugin Owner and LoadRunner Enterprise RnD</role>
             </roles>
             <organization>LoadRunner Enterprise</organization>
-            <organizationUrl>https://www.microfocus.com/en-us/products/loadrunner-enterprise/overview</organizationUrl>
+            <organizationUrl>https://www.opentext.com/products/loadrunner-enterprise</organizationUrl>
         </developer>
     </developers>
     <scm>
@@ -59,21 +59,6 @@
             <groupId>org.apache.httpcomponents.client5</groupId>
             <artifactId>httpclient5</artifactId>
             <version>5.2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-            <version>3.1</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>commons-logging</artifactId>
-                    <groupId>commons-logging</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>commons-codec</artifactId>
-                    <groupId>commons-codec</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->
         <dependency>
