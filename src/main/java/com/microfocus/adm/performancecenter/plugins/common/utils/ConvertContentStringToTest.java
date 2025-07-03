@@ -209,26 +209,40 @@ public class ConvertContentStringToTest {
     private List<SimplifiedGroup> getSimplifiedGroups(SimplifiedContent simplifiedContent) throws IOException, PcException {
         List<SimplifiedGroup> simplifiedGroups = simplifiedContent.getGroup();
         int i = 0;
-        for (SimplifiedGroup simplifiedGroup : simplifiedGroups
-        ) {
+
+        ScriptCache scriptCache = null; // lazy-init only if needed
+
+        for (SimplifiedGroup simplifiedGroup : simplifiedGroups) {
             i++;
             PcScript pcScript = null;
-            if (simplifiedGroup.getScript_id() == 0 && !simplifiedGroup.getScript_path().isEmpty()) { //retreiving the script ID + protocol from script name and script folder
+
+            if (simplifiedGroup.getScript_id() == 0 && !simplifiedGroup.getScript_path().isEmpty()) {
+                // Lazily create scriptCache on first usage
+                if (scriptCache == null) {
+                    List<PcScript> allScripts = pcRestProxy.getScripts().getPcScriptList();
+                    scriptCache = new ScriptCache(allScripts);
+                }
+
                 File file = new File("Subject\\".concat(simplifiedGroup.getScript_path()));
-                pcScript = pcRestProxy.getScript(Helper.getParent(file.toPath()).toString(), Helper.getName(file.getName()));
+                String testFolderPath = Helper.getParent(file.toPath()).toString();
+                String scriptName = Helper.getName(file.getName());
+
+                pcScript = scriptCache.getScript(testFolderPath, scriptName); // fast lookup by name
                 simplifiedGroup.setScript_id(pcScript.getID());
                 simplifiedGroup.setProtocol(pcScript.getProtocol());
                 simplifiedContent.setGroup(simplifiedGroups);
-            } else if (simplifiedGroup.getScript_id() > 0) { // retrieving protocol of script
+            } else if (simplifiedGroup.getScript_id() > 0) {
                 pcScript = pcRestProxy.getScript(simplifiedGroup.getScript_id());
                 simplifiedGroup.setProtocol(pcScript.getProtocol());
                 simplifiedGroup.setScript_path(pcScript.getTestFolderPath());
                 simplifiedContent.setGroup(simplifiedGroups);
             }
+
             if (simplifiedGroup.getGroup_name() == null || simplifiedGroup.getGroup_name().isEmpty()) {
                 simplifiedGroup.setGroup_name(pcScript.getName().concat("_").concat(Integer.toString(i)));
             }
         }
+
         return simplifiedGroups;
     }
 

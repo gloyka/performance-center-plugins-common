@@ -22,7 +22,9 @@ import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentit
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.Content;
 import com.microfocus.adm.performancecenter.plugins.common.pcentities.simplifiedentities.simplifiedtest.content.SimplifiedContent;
 import com.microfocus.adm.performancecenter.plugins.common.utils.Helper;
+import com.microfocus.adm.performancecenter.plugins.common.utils.ScriptCache;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+
 import org.junit.Assert;
 
 import java.io.BufferedReader;
@@ -30,6 +32,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common.stringToInteger;
 import static org.apache.commons.lang.builder.ToStringStyle.MULTI_LINE_STYLE;
@@ -466,7 +469,9 @@ public class TestPcRestProxy {
         System.out.println("getScript: starts");
         try {
             System.out.println(String.format("getScript: getting script folder = %s from the project", testFolderPath));
-            PcScript pcScript = pcRestProxy.getScript(testFolderPath, scriptName);
+            List<PcScript> allScripts = pcRestProxy.getScripts().getPcScriptList();
+            ScriptCache scriptCache = new ScriptCache(allScripts);
+            PcScript pcScript = scriptCache.getScript(testFolderPath, scriptName);
             System.out.println(String.format("ID = %s, Name = %s, CreatedBy = %s, TestFolderPath = %s, WorkingMode = %s, Protocol = %s,",
                     Integer.toString(pcScript.getID()), pcScript.getName(), pcScript.getCreatedBy(),
                     pcScript.getTestFolderPath(), pcScript.getWorkingMode(), pcScript.getProtocol()));
