@@ -53,12 +53,12 @@ public class Helper {
         ArrayList<String[]> pathFromSubjectAndFoldersFiltered = new ArrayList<String[]>();
         for (String[] pathFromSubjectAndFolder : pathFromSubjectAndFolders
         ) {
-            String fullpath = pathFromSubjectAndFolder[0] + '\\' + pathFromSubjectAndFolder[1];
+            String fullPath = pathFromSubjectAndFolder[0] + '\\' + pathFromSubjectAndFolder[1];
             boolean exist = false;
             if (pcTestPlanFolders != null) {
                 for (PcTestPlanFolder pcTestPlanFolder : pcTestPlanFolders.getPcTestPlanFolderList()
                 ) {
-                    if (pcTestPlanFolder.getFullPath().equalsIgnoreCase(fullpath)) {
+                    if (pcTestPlanFolder.getFullPath().equalsIgnoreCase(fullPath)) {
                         exist = true;
                         break;
                     }
@@ -67,7 +67,7 @@ public class Helper {
                     pathFromSubjectAndFoldersFiltered.add(pathFromSubjectAndFolder);
             }
         }
-        Collections.sort(pathFromSubjectAndFoldersFiltered, new Comparator<String[]>() {
+        pathFromSubjectAndFoldersFiltered.sort(new Comparator<String[]>() {
             public int compare(String[] strings, String[] otherStrings) {
                 return strings[0].compareTo(otherStrings[0]);
             }
@@ -117,50 +117,42 @@ public class Helper {
         return sb.toString();
     }
 
+    @Deprecated
     public static String[] GetLreServerAndTenant(String lreServer) {
-        String delimiterSlash = "/";
-        String delimiterQuestionMark = "\\?";
-        String useDelimiter = delimiterSlash;
-        String[] strServerAndTenant = {lreServer, ""};
-        String theLreServer = lreServer;
-        //replace for common mistakes
-        if (lreServer != null && !lreServer.isEmpty()) {
-            theLreServer = lreServer.toLowerCase().replace("http://", "");
-            theLreServer = theLreServer.replace("https://", "");
-            theLreServer = theLreServer.replace("/lre", "");
-            theLreServer = theLreServer.replace("/site", "");
-            theLreServer = theLreServer.replace("/loadtest", "");
-            theLreServer = theLreServer.replace("/pcx", "");
-            theLreServer = theLreServer.replace("/adminx", "");
-            theLreServer = theLreServer.replace("/admin", "");
-            theLreServer = theLreServer.replace("/login", "");
+        return getLreServerAndTenant(lreServer);
+    }
+
+    public static String[] getLreServerAndTenant(String lreServer) {
+        String[] serverAndTenant = {lreServer, ""};
+        if (lreServer == null || lreServer.isEmpty()) {
+            return serverAndTenant;
         }
-        if (theLreServer != null && !theLreServer.isEmpty()) {
-            if (theLreServer.contains("/")) {
-                useDelimiter = delimiterSlash;
-            } else if (theLreServer.contains("?")) {
-                useDelimiter = delimiterQuestionMark;
+
+        // Remove common prefixes and paths, case-insensitive
+        String cleaned = lreServer.replaceAll("(?i)^https?://", ""); // removes http:// or https://
+        cleaned = cleaned.replaceAll("(?i)/lre|/homepage|/site|/loadtest|/pcx|/adminx|/admin|/login", "");
+
+        // Determine delimiter
+        String delimiter = cleaned.contains("/") ? "/" : (cleaned.contains("?") ? "\\?" : null);
+
+        if (delimiter != null) {
+            String[] parts = cleaned.split(delimiter, 2); // limit 2 to avoid splitting tenant further
+            serverAndTenant[0] = parts[0];
+            if (parts.length > 1) {
+                serverAndTenant[1] = delimiter.equals("\\?") ? "?" + parts[1] : parts[1];
             }
-            String[] severTenantArray = theLreServer.split(useDelimiter);
-            if (severTenantArray.length > 0) {
-                strServerAndTenant[0] = severTenantArray[0];
-                if (severTenantArray.length > 1) {
-                    if (useDelimiter.equals(delimiterQuestionMark)) {
-                        strServerAndTenant[1] = delimiterQuestionMark + severTenantArray[1];
-                    } else {
-                        strServerAndTenant[1] = severTenantArray[1];
-                    }
-                }
-            }
+        } else {
+            serverAndTenant[0] = cleaned; // no delimiter found
         }
-        return strServerAndTenant;
+
+        return serverAndTenant;
     }
 
     public static int extractTestIdFromString(String value) {
         if (value != null && !value.isEmpty()) {
-            Pattern pattern = Pattern.compile("ID:\'([^\']*)\'");
+            Pattern pattern = Pattern.compile("ID:'([^']*)'");
             Matcher matcher = pattern.matcher(value);
-            while (matcher.find()) {
+            if (matcher.find()) { // use if instead of while
                 return stringToInteger(matcher.group(1));
             }
         }

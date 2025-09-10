@@ -37,7 +37,6 @@ import java.util.List;
 import static com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common.stringToInteger;
 import static org.apache.commons.lang.builder.ToStringStyle.MULTI_LINE_STYLE;
 
-//import org.junit.Test;
 public class TestPcRestProxy {
 
     public final String RESOURCES_DIR = getClass().getResource("").getPath();
@@ -317,7 +316,7 @@ public class TestPcRestProxy {
     private void testGetAllTestSets() throws PcException, IOException {
         System.out.println("testGetAllTestSets: starts");
         try {
-            PcTestSets pcTestSets = pcRestProxy.GetAllTestSets();
+            PcTestSets pcTestSets = pcRestProxy.getAllTestSets();
             Assert.assertTrue("testGetAllTestSets: testsets received", !pcTestSets.getPcTestSetsList().isEmpty());
         } catch (PcException ex) {
             System.out.println("testGetAllTestSets: failed getting testsets. PcException = " + ex.getMessage());
