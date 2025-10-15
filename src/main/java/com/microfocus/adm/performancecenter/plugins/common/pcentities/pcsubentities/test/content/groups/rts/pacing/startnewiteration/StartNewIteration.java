@@ -23,7 +23,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.xml.bind.annotation.*;
 
-import static com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common.integerToString;
+import static com.microfocus.adm.performancecenter.plugins.common.pcentities.pcsubentities.test.content.common.Common.floatToString;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "StartNewIteration")
@@ -62,7 +62,7 @@ public class StartNewIteration {
         setDelayAtRangeToSeconds(-1);
     }
 
-    public StartNewIteration(StartNewIterationTypeValues type, int delayOfSeconds, int delayAtRangeOfSeconds, int delayAtRangeToSeconds) {
+    public StartNewIteration(StartNewIterationTypeValues type, float delayOfSeconds, float delayAtRangeOfSeconds, float delayAtRangeToSeconds) {
         setType(type);
         if (type.equals(StartNewIterationTypeValues.IMMEDIATELY.value())) {
             setDelayOfSeconds(-1);
@@ -79,7 +79,7 @@ public class StartNewIteration {
         }
     }
 
-    public StartNewIteration(String type, int delayOfSeconds, int delayAtRangeOfSeconds, int delayAtRangeToSeconds) {
+    public StartNewIteration(String type, float delayOfSeconds, float delayAtRangeOfSeconds, float delayAtRangeToSeconds) {
         setType(type);
         if (type.equals(StartNewIterationTypeValues.IMMEDIATELY.value())) {
             setDelayOfSeconds(-1);
@@ -147,8 +147,8 @@ public class StartNewIteration {
         return DelayOfSeconds;
     }
 
-    public void setDelayOfSeconds(int delayOfSeconds) {
-        this.DelayOfSeconds = integerToString(delayOfSeconds);
+    public void setDelayOfSeconds(float delayOfSeconds) {
+        this.DelayOfSeconds = floatToString(delayOfSeconds);
     }
 
     public void setDelayOfSeconds(String delayOfSeconds) {
@@ -159,8 +159,8 @@ public class StartNewIteration {
         return DelayAtRangeOfSeconds;
     }
 
-    public void setDelayAtRangeOfSeconds(int delayAtRangeOfSeconds) {
-        this.DelayAtRangeOfSeconds = integerToString(delayAtRangeOfSeconds);
+    public void setDelayAtRangeOfSeconds(float delayAtRangeOfSeconds) {
+        this.DelayAtRangeOfSeconds = floatToString(delayAtRangeOfSeconds);
     }
 
     public void setDelayAtRangeOfSeconds(String delayAtRangeOfSeconds) {
@@ -171,8 +171,8 @@ public class StartNewIteration {
         return DelayAtRangeToSeconds;
     }
 
-    public void setDelayAtRangeToSeconds(int delayAtRangeToSeconds) {
-        this.DelayAtRangeToSeconds = integerToString(delayAtRangeToSeconds);
+    public void setDelayAtRangeToSeconds(float delayAtRangeToSeconds) {
+        this.DelayAtRangeToSeconds = floatToString(delayAtRangeToSeconds);
     }
 
     public void setDelayAtRangeToSeconds(String delayAtRangeToSeconds) {

@@ -31,4 +31,11 @@ public class Common {
         else
             return 0;
     }
+
+    public static String floatToString(float value) {
+        if (value > 0)
+            return Float.toString(value);
+        else
+            return null;
+    }
 }
