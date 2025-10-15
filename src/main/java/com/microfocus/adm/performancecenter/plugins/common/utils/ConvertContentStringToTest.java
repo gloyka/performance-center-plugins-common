@@ -249,7 +249,14 @@ public class ConvertContentStringToTest {
     private Scheduler getScheduler(SimplifiedContent simplifiedContent) {
         ArrayList<Action> actions = new ArrayList<Action>();
         //initialized is unchanged
-        Initialize initialize = new Initialize();
+        Initialize initialize;
+        if (simplifiedContent.getScheduler().getInit_type() != null && simplifiedContent.getScheduler().getInit_type().equalsIgnoreCase(InitializeTypeValues.SIMULTANEOUSLY.value())) {
+            TimeInterval waitAfterInit = new TimeInterval(0, 0, 0);
+            initialize = new Initialize(InitializeTypeValues.SIMULTANEOUSLY, -1, null, waitAfterInit);
+        } else {
+            initialize = new Initialize();
+        }
+
         //StartVusers does change if rampup was provided
         //StartVusers startVusers = new StartVusers();
         StartVusers startVusers = getStartVusersSchedulerByTest(simplifiedContent);

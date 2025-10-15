@@ -11,12 +11,21 @@ public class SimplifiedScheduler {
     //optional
     private int duration;
 
+    //optional
+    private String init_type;
+
     public SimplifiedScheduler() {
     }
 
     public SimplifiedScheduler(int rampup, int duration) {
         this.rampup = rampup;
         this.duration = duration;
+    }
+
+    public SimplifiedScheduler(int rampup, int duration, String init_type) {
+        this.rampup = rampup;
+        this.duration = duration;
+        this.init_type = init_type;
     }
 
     public static SimplifiedScheduler xmlToObject(String xml) {
@@ -31,6 +40,7 @@ public class SimplifiedScheduler {
     @Override
     public String toString() {
         return "SimplifiedScheduler {" +
+                "init_type = " + init_type + ", " +
                 "rampup = " + rampup + ", " +
                 "duration = " + duration + "}";
     }
@@ -39,6 +49,7 @@ public class SimplifiedScheduler {
         XStream xstream = new XStream();
         xstream = Helper.xstreamPermissions(xstream);
         xstream.alias("SimplifiedScheduler", SimplifiedScheduler.class);
+        xstream.aliasField("init_type", SimplifiedScheduler.class, "init_type");
         xstream.aliasField("rampup", SimplifiedScheduler.class, "rampup");
         xstream.aliasField("duration", SimplifiedScheduler.class, "duration");
         xstream.aliasField("SimplifiedScheduler", SimplifiedScheduler.class, "SimplifiedScheduler");
@@ -60,5 +71,13 @@ public class SimplifiedScheduler {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public String getInit_type() {
+        return init_type;
+    }
+
+    public void setInit_type(String init_type) {
+        this.init_type = init_type;
     }
 }
