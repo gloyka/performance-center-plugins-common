@@ -72,7 +72,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class ConvertContentStringToTest {
-    private static final int MIN_INTERVAL_TIME = 15;
+    private static final int MIN_INTERVAL_TIME = 1;
     private PcRestProxy pcRestProxy;
     private String testName;
     private String testFolderPath;
@@ -298,7 +298,7 @@ public class ConvertContentStringToTest {
     //using 15 seconds interval
     private StartVusers getStartVusersSchedulerByTest(SimplifiedContent simplifiedContent) {
         StartVusers startVusers;
-        if (simplifiedContent.getScheduler().getRampup() > 30) {
+        if (simplifiedContent.getScheduler().getRampup() > MIN_INTERVAL_TIME) {
             int vusersSum = simplifiedContent.getGroup().stream().filter(o -> o.getVusers() > 0).mapToInt(o -> o.getVusers()).sum();
 
             double exactTimeIntervalInSecondsPerUser = ((double) simplifiedContent.getScheduler().getRampup()) / ((double) vusersSum);
@@ -308,13 +308,6 @@ public class ConvertContentStringToTest {
                 vusers = (int) (((double) MIN_INTERVAL_TIME) / exactTimeIntervalInSecondsPerUser) + ((((double) MIN_INTERVAL_TIME) % exactTimeIntervalInSecondsPerUser) == 0 ? 0 : 1);
                 timeIntervalInSeconds = MIN_INTERVAL_TIME;
             }
-            TimeInterval timeInterval = getTimeInterval(timeIntervalInSeconds);
-            Ramp ramp = new Ramp(vusers, timeInterval);
-            startVusers = new StartVusers(StartStopVusersTypeValues.GRADUALLY, ramp);
-        } else if (simplifiedContent.getScheduler().getRampup() > 1) {
-            int vusersSum = simplifiedContent.getGroup().stream().filter(o -> o.getVusers() > 0).mapToInt(o -> o.getVusers()).sum();
-            int timeIntervalInSeconds = simplifiedContent.getScheduler().getRampup() / 2;
-            int vusers = (vusersSum / 2) + (((vusersSum % 2) == 0) ? 0 : 1);
             TimeInterval timeInterval = getTimeInterval(timeIntervalInSeconds);
             Ramp ramp = new Ramp(vusers, timeInterval);
             startVusers = new StartVusers(StartStopVusersTypeValues.GRADUALLY, ramp);
