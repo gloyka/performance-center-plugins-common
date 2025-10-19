@@ -4,7 +4,7 @@ public enum DurationTypeValues {
 
     INDEFINITELY("indefinitely"),
     RUN_FOR("run for"),
-    UNTIL_COMPLETE("until complete");
+    UNTIL_COMPLETE("until completion");
 
     private String value;
 

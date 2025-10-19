@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.microfocus.adm.performancecenter</groupId>
     <artifactId>plugins-common-alfa</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.1.01</version>
     <packaging>jar</packaging>
     <name>OpenText Enterprise Performance Engineering plugins common</name>
     <description>The plugin is a common code for plugins integrated with OpenText Enterprise Performance Engineering via public REST API.</description>

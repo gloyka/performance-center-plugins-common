@@ -266,12 +266,15 @@ public class ConvertContentStringToTest {
             TimeInterval timeInterval = getTimeInterval(simplifiedContent.getScheduler().getDuration());
             duration = new Duration(DurationTypeValues.RUN_FOR, timeInterval);
         }
-        //StopVusers
-        StopVusers stopVusers = new StopVusers();
         actions.add(new Action(initialize));
         actions.add(new Action(startVusers));
         actions.add(new Action(duration));
-        actions.add(new Action(stopVusers));
+
+        //StopVusers
+        if (duration.getType().equalsIgnoreCase(DurationTypeValues.RUN_FOR.value())) {
+            StopVusers stopVusers = new StopVusers();
+            actions.add(new Action(stopVusers));
+        }
         return new Scheduler(actions);
     }
 
